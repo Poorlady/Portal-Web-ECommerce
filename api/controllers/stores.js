@@ -47,7 +47,7 @@ exports.getStore = (req, res) => {
 
 exports.updateStore = (req, res) => {
   const { storeId, name, desc, location } = req.body;
-  console.log(req.body);
+
   let imgFileName;
 
   if (req.files !== null) {
@@ -67,6 +67,20 @@ exports.updateStore = (req, res) => {
   }
 
   Store.findByIdAndUpdate(storeId, { $set: setData }, { new: true })
+    .then(result => res.json(result))
+    .catch(err => console.log(err));
+};
+
+exports.addEtalase = (req, res) => {
+  const { id, etalase } = req.body;
+
+  Store.findByIdAndUpdate(id, { $set: { etalase: etalase } }, { new: true })
+    .then(result => res.json(result))
+    .catch(err => console.log(err));
+};
+
+exports.findByName = (req, res) => {
+  Store.findOne({ name: req.params.params })
     .then(result => res.json(result))
     .catch(err => console.log(err));
 };

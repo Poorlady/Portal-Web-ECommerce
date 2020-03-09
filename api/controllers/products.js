@@ -102,8 +102,13 @@ exports.getProductsById = (req, res) => {
 };
 
 exports.getProductByParams = (req, res) => {
+  console.log(req.params.params);
   Product.find({
-    $or: [{ category: req.params.params }, { name: req.params.params }]
+    $or: [
+      { category: req.params.params },
+      { name: req.params.params },
+      { storeId: req.params.params }
+    ]
   }).then(product => res.json(product));
 };
 
@@ -123,56 +128,80 @@ exports.editProduct = (req, res) => {
     storeId
   } = req.body;
 
-  const mainFile = req.files.mainFile;
-  const mainImgname = stringFormater.makeFileName(
-    `${storeId}_${name}`,
-    mainFile,
-    "main"
-  );
-
-  const secondFile = req.files.secondFile;
-  const secondImgname = stringFormater.makeFileName(
-    `${storeId}_${name}`,
-    secondFile,
-    "second"
-  );
-
-  const thirdFile = req.files.thirdFile;
-  const thirdImgname = stringFormater.makeFileName(
-    `${storeId}_${name}`,
-    thirdFile,
-    "third"
-  );
+  let dataSet;
 
   const mappedSize = stringFormater.stringTOArray(size);
   const mappedColour = stringFormater.stringTOArray(colour);
   const slug = makeSlug(name);
 
-  mainFile.mv(`${mainpath}/client/public/uploads/products/${mainImgname}`);
-  secondFile.mv(`${mainpath}/client/public/uploads/products/${secondImgname}`);
-  thirdFile.mv(`${mainpath}/client/public/uploads/products/${thirdImgname}`);
+  if (req.files !== null) {
+    const mainFile = req.files.mainFile;
+    const mainImgname = stringFormater.makeFileName(
+      `${storeId}_${name}`,
+      mainFile,
+      "main"
+    );
+
+    const secondFile = req.files.secondFile;
+    const secondImgname = stringFormater.makeFileName(
+      `${storeId}_${name}`,
+      secondFile,
+      "second"
+    );
+
+    const thirdFile = req.files.thirdFile;
+    const thirdImgname = stringFormater.makeFileName(
+      `${storeId}_${name}`,
+      thirdFile,
+      "third"
+    );
+
+    mainFile.mv(`${mainpath}/client/public/uploads/products/${mainImgname}`);
+    secondFile.mv(
+      `${mainpath}/client/public/uploads/products/${secondImgname}`
+    );
+    thirdFile.mv(`${mainpath}/client/public/uploads/products/${thirdImgname}`);
+
+    dataSet = {
+      name: name,
+      mainImg: mainImgname,
+      secondImg: secondImgname,
+      thirdImgname: thirdImgname,
+      slug: slug,
+      desc: desc,
+      size: mappedSize,
+      colour: mappedColour,
+      stock: stock,
+      price: price,
+      category: category,
+      etalase: etalase,
+      condition: condition,
+      weight: weight,
+      storeName: storeName,
+      storeId: storeId
+    };
+  }
+
+  dataSet = {
+    name: name,
+    slug: slug,
+    desc: desc,
+    size: mappedSize,
+    colour: mappedColour,
+    stock: stock,
+    price: price,
+    category: category,
+    etalase: etalase,
+    condition: condition,
+    weight: weight,
+    storeName: storeName,
+    storeId: storeId
+  };
 
   Product.findOneAndUpdate(
     { _id: req.params.id },
     {
-      $set: {
-        name: name,
-        mainImg: mainImgname,
-        secondImg: secondImgname,
-        thirdImgname: thirdImgname,
-        slug: slug,
-        desc: desc,
-        size: mappedSize,
-        colour: mappedColour,
-        stock: stock,
-        price: price,
-        category: category,
-        etalase: etalase,
-        condition: condition,
-        weight: weight,
-        storeName: storeName,
-        storeId: storeId
-      }
+      $set: dataSet
     }
   )
     .then(result => {

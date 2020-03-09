@@ -1,45 +1,81 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+import axios from "axios";
 
 import ProductCard from "../components/ProductCard";
 import StorePageHeader from "../components/StorePageHeader";
 import PowerStore from "../components/PowerStore";
+import { useParams, Link } from "react-router-dom";
 
 function StorePage() {
-  const [products, setProducts] = useState([
-    "https://via.placeholder.com/200x150?text=first",
-    "https://via.placeholder.com/200x150?text=second",
-    "https://via.placeholder.com/200x150?text=third",
-    "https://via.placeholder.com/200x150?text=fourth",
-    "https://via.placeholder.com/200x150?text=fifth",
-    "https://via.placeholder.com/200x150?text=sixth",
-    "https://via.placeholder.com/200x150?text=seventh",
-    "https://via.placeholder.com/200x150?text=eighth",
-    "https://via.placeholder.com/200x150?text=ninth",
-    "https://via.placeholder.com/200x150?text=tenth",
-    "https://via.placeholder.com/200x150?text=first",
-    "https://via.placeholder.com/200x150?text=second",
-    "https://via.placeholder.com/200x150?text=third",
-    "https://via.placeholder.com/200x150?text=fourth",
-    "https://via.placeholder.com/200x150?text=fifth",
-    "https://via.placeholder.com/200x150?text=sixth",
-    "https://via.placeholder.com/200x150?text=seventh",
-    "https://via.placeholder.com/200x150?text=eighth",
-    "https://via.placeholder.com/200x150?text=ninth",
-    "https://via.placeholder.com/200x150?text=tenth"
-  ]);
+  const { name } = useParams();
+  const [products, setProducts] = useState([]);
+  const [store, setStore] = useState();
   const [isPowerStore, setIsPowerStore] = useState(false);
-  const productsMapped = products.map(item => <ProductCard product={item} />);
+  const [etalase, setEtalase] = useState();
 
-  return (
+  const fetchStore = async name => {
+    await axios
+      .get(`/api/store/${name}`)
+      .then(result => {
+        setStore(result.data);
+        fetchProducts(result.data._id);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const fetchProducts = async id => {
+    await axios
+      .get(`/api/products/filter/${id}`)
+      .then(result => {
+        setProducts(result.data);
+      })
+      .then(err => console.log(err));
+  };
+
+  const handleClick = e => {
+    if (e.target.text === "All Etalase") {
+      return setEtalase("");
+    }
+    setEtalase(e.target.text);
+  };
+  console.log(products);
+  console.log(etalase);
+  useEffect(() => {
+    fetchStore(name);
+  }, []);
+
+  const etalaseMapped =
+    store &&
+    store.etalase.map(item => (
+      <li>
+        <Link onClick={handleClick} key={item}>
+          {item}
+        </Link>
+      </li>
+    ));
+
+  const productsMapped =
+    products &&
+    products
+      .filter(item =>
+        etalase ? item.etalase.toLowerCase() === etalase.toLowerCase() : item
+      )
+      .map(item => <ProductCard key={item._id} product={item} />);
+
+  return store ? (
     <div className="store-page-wrapper">
-      <StorePageHeader />
+      <StorePageHeader store={store} />
       {isPowerStore && <PowerStore />}
       <div className="store-page-product">
         <div className="store-page-etalase input-border">
           <h4>Store's Etalase</h4>
-          <p>All Etalase</p>
-          <p>Etalase 1</p>
-          <p>Etalase 2</p>
+          <ul>
+            <li>
+              <Link onClick={handleClick}>All Etalase</Link>
+            </li>
+            {etalaseMapped}
+          </ul>
         </div>
         <div className="span-col-3">
           <div className="store-page-filter">
@@ -57,6 +93,8 @@ function StorePage() {
         </div>
       </div>
     </div>
+  ) : (
+    <p>Loading....</p>
   );
 }
 

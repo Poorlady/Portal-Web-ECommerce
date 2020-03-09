@@ -117,13 +117,13 @@ function ProductDetail() {
     <div className="productdetail-wrapper">
       <div className="productdetail-photo">
         <div className="productdetail-mainphoto">
-          <img src={`/uploads/${product.mainImg}`} alt="" />
+          <img src={`/uploads/products/${product.mainImg}`} alt="" />
         </div>
         <div className="productdetail-subphoto">
-          <img src={`/uploads/${product.secondImg}`} alt="" />
+          <img src={`/uploads/products/${product.secondImg}`} alt="" />
         </div>
         <div className="productdetail-subphoto">
-          <img src={`/uploads/${product.thirdImg}`} alt="" />
+          <img src={`/uploads/products/${product.thirdImg}`} alt="" />
         </div>
       </div>
       <div className="productdetail-info">
@@ -134,7 +134,8 @@ function ProductDetail() {
         <div>
           <p>Product's Information</p>
           <p className="product-sub-info">
-            Weight: {product.weight}kg | Condition: {product.condition}
+            Weight: {product.weight}kg | Condition: {product.condition} | By :{" "}
+            <Link to={`/store/${product.storeName}`}>{product.storeName}</Link>
           </p>
         </div>
         <form className="productdetail-option">

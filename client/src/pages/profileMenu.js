@@ -15,23 +15,13 @@ import { authContext } from "../contexts/Auth";
 
 function Profile() {
   let { path } = useRouteMatch();
-  const [store, setStore] = useState();
-  const { user } = useContext(authContext);
-  console.log(store);
-  const fetchStore = async userId => {
-    await axios
-      .post("/api/store/getStore", { userId: userId })
-      .then(result => setStore(result.data))
-      .catch(err => console.log(err));
-  };
+  const { user, updateState, store } = useContext(authContext);
 
-  useEffect(() => {
-    fetchStore(user._id);
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <main className="profile-wrapper">
-      <ProfileMenu store={store} />
+      <ProfileMenu />
       <div className="profile-form span-col-3">
         <Switch>
           <Route path={`${path}/menu`}>
@@ -44,13 +34,17 @@ function Profile() {
             <PurchaseHistory />
           </Route>
           <Route path={`${path}/store/menu`}>
-            <StoreForm store={store} fetchFunction={fetchStore} />
+            <StoreForm store={store} user={user} updateState={updateState} />
           </Route>
           <Route path={`${path}/store/etalase`}>
-            <EtalaseList />
+            <EtalaseList
+              etalase={store.etalase}
+              id={store._id}
+              updateState={updateState}
+            />
           </Route>
           <Route path={`${path}/store/products`}>
-            <StoreProductMenu />
+            <StoreProductMenu id={store._id} />
           </Route>
           <Route path={`${path}/store/order`}>
             <StoreOrder />

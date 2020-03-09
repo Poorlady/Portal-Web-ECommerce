@@ -9,7 +9,7 @@ function LogIn({ closeLogin }) {
   const [password, setPassword] = useState("");
   const URL = "/api/user/login";
 
-  const { saveUser } = useContext(authContext);
+  const { updateState } = useContext(authContext);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -31,9 +31,7 @@ function LogIn({ closeLogin }) {
       .post(URL, { email: email, password: password })
       .then(result => {
         if (result.status === 200) {
-          localStorage.setItem("user", JSON.stringify(result.data));
-          localStorage.setItem("logIn", true);
-          saveUser(result);
+          updateState("user", result.data.data);
           closeLogin();
         } else {
           alert("Email or Password is wrong!!");

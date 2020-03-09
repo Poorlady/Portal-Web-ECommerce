@@ -13,7 +13,7 @@ function Header({ openLogin, closeLogin }) {
 
   useEffect(() => {
     console.log(user);
-  }, [cartProduct]);
+  }, []);
 
   return (
     <header>
@@ -95,9 +95,7 @@ function Header({ openLogin, closeLogin }) {
               <>
                 {console.log(isLogIn)}
                 <li>
-                  <Link to="/profile">{`${user.fName ? user.fName : ""} ${
-                    user.lName ? user.lName : ""
-                  }`}</Link>
+                  <Link to="/profile">{`${user.fName} ${user.lName}`}</Link>
                 </li>
                 <li>
                   <Link onClick={() => deleteUser()}>Logout</Link>

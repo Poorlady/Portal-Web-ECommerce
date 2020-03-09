@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./App.css";
 
 import { Switch, Route } from "react-router-dom";
@@ -46,7 +46,7 @@ function App() {
           <LandingApp />
         </Route>
         <Route path="/signup">
-          <SignUp />
+          <SignUp closeLogin={closeLogin} />
         </Route>
         <Route exact path="/product-page/:param">
           <ProductPage />
@@ -66,7 +66,7 @@ function App() {
         <PrivateRoute path="/edit-product/:id" openLogin={openLogin}>
           <AddProduct />
         </PrivateRoute>
-        <PrivateRoute path="/store/page" openLogin={openLogin}>
+        <PrivateRoute path="/store/:name" openLogin={openLogin}>
           <StorePage />
         </PrivateRoute>
         <PrivateRoute path="/power-store/page" openLogin={openLogin}>

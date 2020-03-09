@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 
+import { authContext } from "../contexts/Auth";
+
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 function AddProductForm({ store, product, method }) {
   const URL = product ? `/api/edit-product/${product._id}` : "/api/product";
@@ -17,10 +20,12 @@ function AddProductForm({ store, product, method }) {
   const [stock, setStock] = useState();
   const [price, setPrice] = useState();
   const [weight, setWeight] = useState();
+  const [etalaseList, setEtalaseList] = useState(store.etalase);
+
+  let history = useHistory();
 
   const check = product => {
     if (product) {
-      console.log(product);
       setName(product.name);
       setImg(product.mainImg);
       setSecondImg(product.secondImg);
@@ -40,10 +45,8 @@ function AddProductForm({ store, product, method }) {
     }
   };
 
-  console.log(desc);
   useEffect(() => {
     check(product);
-    console.log(store);
   }, [store, product]);
 
   const handleFile = e => {
@@ -63,6 +66,9 @@ function AddProductForm({ store, product, method }) {
 
   const handleChange = e => {
     const { name, value } = e.target;
+    if (value === "Select Etalase") {
+      setEtalase("-");
+    }
     switch (name) {
       case "name":
         setName(value);
@@ -96,7 +102,6 @@ function AddProductForm({ store, product, method }) {
         break;
     }
   };
-
   const handleSubmit = async event => {
     event.preventDefault();
     const formData = new FormData();
@@ -123,37 +128,39 @@ function AddProductForm({ store, product, method }) {
           "Content-Type": "multipart/form-data"
         }
       })
-      .then(response => console.log(response))
+      .then(response => history.push("/profile"))
       .catch(err => console.log(err));
   };
+
+  console.log(product);
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="add-form-group">
-        {check() && (
+        {product && (
           <img
             className="add-form-uploaded"
-            src={`/uploads/${product.mainImg}`}
+            src={`/uploads/products/${product.mainImg}`}
           />
         )}
         <label>Add Main Picture</label>
         <input type="file" name="mainImg" onChange={handleFile} />
       </div>
       <div className="add-form-group">
-        {check() && (
+        {product && (
           <img
             className="add-form-uploaded"
-            src={`/uploads/${product.secondImg}`}
+            src={`/uploads/products/${product.secondImg}`}
           />
         )}
         <label>Add Picture</label>
         <input type="file" name="secondImg" onChange={handleFile} />
       </div>
       <div className="add-form-group">
-        {check() && (
+        {product && (
           <img
             className="add-form-uploaded"
-            src={`/uploads/${product.thirdImg}`}
+            src={`/uploads/products/${product.thirdImg}`}
           />
         )}
         <label>Add Picture</label>
@@ -186,14 +193,27 @@ function AddProductForm({ store, product, method }) {
         </div>
         <div className="add-form-group">
           <label>Etalase Produk :</label>
-          <input
+          <select
             name="etalase"
             className="add-form-input input-border"
             type="text"
             placeholder="Product's Etalase"
             value={etalase}
             onChange={handleChange}
-          />
+          >
+            <option selected defaultChecked>
+              Select Etalase
+            </option>
+            {etalaseList.length > 1 ? (
+              etalaseList.map(item => (
+                <option selected={item === etalase} value={item}>
+                  {item}
+                </option>
+              ))
+            ) : (
+              <option>-</option>
+            )}
+          </select>
         </div>
         <h4>Deskripsi Produk</h4>
         <hr />

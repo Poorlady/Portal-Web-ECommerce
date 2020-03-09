@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 function ProfileForm() {
-  const { user, updateUser } = useContext(authContext);
+  const { user, updateState } = useContext(authContext);
   const [img, setImg] = useState({});
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -42,8 +42,6 @@ function ProfileForm() {
     }
   };
 
-  console.log(user.bDate.split("T")[0]);
-
   const handleSubmit = async e => {
     e.preventDefault();
     const formData = new FormData();
@@ -59,8 +57,7 @@ function ProfileForm() {
         headers: { "Content-Type": "multipart/form-data" }
       })
       .then(result => {
-        localStorage.setItem("user", JSON.stringify(result));
-        updateUser(result);
+        updateState("user", result.data);
         history.push("/profile/menu");
       })
       .catch(err => console.log(err));

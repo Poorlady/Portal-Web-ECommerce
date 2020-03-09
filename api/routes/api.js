@@ -36,8 +36,13 @@ routes.post("/api/store/addStore", storeController.addStore);
 routes.post("/api/store/getStore", storeController.getStore);
 
 routes.post("/api/store/updateStore", storeController.updateStore);
+
+routes.put("/api/store/addEtalase", storeController.addEtalase);
+
+routes.get("/api/store/:params", storeController.findByName);
+
+module.exports = routes;
+
 // routes.get("/api/user/user", userController.getUser);
 
 // routes.post("/api/product", productController.postProduct);
-
-module.exports = routes;
