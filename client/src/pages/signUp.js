@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 
 const stringFormarter = require("../helpers/stringFormarter");
 
-function SignUp(props) {
+function SignUp({ closeLogin }) {
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
   const [bDate, setBDate] = useState("");
@@ -52,7 +52,7 @@ function SignUp(props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    props.closeLogin();
+    closeLogin();
   }, []);
 
   const passCheck = (pass, rePass) => {

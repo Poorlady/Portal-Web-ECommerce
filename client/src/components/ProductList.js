@@ -10,7 +10,9 @@ function ProductList() {
       .then(products => setProducts(products));
   }, []);
 
-  const productsMapped = products.map(item => <ProductCard product={item} />);
+  const productsMapped = products.map(item => (
+    <ProductCard key={item._id} product={item} />
+  ));
   return <div className="product-list">{productsMapped}</div>;
 }
 

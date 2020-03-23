@@ -54,8 +54,8 @@ function Header({ openLogin, closeLogin }) {
                 <div class="dropdown-content ml-50">
                   {cartProduct.length > 0 ? (
                     <>
-                      {cartProduct.map(item => (
-                        <CartCard key={item._id} product={item} />
+                      {cartProduct.map((item, i) => (
+                        <CartCard key={i} product={item} />
                       ))}
                       <div className="cart-drop">
                         <p>Total : {totalPrice()}</p>

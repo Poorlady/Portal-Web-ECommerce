@@ -49,7 +49,7 @@ function ProductSlider() {
       </ArrowSlide>
       <div className="products-slider">
         {firstFiveVideo.map(product => (
-          <ProductCard product={product} key={product.id} />
+          <ProductCard product={product} key={product._id} />
         ))}
       </div>
       <ArrowSlide onClick={nextSlide} position={"slide-arrow right"}>

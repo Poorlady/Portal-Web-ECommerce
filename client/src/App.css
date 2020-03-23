@@ -98,6 +98,9 @@ nav ul li {
 .span-row-2 {
   grid-row: span 2 / auto;
 }
+.span-row-3 {
+  grid-row: span 3 / auto;
+}
 .carousel-wrapper{
   position: relative;
 }
@@ -359,8 +362,9 @@ footer{
 .bannerproduct-wrapper{
   grid-area: banner;
   height: 200px;
-  background-color: #FFA975;
   border-radius: 10px;
+  text-transform: capitalize;
+  padding: 10px 0 0 50px;
 }
 .filterproduct-wrapper{
   grid-area: filter;
@@ -578,6 +582,7 @@ height: fit-content;
   margin-right: 15px;
 }
 .span-col-4{grid-column: span 4 / auto;}
+
 .cart-price{
   padding: 10px 15px 10px 25px;
 }
@@ -1245,4 +1250,20 @@ text-transform: capitalize;
 #store-form-img {
   width: 20%;
   display: block;
+}
+.color-filter{
+  overflow: hidden;
+  color: transparent;
+}
+.capitalize{
+  text-transform: capitalize;
+}
+.address-small{
+  font-size: 13px;
+  margin: 0;
+  color: grey;
+}
+.f14{
+  font-size: 14px;
+  margin: 2.5px 0;
 }

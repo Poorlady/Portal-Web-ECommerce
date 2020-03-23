@@ -3,7 +3,7 @@ import ImageSlide from "./ImageSlide";
 import ArrowSlide from "./ArrowSlide";
 
 function Carousel({ classProp }) {
-  const [img, setImg] = useState([
+  const [img] = useState([
     "https://cmeimg-a.akamaihd.net/640/clsd/getty/c64f76dc20c246ca88ee180fe4b4b781",
     "https://lh3.googleusercontent.com/oxPeODS2m6rYIVbhcQChRtOWEYeGDwbeeeB1cDU2o_WYAVPU61VIgx-_6BAh5gSL8Sw=h900",
     "https://i0.wp.com/www.universodegatos.com/wp-content/uploads/2017/04/fivfelv7.jpg?resize=582%2C328",

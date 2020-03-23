@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import "./App.css";
 
 import { Switch, Route } from "react-router-dom";
@@ -18,6 +18,7 @@ import Profile from "./pages/profileMenu";
 import AddProduct from "./pages/addProduct";
 import StorePage from "./pages/storePage";
 import PowerStore from "./pages/powerStore";
+import CartPayment from "./pages/cartPayment";
 
 import { authContext } from "./contexts/Auth";
 
@@ -54,7 +55,7 @@ function App() {
         <Route path="/product/:id">
           <ProductDetail />
         </Route>
-        <Route path="/carts">
+        <Route exact path="/carts">
           <Carts />
         </Route>
         <PrivateRoute path="/profile" openLogin={openLogin}>
@@ -71,6 +72,9 @@ function App() {
         </PrivateRoute>
         <PrivateRoute path="/power-store/page" openLogin={openLogin}>
           <PowerStore />
+        </PrivateRoute>
+        <PrivateRoute path="/carts/payment" openLogin={openLogin}>
+          <CartPayment />
         </PrivateRoute>
       </Switch>
       <Footer />

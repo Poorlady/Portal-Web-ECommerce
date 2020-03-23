@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { authContext } from "../contexts/Auth";
 
 function StoreForm({ store, user, updateState }) {
   const URL = store ? "/api/store/updateStore" : "/api/store/addStore";
@@ -28,6 +27,8 @@ function StoreForm({ store, user, updateState }) {
         break;
       case "location":
         setLocation(value);
+        break;
+      default:
         break;
     }
   };
@@ -99,7 +100,11 @@ function StoreForm({ store, user, updateState }) {
         <input onChange={handleFile} name="img" type="file" />
       </div>
       {store && (
-        <img id="store-form-img" src={`/uploads/stores/${store.img}`} />
+        <img
+          id="store-form-img"
+          src={`/uploads/stores/${store.img}`}
+          alt={store.name}
+        />
       )}
       <button
         type="submit"

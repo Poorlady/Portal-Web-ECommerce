@@ -1,10 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
-import axios from "axios";
-
+import React, { useContext, useEffect } from "react";
 import ProfileForm from "../components/ProfileForm";
 import ProfileMenu from "../components/ProfileMenu";
 import ProfileProtection from "../components/ProtectionForm";
-import { Switch, Route, useParams, useRouteMatch } from "react-router-dom";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
 import PurchaseHistory from "../components/PurchaseHistory";
 import StoreForm from "../components/StoreForm";
 import EtalaseList from "../components/EtalaseList";
@@ -16,8 +14,9 @@ import { authContext } from "../contexts/Auth";
 function Profile() {
   let { path } = useRouteMatch();
   const { user, updateState, store } = useContext(authContext);
-
-  useEffect(() => {}, []);
+  console.log(user);
+  console.log(store);
+  useEffect(() => {}, [user]);
 
   return (
     <main className="profile-wrapper">
@@ -31,20 +30,20 @@ function Profile() {
             <ProfileProtection />
           </Route>
           <Route path={`${path}/purchase-history`}>
-            <PurchaseHistory />
+            <PurchaseHistory user={user} />
           </Route>
           <Route path={`${path}/store/menu`}>
             <StoreForm store={store} user={user} updateState={updateState} />
           </Route>
           <Route path={`${path}/store/etalase`}>
             <EtalaseList
-              etalase={store.etalase}
-              id={store._id}
+              etalase={store && store.etalase}
+              id={store && store._id}
               updateState={updateState}
             />
           </Route>
           <Route path={`${path}/store/products`}>
-            <StoreProductMenu id={store._id} />
+            <StoreProductMenu id={store && store._id} />
           </Route>
           <Route path={`${path}/store/order`}>
             <StoreOrder />

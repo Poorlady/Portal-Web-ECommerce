@@ -13,6 +13,8 @@ function StorePage() {
   const [store, setStore] = useState();
   const [isPowerStore, setIsPowerStore] = useState(false);
   const [etalase, setEtalase] = useState();
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState();
 
   const fetchStore = async name => {
     await axios
@@ -23,14 +25,22 @@ function StorePage() {
       })
       .catch(err => console.log(err));
   };
-
+  console.log(sort);
   const fetchProducts = async id => {
     await axios
-      .get(`/api/products/filter/${id}`)
+      .get(`/api/products/store/${id}`)
       .then(result => {
         setProducts(result.data);
       })
       .then(err => console.log(err));
+  };
+
+  const sortFilter = (a, b) => {
+    if (sort === "lowest price") {
+      return a.price - b.price;
+    } else if (sort === "highest price") {
+      return b.price - a.price;
+    }
   };
 
   const handleClick = e => {
@@ -39,8 +49,21 @@ function StorePage() {
     }
     setEtalase(e.target.text);
   };
-  console.log(products);
-  console.log(etalase);
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "search":
+        setSearch(value);
+        break;
+      case "sort":
+        setSort(value);
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
     fetchStore(name);
   }, []);
@@ -61,6 +84,8 @@ function StorePage() {
       .filter(item =>
         etalase ? item.etalase.toLowerCase() === etalase.toLowerCase() : item
       )
+      .filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
+      .sort((a, b) => sortFilter(a, b))
       .map(item => <ProductCard key={item._id} product={item} />);
 
   return store ? (
@@ -80,8 +105,19 @@ function StorePage() {
         <div className="span-col-3">
           <div className="store-page-filter">
             <h4 className="span-col-2">Store's Product</h4>
-            <input className="input-border" placeholder="search product" />
-            <select className="input-border" name="cars">
+            <input
+              name="search"
+              value={search}
+              onChange={handleChange}
+              className="input-border"
+              placeholder="search product"
+            />
+            <select
+              value={sort}
+              onChange={handleChange}
+              className="input-border"
+              name="sort"
+            >
               <option value="lowest price">lowest price</option>
               <option value="highest price">highest price</option>
               <option value="latest add">latest add</option>

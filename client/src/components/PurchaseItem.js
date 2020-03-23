@@ -1,19 +1,26 @@
 import React from "react";
+import { Link } from "react-router-dom";
+const currency = require("../helpers/stringFormarter");
 
-import Shoes from "../img/shoes.jpg";
-
-function PurchaseItem() {
+function PurchaseItem({ product }) {
   return (
     <>
       <div className="item-photo">
-        <img src={Shoes} />
+        <img src={`/uploads/products/${product.mainImg}`} alt={product.name} />
       </div>
-      <div className="span-col-4 the-item">
-        <p className="the-item-header">Product's Name</p>
-        <p>Product Option</p>
+      <div className="span-col-3 the-item">
+        <p className="the-item-header">{product.name}</p>
+        <p>Size: {product.size}</p>
+        <p>Colour: {product.colour}</p>
+        <p>Amount: {product.amount}</p>
       </div>
       <div>
-        <p>$100.00</p>
+        <Link to={`/store/${product.storeName}`} className="capitalize">
+          {product.storeName}
+        </Link>
+      </div>
+      <div>
+        <p>{currency.toCurrency(product.price)}</p>
       </div>
     </>
   );

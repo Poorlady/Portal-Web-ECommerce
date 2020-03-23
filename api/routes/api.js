@@ -8,6 +8,8 @@ const userController = require("../controllers/users");
 
 const storeController = require("../controllers/stores");
 
+const orderController = require("../controllers/orders");
+
 routes.post("/api/product", productController.postProduct);
 
 routes.post("/api/edit-product/:id", productController.editProduct);
@@ -20,6 +22,13 @@ routes.get(
   "/api/products/filter/:params",
   productController.getProductByParams
 );
+
+routes.get(
+  "/api/products/store/:params",
+  productController.getProductsByStoreId
+);
+
+routes.delete("/api/products/:params", productController.deleteProducts);
 
 routes.post("/api/user/signup", userController.signUp);
 
@@ -41,7 +50,14 @@ routes.put("/api/store/addEtalase", storeController.addEtalase);
 
 routes.get("/api/store/:params", storeController.findByName);
 
+routes.post("/api/order", orderController.postOrder);
 module.exports = routes;
+
+routes.get("/api/order/:params", orderController.getOrder);
+
+routes.post("/api/user/cart", userController.addToCart);
+routes.get("/api/user/cart/:id", userController.getCart);
+routes.delete("/api/user/cart/:id", userController.deleteCart);
 
 // routes.get("/api/user/user", userController.getUser);
 

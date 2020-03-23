@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import CartProduct from "../components/CartProduct";
 
 import { CartContext } from "../contexts/Cart";
-import AddProduct from "./addProduct";
+import { Link } from "react-router-dom";
 
 function Carts() {
   const {
@@ -25,13 +25,13 @@ function Carts() {
       <div className="cart-list">
         <div className="span-col-4 cart-items">
           {cartProduct.length > 0 ? (
-            cartProduct.map(item => (
+            cartProduct.map((item, i) => (
               <CartProduct
                 product={item}
                 addProduct={addProduct}
                 delProduct={delProduct}
                 subProduct={subProduct}
-                key={item._id}
+                key={i}
                 // toCurrency={toCurrency}
               />
             ))
@@ -42,7 +42,9 @@ function Carts() {
         <div className=" cart-price input-border">
           <h4>Total :</h4>
           <p>{totalPrice()}</p>
-          <button className="input-border">Buy Now</button>
+          <Link to="carts/payment" className="input-border">
+            Buy Now
+          </Link>
         </div>
       </div>
     </main>

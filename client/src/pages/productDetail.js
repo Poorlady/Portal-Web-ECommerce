@@ -55,6 +55,7 @@ function ProductDetail() {
         setPickColour(value);
         break;
       default:
+        break;
     }
   };
 
@@ -149,12 +150,12 @@ function ProductDetail() {
                   onChange={handleChange}
                   value={pickColour}
                 >
-                  <option selected defaultChecked>
-                    Pick Colour
-                  </option>
+                  <option defaultChecked>Pick Colour</option>
                   {product.colour &&
                     product.colour.map(colour => (
-                      <option value={colour}>{colour}</option>
+                      <option key={colour} value={colour}>
+                        {colour}
+                      </option>
                     ))}
                 </select>
               </>
@@ -172,11 +173,11 @@ function ProductDetail() {
                   className="input-border"
                   onChange={handleChange}
                 >
-                  <option selected defaultChecked>
-                    Pick Size
-                  </option>
+                  <option defaultChecked>Pick Size</option>
                   {product.size.map(size => (
-                    <option value={size}>{size}</option>
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
                   ))}
                 </select>
               </>

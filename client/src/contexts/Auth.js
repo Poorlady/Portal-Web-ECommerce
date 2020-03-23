@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
 
 const authContext = React.createContext();
 
@@ -25,10 +23,10 @@ function AuthProvider(props) {
       .catch(err => console.log(err));
   };
 
+  console.log(user);
+  console.log(store);
   useEffect(() => {
-    console.log(user);
-    console.log(store);
-    if (user && store === null) {
+    if (user != null && store == null) {
       fetchStore(user._id);
     }
   }, [user, store]);
@@ -39,6 +37,7 @@ function AuthProvider(props) {
     setIsLogIn(false);
     localStorage.removeItem("user");
     localStorage.removeItem("store");
+    localStorage.removeItem("carts");
     localStorage.removeItem("rememberMe");
   };
 
@@ -53,6 +52,8 @@ function AuthProvider(props) {
       case "store":
         setStore(data);
         localStorage.setItem("store", JSON.stringify(data));
+        break;
+      default:
         break;
     }
   };

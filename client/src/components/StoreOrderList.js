@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import PurchasItem from "./PurchaseItem";
 import { Link } from "react-router-dom";
 
-function StoreOrderList() {
+function StoreOrderList({ order, store }) {
   const [isShowClicked, setIsShowClicked] = useState(false);
 
   const showAble = () => {
@@ -13,18 +13,18 @@ function StoreOrderList() {
   const showDisable = () => {
     setIsShowClicked(false);
   };
+  const orderItems = order.products
+    .filter(item => item.storeName === store.name)
+    .map(item => <PurchasItem product={item} key={item._id} />);
 
   return (
     <div className="store-order-wrapper input-border">
       <div className="store-order-info">
-        <p>Name : Nama User</p>
-        <p>
-          Location : Jl. Mulwo Selatan No.15, Kel. Karangasem, Kec. Laweyan,
-          Karangasem, Kec. Laweyan, Kota Surakarta, Jawa Tengah 57145
-        </p>
+        <p className="capitalize">Name : {order.userName}</p>
+        <p className="capitalize">Location : {order.location}</p>
       </div>
       <div className="store-order-date">
-        <p>February 2, 2020</p>
+        <p className="capitalize">February 2, 2020</p>
       </div>
       <div className="store-order-item-wrapper">
         <div className="span-col-5">
@@ -35,9 +35,7 @@ function StoreOrderList() {
         </div>
         {isShowClicked ? (
           <>
-            <PurchasItem />
-            <PurchasItem />
-            <PurchasItem />
+            {orderItems}
             <Link className="span-col-6" onClick={showDisable}>
               Close Details
             </Link>

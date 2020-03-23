@@ -39,6 +39,8 @@ function ProfileForm() {
       case "zip":
         setZip(value);
         break;
+      default:
+        break;
     }
   };
 
@@ -66,7 +68,7 @@ function ProfileForm() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-photo">
-        {user.img && <img src={`/uploads/users/${user.img}`} />}
+        {user.img && <img src={`/uploads/users/${user.img}`} alt={user.name} />}
         <input type="file" name="userImg" onChange={handleFile} />
         <div className="user-prev">
           <p className="user-prev-name">

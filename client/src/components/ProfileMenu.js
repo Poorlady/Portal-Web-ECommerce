@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link, useRouteMatch, Redirect } from "react-router-dom";
+import React, { useEffect, useContext } from "react";
+import { Link, useRouteMatch } from "react-router-dom";
 
 import { authContext } from "../contexts/Auth";
 

@@ -4,7 +4,7 @@ import EtalaseForm from "./EtalaseForm";
 
 function EtalaseList({ etalase, id, updateState }) {
   const [isAddClicked, setIsAddClicked] = useState(false);
-  const [isEtalase, setIsEtalase] = useState(etalase && etalase);
+  const [isEtalase] = useState(etalase && etalase);
 
   useEffect(() => {}, [isEtalase]);
 

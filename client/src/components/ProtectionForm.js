@@ -19,6 +19,8 @@ function ProtectionForm() {
       case "re-password":
         setRePassword(value);
         break;
+      default:
+        break;
     }
   };
 

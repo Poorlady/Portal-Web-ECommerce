@@ -31,6 +31,7 @@ function LogIn({ closeLogin }) {
       .post(URL, { email: email, password: password })
       .then(result => {
         if (result.status === 200) {
+          console.log(result.data);
           updateState("user", result.data.data);
           closeLogin();
         } else {
