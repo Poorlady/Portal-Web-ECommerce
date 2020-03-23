@@ -82,11 +82,9 @@ function CartProvider(props) {
   };
 
   const totalPrice = () => {
-    return currency.toCurrency(
-      cartProduct.reduce(
-        (acc, { productId, amount }) => acc + productId.price * amount,
-        0
-      )
+    return cartProduct.reduce(
+      (acc, { productId, amount }) => acc + productId.price * amount,
+      0
     );
   };
 

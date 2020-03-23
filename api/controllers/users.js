@@ -37,14 +37,7 @@ const insertProductToCart = (user, productId, amount, size, colour) => {
   const updatedCart = { items: updatedCartProducts };
   // console.log(updatedCartProducts);
   user.cart = updatedCart;
-  user
-    .save()
-    .then(result => {
-      return result;
-    })
-    .catch(err => {
-      return err;
-    });
+  return user.save();
 };
 
 const deleteProductFromCart = (user, product) => {
@@ -60,14 +53,7 @@ const deleteProductFromCart = (user, product) => {
   const updatedCart = { items: updatedCartProducts };
   // console.log(updatedCartProducts);
   user.cart = updatedCart;
-  user
-    .save()
-    .then(result => {
-      return result;
-    })
-    .catch(err => {
-      return err;
-    });
+  return user.save();
 };
 
 exports.signUp = (req, res) => {

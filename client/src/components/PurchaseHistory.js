@@ -19,13 +19,17 @@ function PurchaseHistory({ user }) {
   const fetchOrder = async e => {
     await axios
       .get(URL)
-      .then(result => setHistory(result.data))
+      .then(result => {
+        console.log(result);
+        setHistory(result.data);
+      })
       .catch(err => console.log(err));
   };
 
   useEffect(() => {
     fetchOrder();
   }, []);
+  console.log(history);
 
   const mappedHistory = history.map(item => (
     <div className="purchase-history-wrapper input-border">
@@ -33,7 +37,7 @@ function PurchaseHistory({ user }) {
         <p>Logo Cart</p>
       </div>
       <div className="purchase-history-item span-col-2">
-        <p>{item.products.length} items</p>
+        <p>{item.order.items.length} item(s)</p>
         <Link onClick={handleClick} className="input-border">
           See details
         </Link>
@@ -48,7 +52,7 @@ function PurchaseHistory({ user }) {
         <p>payment method</p>
       </div>
       {isDetailClicked &&
-        item.products.map(product => (
+        item.order.items.map(product => (
           <PurchaseItem product={product} key={product._id} />
         ))}
     </div>

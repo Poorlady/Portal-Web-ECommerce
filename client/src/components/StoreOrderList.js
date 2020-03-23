@@ -13,18 +13,21 @@ function StoreOrderList({ order, store }) {
   const showDisable = () => {
     setIsShowClicked(false);
   };
-  const orderItems = order.products
-    .filter(item => item.storeName === store.name)
+  console.log(order);
+  const orderItems = order.order.items
+    .filter(item => item.product.storeId.name === store.name)
     .map(item => <PurchasItem product={item} key={item._id} />);
 
+  console.log(orderItems);
   return (
+    // <p>hello</p>
     <div className="store-order-wrapper input-border">
       <div className="store-order-info">
-        <p className="capitalize">Name : {order.userName}</p>
-        <p className="capitalize">Location : {order.location}</p>
+        <p className="capitalize">Name : {order.user.name}</p>
+        <p className="capitalize">Location : {order.user.location}</p>
       </div>
       <div className="store-order-date">
-        <p className="capitalize">February 2, 2020</p>
+        <p className="capitalize">{order.orderDate.split("T").shift()}</p>
       </div>
       <div className="store-order-item-wrapper">
         <div className="span-col-5">

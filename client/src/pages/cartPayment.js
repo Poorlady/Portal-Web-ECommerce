@@ -3,6 +3,7 @@ import CartProduct from "../components/CartProduct";
 import axios from "axios";
 import { CartContext } from "../contexts/Cart";
 import { authContext } from "../contexts/Auth";
+import stringFormarter from "../helpers/stringFormarter";
 
 function CartPayment() {
   const URL = "/api/order";
@@ -16,11 +17,12 @@ function CartPayment() {
     // toCurrency
   } = useContext(CartContext);
   const { user } = useContext(authContext);
+  let total = totalPrice();
 
   const handleClick = async e => {
     e.preventDefault();
     await axios
-      .post(URL, { user: user, product: cartProduct })
+      .post(URL, { userId: user._id, total: total })
       .then(result => {
         localStorage.removeItem("carts");
         delAll();
@@ -43,7 +45,7 @@ function CartPayment() {
         </div>
         <div className=" cart-price input-border span-row-3">
           <h4>Total :</h4>
-          <p>{totalPrice()}</p>
+          <p>{stringFormarter.toCurrency(totalPrice())}</p>
           <button onClick={handleClick} className="input-border">
             Buy Now
           </button>

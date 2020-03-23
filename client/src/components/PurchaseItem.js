@@ -6,7 +6,10 @@ function PurchaseItem({ product }) {
   return (
     <>
       <div className="item-photo">
-        <img src={`/uploads/products/${product.mainImg}`} alt={product.name} />
+        <img
+          src={`/uploads/products/${product.product.mainImg}`}
+          alt={product.name}
+        />
       </div>
       <div className="span-col-3 the-item">
         <p className="the-item-header">{product.name}</p>
@@ -15,12 +18,15 @@ function PurchaseItem({ product }) {
         <p>Amount: {product.amount}</p>
       </div>
       <div>
-        <Link to={`/store/${product.storeName}`} className="capitalize">
-          {product.storeName}
+        <Link
+          to={`/store/${product.product.storeId.name}`}
+          className="capitalize"
+        >
+          {product.product.storeId.name}
         </Link>
       </div>
       <div>
-        <p>{currency.toCurrency(product.price)}</p>
+        <p>{currency.toCurrency(product.product.price)}</p>
       </div>
     </>
   );
