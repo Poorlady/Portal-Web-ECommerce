@@ -36,6 +36,9 @@ const orderSchema = new Schema({
         amount: {
           type: Number,
           required: true
+        },
+        reviewed: {
+          type: Boolean
         }
       }
     ]

@@ -36,8 +36,26 @@ const productSchema = new Schema({
   },
   review: [
     {
-      userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-      text: { type: String, required: true }
+      user: {
+        userId: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+          required: true
+        },
+        name: { type: String, required: true }
+      },
+      text: {
+        type: String,
+        required: true
+      },
+      rate: {
+        type: Number,
+        required: true
+      },
+      date: {
+        type: Date,
+        required: true
+      }
     }
   ]
 });

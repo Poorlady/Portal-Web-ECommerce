@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { authContext } from "./Auth";
 const CartContext = React.createContext();
-const currency = require("../helpers/stringFormarter");
 
 function CartProvider(props) {
   const [cartProduct, setCartProduct] = useState([]);

@@ -135,7 +135,7 @@ function AddProductForm({ store, product }) {
           "Content-Type": "multipart/form-data"
         }
       })
-      .then(response => history.push("/profile"))
+      .then(response => history.push("/profile/store/products"))
       .catch(err => console.log(err));
   };
 

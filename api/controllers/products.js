@@ -5,7 +5,7 @@ const mainpath = require("../../helpers/path");
 // const fileUpload = require("express-fileupload");
 
 const Product = require("../models/Product");
-
+const Order = require("../models/Order");
 const stringFormater = require("../../helpers/stringFormat");
 
 const makeSlug = name => {
@@ -139,6 +139,12 @@ exports.getProducts = (req, res) => {
 exports.getProductsById = (req, res) => {
   Product.findById(req.params.id)
     .populate("storeId", "name")
+    .populate({
+      path: "review.user.userId",
+      select: {
+        img: 1
+      }
+    })
     .exec()
     .then(product => {
       // console.log(product);
@@ -184,6 +190,41 @@ exports.deleteProducts = (req, res) => {
       result.thirdImg && removeFile(result.thirdImg);
       res.json(result);
     })
+    .catch(err => console.log(err));
+};
+
+exports.postReview = (req, res) => {
+  // console.log(req.body);
+  const {
+    userId,
+    userName,
+    productId,
+    text,
+    rate,
+    orderId,
+    orderList
+  } = req.body;
+
+  const review = {
+    user: { userId: userId, name: userName },
+    text: text,
+    rate: rate,
+    date: stringFormater.dateToday()
+  };
+  Product.updateOne({ _id: productId }, { $push: { review: review } })
+    .then(result => {
+      Order.findById(orderId).then(result => {
+        const orderItems = [...result.order.items];
+        const index = orderItems.findIndex(
+          item => item._id.toString() === orderList.toString()
+        );
+        orderItems[index].reviewed = true;
+        const order = { items: orderItems };
+        result.order = order;
+        return result.save();
+      });
+    })
+    .then(result => res.json(result))
     .catch(err => console.log(err));
 };
 

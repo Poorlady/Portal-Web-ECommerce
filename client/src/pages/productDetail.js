@@ -113,6 +113,10 @@ function ProductDetail() {
     }
     return false;
   };
+
+  const mappedReview =
+    product.review &&
+    product.review.map(item => <ReviewCard id={item._id} review={item} />);
   console.log(product);
   return (
     <div className="productdetail-wrapper">
@@ -226,15 +230,7 @@ function ProductDetail() {
         {!isOptionClicked ? (
           <p>{product.desc}</p>
         ) : (
-          <div className="review-wrapper">
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-          </div>
+          <div className="review-wrapper">{mappedReview}</div>
         )}
       </div>
       <div className="productdetail-recom">

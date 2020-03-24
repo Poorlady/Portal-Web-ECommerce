@@ -1,9 +1,8 @@
 import React, { useContext } from "react";
-
 import CartProduct from "../components/CartProduct";
-
 import { CartContext } from "../contexts/Cart";
 import { Link } from "react-router-dom";
+import stringFormat from "../helpers/stringFormarter";
 
 function Carts() {
   const {
@@ -41,7 +40,7 @@ function Carts() {
         </div>
         <div className=" cart-price input-border">
           <h4>Total :</h4>
-          <p>{totalPrice()}</p>
+          <p>{stringFormat.toCurrency(totalPrice())}</p>
           <Link to="carts/payment" className="input-border">
             Buy Now
           </Link>
