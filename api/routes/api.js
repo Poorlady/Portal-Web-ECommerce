@@ -39,6 +39,10 @@ routes.get("/api/order/:params", orderController.getOrder);
 routes.post("/api/user/cart", userController.addToCart);
 routes.get("/api/user/cart/:id", userController.getCart);
 routes.delete("/api/user/cart/:id", userController.deleteCart);
+routes.post("/api/user/reset", userController.resetPassword);
+routes.post("/api/user/changepassword", userController.changePassword);
+
+routes.post("/api/stripe/post-intent", orderController.postIntent);
 module.exports = routes;
 
 // routes.get("/api/user/user", userController.getUser);

@@ -41,7 +41,9 @@ const userSchema = new Schema({
         amount: { type: Number, required: true }
       }
     ]
-  }
+  },
+  resetToken: { type: String },
+  resetExpired: { type: Date }
 });
 
 module.exports = mongoose.model("User", userSchema);

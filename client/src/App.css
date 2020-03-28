@@ -1267,3 +1267,64 @@ text-transform: capitalize;
   font-size: 14px;
   margin: 2.5px 0;
 }
+.reset-password{
+  width: 80%;
+  margin: 5rem auto;
+}
+.reset-password input{
+  padding: 5px;
+  display: block;
+  width: 60%;
+  height: 20px;
+}
+.reset-password button{
+  padding: 5px;
+  display: block;
+  width: 61%;
+}
+
+.StripeElement {
+  padding: 7px;
+  width: 100%;
+  color: #32325d;
+  background-color: white;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  display: inline-block;
+  margin: 1rem;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+.billing-address{
+  width: 100%;
+  margin: 1rem;
+}
+.billing-address label{
+  width: 10%;
+  display: inline-block;
+}
+
+.billing-address input {
+  width: 40%;
+  padding: 7px;
+  border-radius: 5px;
+}
+
+.billing-card{
+  width: 50%;
+}

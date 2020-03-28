@@ -1,14 +1,41 @@
 const mongoose = require("mongoose");
-
+const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const saltRound = 10;
-
+const nodemailer = require("nodemailer");
+const sendgridTransport = require("nodemailer-sendgrid-transport");
+const transport = nodemailer.createTransport(
+  sendgridTransport({
+    auth: {
+      api_key: process.env.SENDGRID_API_KEY
+    }
+  })
+);
 const mainpath = require("../../helpers/path");
-
 const User = require("../models/User");
 const Product = require("../models/Product");
-
 const stringFormater = require("../../helpers/stringFormat");
+
+const emailSign = userMail => {
+  return (email = {
+    to: userMail,
+    from: "shop@node-ecom.com",
+    subject: "Welcome To ECommerce Shop",
+    text:
+      "We are grateful for your membership and hope you have fun shopping in our website",
+    html: "<strong>and easy to do anywhere, even with Node.js</strong>"
+  });
+};
+
+const emailReset = (userMail, token) => {
+  return (email = {
+    to: userMail,
+    from: "shop@node-ecom.com",
+    subject: "Password Reset",
+    html: `<p>You request a reset password for this account</p>
+    <p>Click this <a href="http://localhost:3000/reset/${token}"> Link </a> for reset your account password</p>`
+  });
+};
 
 const insertProductToCart = (user, productId, amount, size, colour) => {
   const cartProductIndex = user.cart.items.findIndex(
@@ -77,7 +104,10 @@ exports.signUp = (req, res) => {
       } else {
         user
           .save()
-          .then(result => res.status(201).json({ data: result }))
+          .then(result => {
+            res.status(201).json({ data: result });
+            return transport.sendMail(emailSign(email));
+          })
           .catch(err => res.status(501).json({ err: err }));
       }
     });
@@ -91,7 +121,7 @@ exports.logIn = (req, res) => {
     .then(user => {
       if (!user) {
         console.log(0);
-        res.status(204).json({ mssg: "user not found!" });
+        return res.status(204).json({ mssg: "user not found!" });
       } else {
         bcrypt.compare(password, user.password, function(err, result) {
           if (result) {
@@ -100,7 +130,7 @@ exports.logIn = (req, res) => {
             res.status(200).json({ data: user });
           } else {
             console.log(2);
-            res.status(204).json({ mssg: "Wrong password, try again!" });
+            return res.status(201).json({ mssg: "Wrong password, try again!" });
           }
         });
       }
@@ -190,6 +220,7 @@ exports.getCart = (req, res) => {
       path: "cart.items.productId",
       select: {
         name: 1,
+        desc: 1,
         mainImg: 1,
         storeId: 1,
         price: 1,
@@ -210,5 +241,59 @@ exports.deleteCart = (req, res) => {
   User.findById(userId)
     .then(user => deleteProductFromCart(user, productId))
     .then(result => res.json(result))
+    .catch(err => console.log(err));
+};
+
+exports.resetPassword = (req, res) => {
+  const { email } = req.body;
+  let id;
+  crypto.randomBytes(32, (err, buffer) => {
+    if (err) {
+      console.log(err);
+      res.status(501).json({ err: err });
+    }
+    const token = buffer.toString("hex");
+    console.log(token);
+    User.findOne({ email: email })
+      .then(user => {
+        if (!user) {
+          return res.status(201).json({ mssg: "Email Not Found" });
+        }
+        id = user._id;
+        user.resetToken = token + "U" + user._id;
+        user.resetExpired = Date.now() + 3600000;
+        return user.save();
+      })
+      .then(result => {
+        res.status(200).json({ mssg: "Email has been send" });
+        transport.sendMail(emailReset(email, token + "U" + id));
+      })
+      .catch(err => console.log(err));
+  });
+};
+
+exports.changePassword = (req, res) => {
+  const { password, token } = req.body;
+  const userId = token.split("U").pop();
+  let resetUser;
+  User.findOne({
+    resetToken: token,
+    resetExpired: { $gt: Date.now() },
+    _id: userId
+  })
+    .then(user => {
+      resetUser = user;
+      if (!user) {
+        res.status(201).json({ mssg: "Token is expired!" });
+      }
+      return bcrypt.hash(password, saltRound);
+    })
+    .then(hashedPassword => {
+      resetUser.password = hashedPassword;
+      resetUser.resetToken = undefined;
+      resetUser.resetExpired = undefined;
+      return resetUser.save();
+    })
+    .then(result => res.json({ mssg: "Password Change" }))
     .catch(err => console.log(err));
 };

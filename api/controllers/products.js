@@ -228,6 +228,7 @@ exports.postReview = (req, res) => {
     .catch(err => console.log(err));
 };
 
+exports.processCheckout = (req, res) => {};
 // console.log(dataSet);
 // console.log(req.files.mainFile);
 // console.log(req.body);

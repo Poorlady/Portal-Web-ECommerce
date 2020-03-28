@@ -7,6 +7,7 @@ import { Switch, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import LogIn from "./components/LogIn";
+import ResetPassword from "./components/ProtectionForm";
 
 //import Pages
 import LandingApp from "./pages/landingApp";
@@ -20,10 +21,14 @@ import StorePage from "./pages/storePage";
 import PowerStore from "./pages/powerStore";
 import CartPayment from "./pages/cartPayment";
 
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
 import { authContext } from "./contexts/Auth";
 
 import PrivateRoute from "./components/PrivateRoutes";
 
+const stripePromise = loadStripe("pk_test_AtlHscRyVkd8ifMfwTytBMfc00e4hmgMWA");
 function App() {
   const [isPop, setIsPop] = useState(false);
   const { isLogIn } = useContext(authContext);
@@ -45,6 +50,11 @@ function App() {
       <Switch>
         <Route exact path="/">
           <LandingApp />
+        </Route>
+        <Route exact path="/reset/:token">
+          <div className="reset-password">
+            <ResetPassword />
+          </div>
         </Route>
         <Route path="/signup">
           <SignUp closeLogin={closeLogin} />
@@ -73,9 +83,11 @@ function App() {
         <PrivateRoute path="/power-store/page" openLogin={openLogin}>
           <PowerStore />
         </PrivateRoute>
-        <PrivateRoute path="/carts/payment" openLogin={openLogin}>
-          <CartPayment />
-        </PrivateRoute>
+        <Elements stripe={stripePromise}>
+          <PrivateRoute path="/carts/payment" openLogin={openLogin}>
+            <CartPayment />
+          </PrivateRoute>
+        </Elements>
       </Switch>
       <Footer />
     </>

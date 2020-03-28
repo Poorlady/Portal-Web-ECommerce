@@ -4,6 +4,7 @@ const User = require("../models/User");
 const stringFormatter = require("../../helpers/stringFormat");
 
 const objectId = require("mongoose").Types.ObjectId;
+const stripe = require("stripe")("sk_test_INhAMx6X7pWJKnS3nitQxfN7008HCLiBLu");
 
 const checkObjectId = value => {
   if (objectId.isValid(value)) {
@@ -83,6 +84,19 @@ exports.getOrder = (req, res) => {
     .catch(err => console.log(err));
 };
 
+exports.postIntent = async (req, res) => {
+  console.log(req.body);
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: req.body.total * 100,
+      currency: "idr",
+      metadata: { integration_check: "accept_a_payment" }
+    });
+    res.status(200).json({ client_secret: paymentIntent.client_secret });
+  } catch (err) {
+    res.status(500).json({ statusCode: 500, mssg: err.massage });
+  }
+};
 // console.log(product);
 
 // const uName = stringFormatter.fullName(user.fName, user.lName);

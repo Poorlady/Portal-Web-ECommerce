@@ -20,7 +20,7 @@ function CartProduct({
       </div>
       <div className="cart-product-option span-col-3">
         <div>
-          <p className="cart-product-optionHead">{product.name}</p>
+          <p className="cart-product-optionHead">{product.productId.name}</p>
           <span>By {product.productId.storeId.name}</span>
         </div>
         <div>
