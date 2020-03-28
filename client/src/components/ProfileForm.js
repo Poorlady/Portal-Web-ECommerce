@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 function ProfileForm() {
-  const { user, updateUser } = useContext(authContext);
+  const { user, updateState } = useContext(authContext);
   const [img, setImg] = useState({});
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -39,10 +39,10 @@ function ProfileForm() {
       case "zip":
         setZip(value);
         break;
+      default:
+        break;
     }
   };
-
-  console.log(user.bDate.split("T")[0]);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -59,8 +59,7 @@ function ProfileForm() {
         headers: { "Content-Type": "multipart/form-data" }
       })
       .then(result => {
-        localStorage.setItem("user", JSON.stringify(result));
-        updateUser(result);
+        updateState("user", result.data);
         history.push("/profile/menu");
       })
       .catch(err => console.log(err));
@@ -69,7 +68,7 @@ function ProfileForm() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-photo">
-        {user.img && <img src={`/uploads/users/${user.img}`} />}
+        {user.img && <img src={`/uploads/users/${user.img}`} alt={user.name} />}
         <input type="file" name="userImg" onChange={handleFile} />
         <div className="user-prev">
           <p className="user-prev-name">

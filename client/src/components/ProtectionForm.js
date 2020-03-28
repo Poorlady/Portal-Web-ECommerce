@@ -3,12 +3,18 @@ import React, { useState, useContext } from "react";
 import { authContext } from "../contexts/Auth";
 
 import axios from "axios";
+import { useParams, useHistory } from "react-router-dom";
 
 function ProtectionForm() {
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const { user } = useContext(authContext);
-  const URL = "/api/user/update-password/";
+  const param = useParams();
+  const URL = !param
+    ? "/api/user/update-password/"
+    : "/api/user/changepassword";
+  console.log(param.token);
+  let history = useHistory();
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -18,6 +24,8 @@ function ProtectionForm() {
         break;
       case "re-password":
         setRePassword(value);
+        break;
+      default:
         break;
     }
   };
@@ -32,8 +40,16 @@ function ProtectionForm() {
     e.preventDefault();
     if (validePassword(password, rePassword)) {
       await axios
-        .post(URL, { _id: user._id, password: password })
-        .then(result => console.log(result))
+        .post(URL, {
+          _id: user && user._id,
+          password: password,
+          token: param.token
+        })
+        .then(result => {
+          if (param) {
+            history.push("/");
+          }
+        })
         .catch(err => console.log(err));
     }
   };

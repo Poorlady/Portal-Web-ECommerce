@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Link, useRouteMatch, Redirect } from "react-router-dom";
+import React, { useEffect, useContext } from "react";
+import { Link, useRouteMatch } from "react-router-dom";
 
-function ProfileMenu({ store }) {
+import { authContext } from "../contexts/Auth";
+
+function ProfileMenu() {
   let { url } = useRouteMatch();
-
+  const { store } = useContext(authContext);
   useEffect(() => {}, [store]);
 
   return (

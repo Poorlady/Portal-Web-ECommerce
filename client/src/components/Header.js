@@ -13,7 +13,7 @@ function Header({ openLogin, closeLogin }) {
 
   useEffect(() => {
     console.log(user);
-  }, [cartProduct]);
+  }, []);
 
   return (
     <header>
@@ -54,8 +54,8 @@ function Header({ openLogin, closeLogin }) {
                 <div class="dropdown-content ml-50">
                   {cartProduct.length > 0 ? (
                     <>
-                      {cartProduct.map(item => (
-                        <CartCard key={item._id} product={item} />
+                      {cartProduct.map((item, i) => (
+                        <CartCard key={i} product={item} />
                       ))}
                       <div className="cart-drop">
                         <p>Total : {totalPrice()}</p>
@@ -95,9 +95,7 @@ function Header({ openLogin, closeLogin }) {
               <>
                 {console.log(isLogIn)}
                 <li>
-                  <Link to="/profile">{`${user.fName ? user.fName : ""} ${
-                    user.lName ? user.lName : ""
-                  }`}</Link>
+                  <Link to="/profile">{`${user.fName} ${user.lName}`}</Link>
                 </li>
                 <li>
                   <Link onClick={() => deleteUser()}>Logout</Link>

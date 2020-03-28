@@ -1,16 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import StoreProductList from "../components/StoreProductList";
 
-function StoreProductMenu() {
-  const [isDelClicked, setIsDelClicked] = useState(false);
+import axios from "axios";
 
-  const delClicked = () => {
-    setIsDelClicked(true);
+function StoreProductMenu({ id }) {
+  const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    fetchProducts(id);
+  }, []);
+
+  const fetchProducts = async id => {
+    await axios
+      .get(`/api/products/store/${id}`)
+      .then(products => setProducts(products.data))
+      .catch(err => console.log(err));
   };
 
-  const delClose = () => {
-    setIsDelClicked(false);
+  const deleteProduct = async id => {
+    await axios
+      .delete(`/api/products/${id}`)
+      .then(result =>
+        setProducts(prevState =>
+          prevState.filter(item => item.name !== result.data.name)
+        )
+      )
+      .catch(err => console.log(err));
   };
+
+  const handleChange = e => {
+    const { value } = e.target;
+    setSearch(value);
+  };
+
+  const productFilter = products
+    .filter(product => product.name.toLowerCase().includes(search))
+    .map(product => (
+      <StoreProductList
+        key={product._id}
+        product={product}
+        deleteProduct={deleteProduct}
+      />
+    ));
 
   return (
     <div className="store-productmenu-wrapper">
@@ -20,23 +52,12 @@ function StoreProductMenu() {
           type="text"
           placeholder="Search Product"
           className="input-border store-productmenu-search"
+          name="search"
+          onChange={handleChange}
         />
       </form>
       <hr />
-      <StoreProductList delClicked={delClicked} />
-      {isDelClicked && (
-        <div className="popup-wrapper">
-          <div className="popup-inner">
-            <div className="store-product-del">
-              <p>Are you sure?</p>
-              <button className="ml-0 del-btn input-border">Delete</button>
-              <button className=" input-border" onClick={delClose}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {productFilter}
     </div>
   );
 }

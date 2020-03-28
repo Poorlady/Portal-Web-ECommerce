@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
-function AddProductForm({ store, product, method }) {
+function AddProductForm({ store, product }) {
   const URL = product ? `/api/edit-product/${product._id}` : "/api/product";
   const [name, setName] = useState("");
   const [img, setImg] = useState();
@@ -14,13 +15,17 @@ function AddProductForm({ store, product, method }) {
   const [condition, setCondition] = useState("");
   const [colour, setColour] = useState("");
   const [size, setSize] = useState("");
-  const [stock, setStock] = useState();
   const [price, setPrice] = useState();
   const [weight, setWeight] = useState();
+  const [etalaseList, setEtalaseList] = useState(store ? store.etalase : []);
+  const [isLoading, setIsLoading] = useState();
+
+  let history = useHistory();
 
   const check = product => {
+    setIsLoading(true);
     if (product) {
-      console.log(product);
+      console.log(product.mainImg);
       setName(product.name);
       setImg(product.mainImg);
       setSecondImg(product.secondImg);
@@ -31,19 +36,18 @@ function AddProductForm({ store, product, method }) {
       setCondition(product.condition);
       setSize(product.size);
       setColour(product.colour);
-      setStock(product.stock);
       setPrice(product.price);
       setWeight(product.weight);
+      setIsLoading(false);
       return true;
     } else {
+      setIsLoading(false);
       return false;
     }
   };
 
-  console.log(desc);
   useEffect(() => {
     check(product);
-    console.log(store);
   }, [store, product]);
 
   const handleFile = e => {
@@ -58,11 +62,16 @@ function AddProductForm({ store, product, method }) {
       case "thirdImg":
         setThirdImg(files[0]);
         break;
+      default:
+        break;
     }
   };
 
   const handleChange = e => {
     const { name, value } = e.target;
+    if (value === "Select Etalase") {
+      setEtalase("-");
+    }
     switch (name) {
       case "name":
         setName(value);
@@ -79,9 +88,6 @@ function AddProductForm({ store, product, method }) {
       case "colour":
         setColour(value);
         break;
-      case "stock":
-        setStock(value);
-        break;
       case "price":
         setPrice(value);
         break;
@@ -94,22 +100,28 @@ function AddProductForm({ store, product, method }) {
       case "weight":
         setWeight(value);
         break;
+      default:
+        break;
     }
   };
-
   const handleSubmit = async event => {
     event.preventDefault();
     const formData = new FormData();
 
-    formData.append("mainFile", img);
-    formData.append("secondFile", secondImg);
-    formData.append("thirdFile", thirdImg);
+    formData.append("mainFile", img ? img : product ? product.mainImg : null);
+    formData.append(
+      "secondFile",
+      secondImg ? secondImg : product ? product.secondImg : null
+    );
+    formData.append(
+      "thirdFile",
+      thirdImg ? thirdImg : product ? product.thirdImg : null
+    );
     formData.append("name", name);
     formData.append("desc", desc);
     formData.append("category", category);
     formData.append("etalase", etalase);
     formData.append("condition", condition);
-    formData.append("stock", stock);
     formData.append("price", price);
     formData.append("size", size);
     formData.append("colour", colour);
@@ -123,37 +135,44 @@ function AddProductForm({ store, product, method }) {
           "Content-Type": "multipart/form-data"
         }
       })
-      .then(response => console.log(response))
+      .then(response => history.push("/profile/store/products"))
       .catch(err => console.log(err));
   };
 
-  return (
+  console.log(product);
+
+  return isLoading ? (
+    <p>Loading data....</p>
+  ) : (
     <form onSubmit={handleSubmit}>
       <div className="add-form-group">
-        {check() && (
+        {product && (
           <img
             className="add-form-uploaded"
-            src={`/uploads/${product.mainImg}`}
+            src={`/uploads/products/${product.mainImg}`}
+            alt={`${product.name} one`}
           />
         )}
         <label>Add Main Picture</label>
         <input type="file" name="mainImg" onChange={handleFile} />
       </div>
       <div className="add-form-group">
-        {check() && (
+        {product && (
           <img
             className="add-form-uploaded"
-            src={`/uploads/${product.secondImg}`}
+            src={`/uploads/products/${product.secondImg}`}
+            alt={`${product.name} two`}
           />
         )}
         <label>Add Picture</label>
         <input type="file" name="secondImg" onChange={handleFile} />
       </div>
       <div className="add-form-group">
-        {check() && (
+        {product && (
           <img
             className="add-form-uploaded"
-            src={`/uploads/${product.thirdImg}`}
+            src={`/uploads/products/${product.thirdImg}`}
+            alt={`${product.name} three`}
           />
         )}
         <label>Add Picture</label>
@@ -186,14 +205,27 @@ function AddProductForm({ store, product, method }) {
         </div>
         <div className="add-form-group">
           <label>Etalase Produk :</label>
-          <input
+          <select
             name="etalase"
             className="add-form-input input-border"
             type="text"
             placeholder="Product's Etalase"
             value={etalase}
             onChange={handleChange}
-          />
+          >
+            <option selected defaultChecked>
+              Select Etalase
+            </option>
+            {etalaseList.length > 1 ? (
+              etalaseList.map(item => (
+                <option selected={item === etalase} value={item}>
+                  {item}
+                </option>
+              ))
+            ) : (
+              <option>-</option>
+            )}
+          </select>
         </div>
         <h4>Deskripsi Produk</h4>
         <hr />
@@ -264,17 +296,6 @@ function AddProductForm({ store, product, method }) {
             type="text"
             placeholder="Product's Colour Avalaible (Red,Green,Blue)"
             value={colour}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="add-form-group">
-          <label>Stok Produk</label>
-          <input
-            name="stock"
-            className="add-form-input input-border"
-            type="number"
-            placeholder="Product's Stock"
-            value={stock}
             onChange={handleChange}
           />
         </div>

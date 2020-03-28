@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import EtalaseForm from "./EtalaseForm";
 
-function EtalaseList() {
+function EtalaseList({ etalase, id, updateState }) {
   const [isAddClicked, setIsAddClicked] = useState(false);
+  const [isEtalase] = useState(etalase && etalase);
+
+  useEffect(() => {}, [isEtalase]);
+
   const openPop = () => {
     setIsAddClicked(true);
   };
@@ -11,9 +15,19 @@ function EtalaseList() {
   const closePop = () => {
     setIsAddClicked(false);
   };
+
+  let etalaseList = etalase && etalase.map(item => <li key={item}>{item}</li>);
+
   return (
     <div>
-      {isAddClicked && <EtalaseForm closePop={closePop} />}
+      {isAddClicked && (
+        <EtalaseForm
+          etalaseList={etalase && etalase}
+          id={id}
+          updateState={updateState}
+          closePop={closePop}
+        />
+      )}
       <div className="etalase-list-header">
         <h4>Etalase List</h4>
         <button className="input-border" onClick={openPop}>
@@ -21,7 +35,9 @@ function EtalaseList() {
         </button>
         <hr />
       </div>
-      <div></div>
+      <div className="etalase-lists">
+        <ul>{etalaseList}</ul>
+      </div>
     </div>
   );
 }

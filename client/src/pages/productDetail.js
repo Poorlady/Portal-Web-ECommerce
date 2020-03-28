@@ -55,6 +55,7 @@ function ProductDetail() {
         setPickColour(value);
         break;
       default:
+        break;
     }
   };
 
@@ -112,18 +113,22 @@ function ProductDetail() {
     }
     return false;
   };
+
+  const mappedReview =
+    product.review &&
+    product.review.map(item => <ReviewCard id={item._id} review={item} />);
   console.log(product);
   return (
     <div className="productdetail-wrapper">
       <div className="productdetail-photo">
         <div className="productdetail-mainphoto">
-          <img src={`/uploads/${product.mainImg}`} alt="" />
+          <img src={`/uploads/products/${product.mainImg}`} alt="" />
         </div>
         <div className="productdetail-subphoto">
-          <img src={`/uploads/${product.secondImg}`} alt="" />
+          <img src={`/uploads/products/${product.secondImg}`} alt="" />
         </div>
         <div className="productdetail-subphoto">
-          <img src={`/uploads/${product.thirdImg}`} alt="" />
+          <img src={`/uploads/products/${product.thirdImg}`} alt="" />
         </div>
       </div>
       <div className="productdetail-info">
@@ -134,7 +139,8 @@ function ProductDetail() {
         <div>
           <p>Product's Information</p>
           <p className="product-sub-info">
-            Weight: {product.weight}kg | Condition: {product.condition}
+            Weight: {product.weight}kg | Condition: {product.condition} | By :{" "}
+            <Link to={`/store/${product.storeName}`}>{product.storeName}</Link>
           </p>
         </div>
         <form className="productdetail-option">
@@ -148,12 +154,12 @@ function ProductDetail() {
                   onChange={handleChange}
                   value={pickColour}
                 >
-                  <option selected defaultChecked>
-                    Pick Colour
-                  </option>
+                  <option defaultChecked>Pick Colour</option>
                   {product.colour &&
                     product.colour.map(colour => (
-                      <option value={colour}>{colour}</option>
+                      <option key={colour} value={colour}>
+                        {colour}
+                      </option>
                     ))}
                 </select>
               </>
@@ -171,11 +177,11 @@ function ProductDetail() {
                   className="input-border"
                   onChange={handleChange}
                 >
-                  <option selected defaultChecked>
-                    Pick Size
-                  </option>
+                  <option defaultChecked>Pick Size</option>
                   {product.size.map(size => (
-                    <option value={size}>{size}</option>
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
                   ))}
                 </select>
               </>
@@ -224,15 +230,7 @@ function ProductDetail() {
         {!isOptionClicked ? (
           <p>{product.desc}</p>
         ) : (
-          <div className="review-wrapper">
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-            <ReviewCard />
-          </div>
+          <div className="review-wrapper">{mappedReview}</div>
         )}
       </div>
       <div className="productdetail-recom">

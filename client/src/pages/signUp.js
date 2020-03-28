@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 
 const stringFormarter = require("../helpers/stringFormarter");
 
-function SignUp(props) {
+function SignUp({ closeLogin }) {
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
   const [bDate, setBDate] = useState("");
@@ -15,7 +15,7 @@ function SignUp(props) {
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const URL = "/api/user/signup";
-  const { saveUser } = useContext(authContext);
+  const { updateState } = useContext(authContext);
 
   let history = useHistory();
 
@@ -52,6 +52,7 @@ function SignUp(props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    closeLogin();
   }, []);
 
   const passCheck = (pass, rePass) => {
@@ -82,9 +83,7 @@ function SignUp(props) {
         .then(result => {
           console.log(result);
           if (result.status === 201) {
-            localStorage.setItem("user", JSON.stringify(result));
-            localStorage.setItem("logIn", true);
-            saveUser(result);
+            updateState("user", result.data.data);
             history.push("/");
           } else {
             alert("Email already taken! please use another email");

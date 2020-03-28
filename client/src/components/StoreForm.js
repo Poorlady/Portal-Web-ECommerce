@@ -1,14 +1,13 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { authContext } from "../contexts/Auth";
 
-function StoreForm({ store, fetchFunction }) {
+function StoreForm({ store, user, updateState }) {
   const URL = store ? "/api/store/updateStore" : "/api/store/addStore";
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [location, setLocation] = useState("");
   const [image, setImg] = useState("");
-  const { user } = useContext(authContext);
+
   useEffect(() => {
     if (store) {
       setName(store.name);
@@ -19,7 +18,6 @@ function StoreForm({ store, fetchFunction }) {
 
   const handleChange = e => {
     const { name, value } = e.target;
-
     switch (name) {
       case "name":
         setName(value);
@@ -29,6 +27,8 @@ function StoreForm({ store, fetchFunction }) {
         break;
       case "location":
         setLocation(value);
+        break;
+      default:
         break;
     }
   };
@@ -54,8 +54,7 @@ function StoreForm({ store, fetchFunction }) {
         headers: { "Content-Type": "multipart/form-data" }
       })
       .then(result => {
-        fetchFunction(user._id);
-        console.log(result);
+        updateState("store", result.data);
       })
       .catch(err => console.log(err));
   };
@@ -101,7 +100,11 @@ function StoreForm({ store, fetchFunction }) {
         <input onChange={handleFile} name="img" type="file" />
       </div>
       {store && (
-        <img id="store-form-img" src={`/uploads/stores/${store.img}`} />
+        <img
+          id="store-form-img"
+          src={`/uploads/stores/${store.img}`}
+          alt={store.name}
+        />
       )}
       <button
         type="submit"

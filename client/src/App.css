@@ -98,6 +98,9 @@ nav ul li {
 .span-row-2 {
   grid-row: span 2 / auto;
 }
+.span-row-3 {
+  grid-row: span 3 / auto;
+}
 .carousel-wrapper{
   position: relative;
 }
@@ -359,8 +362,9 @@ footer{
 .bannerproduct-wrapper{
   grid-area: banner;
   height: 200px;
-  background-color: #FFA975;
   border-radius: 10px;
+  text-transform: capitalize;
+  padding: 10px 0 0 50px;
 }
 .filterproduct-wrapper{
   grid-area: filter;
@@ -578,6 +582,7 @@ height: fit-content;
   margin-right: 15px;
 }
 .span-col-4{grid-column: span 4 / auto;}
+
 .cart-price{
   padding: 10px 15px 10px 25px;
 }
@@ -813,6 +818,19 @@ text-transform: capitalize;
   padding: 5px;
   text-align: center;
 }
+.etalase-lists{
+  width: 100%;
+}
+.etalase-lists ul{
+  width: 100%;
+  text-align: left;
+  list-style: decimal;
+  padding: 0;
+}
+.etalase-lists li{
+  margin: 10px 0;
+  padding: 10px;
+}
 .etalase-form{
   margin-bottom: 15px;
 }
@@ -931,6 +949,7 @@ text-transform: capitalize;
 }
 .add-form-uploaded{
   width: 20%;
+  height: 50%;
   margin-right: 20px;
 }
 .add-form-group label{
@@ -1231,4 +1250,81 @@ text-transform: capitalize;
 #store-form-img {
   width: 20%;
   display: block;
+}
+.color-filter{
+  overflow: hidden;
+  color: transparent;
+}
+.capitalize{
+  text-transform: capitalize;
+}
+.address-small{
+  font-size: 13px;
+  margin: 0;
+  color: grey;
+}
+.f14{
+  font-size: 14px;
+  margin: 2.5px 0;
+}
+.reset-password{
+  width: 80%;
+  margin: 5rem auto;
+}
+.reset-password input{
+  padding: 5px;
+  display: block;
+  width: 60%;
+  height: 20px;
+}
+.reset-password button{
+  padding: 5px;
+  display: block;
+  width: 61%;
+}
+
+.StripeElement {
+  padding: 7px;
+  width: 100%;
+  color: #32325d;
+  background-color: white;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  display: inline-block;
+  margin: 1rem;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+.billing-address{
+  width: 100%;
+  margin: 1rem;
+}
+.billing-address label{
+  width: 10%;
+  display: inline-block;
+}
+
+.billing-address input {
+  width: 40%;
+  padding: 7px;
+  border-radius: 5px;
+}
+
+.billing-card{
+  width: 50%;
 }
