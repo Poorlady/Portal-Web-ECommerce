@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const authContext = React.createContext();
 
@@ -31,7 +32,7 @@ function AuthProvider(props) {
     }
   }, [user, store]);
 
-  const deleteUser = () => {
+  const deleteUser = history => {
     setUser();
     setStore();
     setIsLogIn(false);
@@ -39,6 +40,7 @@ function AuthProvider(props) {
     localStorage.removeItem("store");
     localStorage.removeItem("carts");
     localStorage.removeItem("rememberMe");
+    history.push("/");
   };
 
   const updateState = (name, data) => {

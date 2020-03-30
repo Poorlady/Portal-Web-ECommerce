@@ -12,8 +12,7 @@ const userSchema = new Schema({
     required: true
   },
   bDate: {
-    type: Date,
-    required: true
+    type: Date
   },
   email: {
     type: String,
@@ -24,7 +23,7 @@ const userSchema = new Schema({
     required: true
   },
   img: { type: String },
-  phoneNumber: { type: String },
+  phone: { type: String },
   address: { type: String },
   city: { type: String },
   zip: { type: String },
@@ -43,7 +42,8 @@ const userSchema = new Schema({
     ]
   },
   resetToken: { type: String },
-  resetExpired: { type: Date }
+  resetExpired: { type: Date },
+  role: { type: String, default: "user", enum: ["user", "admin"] }
 });
 
 module.exports = mongoose.model("User", userSchema);

@@ -5,7 +5,7 @@ const currency = require("../helpers/stringFormarter");
 
 function ProductCard({ product }) {
   return (
-    <Link to={`/product/${product._id}`}>
+    <Link className="card--link" to={`/product/${product._id}`}>
       <div className="product-card">
         <div className="product-card-photo">
           <img src={`/uploads/products/${product.mainImg}`} alt="" />

@@ -108,21 +108,21 @@ const setData = req => {
 };
 
 exports.postProduct = (req, res) => {
-  // const dataSet = setData(req);
-  // const product = new Product(dataSet);
+  const dataSet = setData(req);
+  const product = new Product(dataSet);
   console.log(req.user);
-  // console.log(req);
-  // product
-  //   .save()
-  //   .then(result => {
-  //     console.log("product created");
-  //     res.json({
-  //       mssg: "product added"
-  //     });
-  //   })
-  //   .catch(err => {
-  //     console.log(err);
-  //   });
+  console.log(req);
+  product
+    .save()
+    .then(result => {
+      console.log("product created");
+      res.json({
+        mssg: "product added"
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 exports.getProducts = (req, res) => {

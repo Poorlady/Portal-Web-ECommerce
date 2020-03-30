@@ -11,15 +11,17 @@ function ProfileForm() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [zip, setZip] = useState();
+  const [phone, setPhone] = useState("");
   const bDate = user.bDate.split("T")[0];
   const URL = "/api/user/update/";
-
+  console.log(phone);
   let history = useHistory();
 
   useEffect(() => {
     setAddress(user.address);
     setCity(user.city);
     setZip(user.zip);
+    setPhone(user.phone);
   }, [user]);
 
   const handleFile = e => {
@@ -39,6 +41,9 @@ function ProfileForm() {
       case "zip":
         setZip(value);
         break;
+      case "phone":
+        setPhone(value);
+        break;
       default:
         break;
     }
@@ -53,6 +58,7 @@ function ProfileForm() {
     formData.append("address", address);
     formData.append("city", city);
     formData.append("zip", zip);
+    formData.append("phone", phone);
 
     await axios
       .put(URL, formData, {
@@ -95,6 +101,17 @@ function ProfileForm() {
           placeholder="Last Name"
           value={user.lName}
           disabled
+        />
+      </div>
+      <div className="form-group">
+        <label>Phone</label>
+        <input
+          className="input-border ml-0"
+          type="text"
+          placeholder="Phone Number"
+          value={phone}
+          name="phone"
+          onChange={handleChange}
         />
       </div>
       <div className="form-group">

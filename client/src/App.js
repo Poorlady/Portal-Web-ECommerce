@@ -28,7 +28,7 @@ import { authContext } from "./contexts/Auth";
 
 import PrivateRoute from "./components/PrivateRoutes";
 
-const stripePromise = loadStripe("pk_test_AtlHscRyVkd8ifMfwTytBMfc00e4hmgMWA");
+const stripePromise ;
 function App() {
   const [isPop, setIsPop] = useState(false);
   const { isLogIn } = useContext(authContext);
@@ -43,7 +43,7 @@ function App() {
   const closeLogin = () => {
     setIsPop(false);
   };
-  return (
+  return window.location.pathname.search("/admin") ? (
     <>
       <Header openLogin={openLogin} />
       {isPop && <LogIn closeLogin={closeLogin} />}
@@ -65,9 +65,9 @@ function App() {
         <Route path="/product/:id">
           <ProductDetail />
         </Route>
-        <Route exact path="/carts">
+        <PrivateRoute exact path="/carts" openLogin={openLogin}>
           <Carts />
-        </Route>
+        </PrivateRoute>
         <PrivateRoute path="/profile" openLogin={openLogin}>
           <Profile />
         </PrivateRoute>
@@ -77,9 +77,9 @@ function App() {
         <PrivateRoute path="/edit-product/:id" openLogin={openLogin}>
           <AddProduct />
         </PrivateRoute>
-        <PrivateRoute path="/store/:name" openLogin={openLogin}>
+        <Route path="/store/:name">
           <StorePage />
-        </PrivateRoute>
+        </Route>
         <PrivateRoute path="/power-store/page" openLogin={openLogin}>
           <PowerStore />
         </PrivateRoute>
@@ -91,7 +91,16 @@ function App() {
       </Switch>
       <Footer />
     </>
+  ) : (
+    <Switch>
+      <Route exact path="/admin/">
+        <LogIn role="admin" />
+      </Route>
+      <Route path="/admin/dashboard">
+        <p>Hello Administrator</p>
+      </Route>
+    </Switch>
   );
-}
+};
 
 export default App;

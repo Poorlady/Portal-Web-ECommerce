@@ -1,15 +1,15 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { authContext } from "../contexts/Auth";
 
-function LogIn({ closeLogin }) {
+function LogIn({ closeLogin, role }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isForgetPassword, setIsForgetPassword] = useState(false);
   const URL = !isForgetPassword ? "/api/user/login" : "/api/user/reset";
-
   const { updateState } = useContext(authContext);
+  let history = useHistory();
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -34,12 +34,15 @@ function LogIn({ closeLogin }) {
     }
 
     await axios
-      .post(URL, { email: email, password: password })
+      .post(URL, { email: email, password: password, role: role })
       .then(result => {
         if (result.status === 200) {
           console.log(result.data);
           if (!isForgetPassword) {
             updateState("user", result.data.data);
+            if (result.data.data.role === "admin") {
+              history.push("/admin/dashboard");
+            }
           } else {
             setIsForgetPassword(false);
           }
@@ -79,8 +82,10 @@ function LogIn({ closeLogin }) {
                   onChange={handleChange}
                   value={password}
                 />
-                <Link onClick={handleClick}>Forget Password</Link>
-                <button className="input-border" type="submit">
+                <Link className="forget-password" onClick={handleClick}>
+                  Forget Password
+                </Link>
+                <button className=" submit-btn input-border" type="submit">
                   Log In
                 </button>
               </form>
@@ -101,7 +106,7 @@ function LogIn({ closeLogin }) {
                   onChange={handleChange}
                   value={email}
                 />
-                <button className="input-border" type="submit">
+                <button className="submit-btn input-border" type="submit">
                   Submit
                 </button>
               </form>
