@@ -178,15 +178,17 @@ function CartPayment() {
         <div className=" cart-price span-row-3">
           <p>Your Address :</p>
           <div>
-            <p className="f14 capitalize">{`${user.fName} ${user.lName}`}</p>
-            <p className="address-small capitalize">Phone Number</p>
+            <p className="small-uInfo f14 capitalize">{`${user.fName} ${user.lName}`}</p>
+            <p className="small-uInfo address-small capitalize">{user.phone}</p>
             {user.address ? (
-              <p className="address-small capitalize">{user.address}</p>
+              <p className="small-uInfo address-small capitalize">
+                {user.address}
+              </p>
             ) : (
-              <p className="address-small capitalize">Address: -</p>
+              <p className="small-uInfo address-small capitalize">Address: -</p>
             )}
             {user.city && (
-              <p className="address-small capitalize">{`Kota ${user.city}, ${user.zip}`}</p>
+              <p className="small-uInfo address-small capitalize">{`Kota ${user.city}, ${user.zip}`}</p>
             )}
           </div>
           <h4>Total :</h4>
@@ -195,7 +197,7 @@ function CartPayment() {
         {cartProduct.length > 0 && (
           <div className="span-col-4">
             <h2>Billing address</h2>
-            <div>
+            <div className="same-address">
               <label>
                 <input
                   type="checkbox"
@@ -251,7 +253,7 @@ function CartPayment() {
               <button
                 type="submit"
                 disabled={isProcessing}
-                className="input-border"
+                className="order-btn submit-btn input-border"
               >
                 {isProcessing ? "Processing..." : "Buy Now!"}
               </button>

@@ -115,9 +115,10 @@ exports.signUp = (req, res) => {
 };
 
 exports.logIn = (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
+  let userRole = role ? role : "user";
 
-  User.findOne({ email: email })
+  User.findOne({ email: email, role: userRole })
     .then(user => {
       if (!user) {
         console.log(0);
@@ -141,22 +142,29 @@ exports.logIn = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  const { _id, address, city, zip } = req.body;
-
+  const { _id, address, city, zip, phone } = req.body;
+  console.log(phone);
   let imgFileName, setData;
   if (req.files !== null) {
     const imgFile = req.files.file;
     imgFileName = stringFormater.makeFileName(_id, imgFile, "photo");
     console.log(imgFileName);
 
-    setData = { img: imgFileName, address: address, city: city, zip: zip };
+    setData = {
+      img: imgFileName,
+      address: address,
+      city: city,
+      zip: zip,
+      phone: phone
+    };
 
     imgFile.mv(`${mainpath}/client/public/uploads/users/${imgFileName}`);
   } else {
     setData = {
       address: address,
       city: city,
-      zip: zip
+      zip: zip,
+      phone: phone
     };
   }
 

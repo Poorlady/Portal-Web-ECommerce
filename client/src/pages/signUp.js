@@ -153,7 +153,7 @@ function SignUp({ closeLogin }) {
             value={rePassword}
           />
         </div>
-        <button type="submit" className="input-border">
+        <button type="submit" className=" submit-btn input-border">
           Submit
         </button>
       </form>

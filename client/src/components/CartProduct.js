@@ -21,7 +21,9 @@ function CartProduct({
       <div className="cart-product-option span-col-3">
         <div>
           <p className="cart-product-optionHead">{product.productId.name}</p>
-          <span>By {product.productId.storeId.name}</span>
+          <span className="capitalize">
+            By {product.productId.storeId.name}
+          </span>
         </div>
         <div>
           <p>Color: {product.colour ? product.colour : "-"}</p>
@@ -37,7 +39,7 @@ function CartProduct({
         {status !== "payment" && (
           <div className="cart-product-amount">
             <button
-              className="input-border"
+              className=" amount--button input-border"
               onClick={() =>
                 product.amount === 1 ? delProduct(product) : subProduct(product)
               }
@@ -51,7 +53,7 @@ function CartProduct({
               value={product.amount}
             />
             <button
-              className="input-border"
+              className=" amount--button input-border"
               onClick={() =>
                 addProduct(product, 1, product.colour, product.size)
               }

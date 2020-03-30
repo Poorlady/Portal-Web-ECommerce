@@ -140,7 +140,9 @@ function ProductDetail() {
           <p>Product's Information</p>
           <p className="product-sub-info">
             Weight: {product.weight}kg | Condition: {product.condition} | By :{" "}
-            <Link to={`/store/${product.storeName}`}>{product.storeName}</Link>
+            <Link className="capitalize" to={`/store/${product.storeName}`}>
+              {product.storeName}
+            </Link>
           </p>
         </div>
         <form className="productdetail-option">
@@ -150,7 +152,7 @@ function ProductDetail() {
                 <p>Colour :</p>
                 <select
                   name="colour"
-                  className="input-border"
+                  className=" detail--select input-border"
                   onChange={handleChange}
                   value={pickColour}
                 >
@@ -174,7 +176,7 @@ function ProductDetail() {
                 <select
                   value={pickSize}
                   name="size"
-                  className="input-border"
+                  className="detail--select input-border"
                   onChange={handleChange}
                 >
                   <option defaultChecked>Pick Size</option>
@@ -192,14 +194,19 @@ function ProductDetail() {
         </form>
         <div className="productdetail-quantity">
           <p>Quantity :</p>
-          <button className=" input-border ml-0" onClick={() => subAmount()}>
+          <button
+            className="amount--button input-border ml-0"
+            onClick={() => subAmount()}
+          >
             -
           </button>
           <input className="input-border" type="text" value={amount} />
-          <button className="input-border" onClick={() => addAmount()}>
+          <button
+            className=" amount--button input-border"
+            onClick={() => addAmount()}
+          >
             +
           </button>
-          <small>Stock left : {product.stock}</small>
         </div>
         <div className="product-buttons">
           <Link
@@ -210,19 +217,24 @@ function ProductDetail() {
                 alert("Colour, Size, and Amount Options Must be Filled!");
               }
             }}
-            className=" ml-0"
+            className="cart--button ml-0"
           >
             Add To Cart
           </Link>
-          <button className="input-border">Buy Now</button>
         </div>
       </div>
       <div className="productdetail-desc">
         <div>
-          <button className="input-border" onClick={descClick}>
+          <button
+            className="subdetail--button input-border"
+            onClick={descClick}
+          >
             Product Description
           </button>
-          <button className="input-border" onClick={reviewClick}>
+          <button
+            className="subdetail--button input-border"
+            onClick={reviewClick}
+          >
             Product Review
           </button>
         </div>
@@ -230,7 +242,13 @@ function ProductDetail() {
         {!isOptionClicked ? (
           <p>{product.desc}</p>
         ) : (
-          <div className="review-wrapper">{mappedReview}</div>
+          <div className="review-wrapper">
+            {mappedReview.length > 1 ? (
+              mappedReview
+            ) : (
+              <p>No review for this product</p>
+            )}
+          </div>
         )}
       </div>
       <div className="productdetail-recom">

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import CartCard from "./CartCard";
 
@@ -10,7 +10,7 @@ import { authContext } from "../contexts/Auth";
 function Header({ openLogin, closeLogin }) {
   const { cartProduct, totalPrice } = useContext(CartContext);
   const { isLogIn, user, deleteUser } = useContext(authContext);
-
+  let history = useHistory();
   useEffect(() => {
     console.log(user);
   }, []);
@@ -50,7 +50,9 @@ function Header({ openLogin, closeLogin }) {
             </li>
             <li>
               <div class="dropdown">
-                <Link to="/carts">Cart</Link>
+                <Link className="header--link" to="/carts">
+                  Cart
+                </Link>
                 <div class="dropdown-content ml-50">
                   {cartProduct.length > 0 ? (
                     <>
@@ -73,21 +75,18 @@ function Header({ openLogin, closeLogin }) {
             {!isLogIn ? (
               <>
                 <li>
-                  <div className="btn-header">
-                    <Link to="/signup">
-                      <p>Daftar</p>
-                    </Link>
-                  </div>
+                  <Link className="header--link" to="/signup">
+                    Daftar
+                  </Link>
                 </li>
                 <li>
                   <Link
+                    className="header--link"
                     onClick={() => {
                       openLogin();
                     }}
                   >
-                    <div className="btn-header">
-                      <p>Masuk</p>
-                    </div>
+                    Masuk
                   </Link>
                 </li>
               </>
@@ -95,10 +94,18 @@ function Header({ openLogin, closeLogin }) {
               <>
                 {console.log(isLogIn)}
                 <li>
-                  <Link to="/profile">{`${user.fName} ${user.lName}`}</Link>
+                  <Link
+                    className="header--link"
+                    to="/profile/menu"
+                  >{`${user.fName} ${user.lName}`}</Link>
                 </li>
                 <li>
-                  <Link onClick={() => deleteUser()}>Logout</Link>
+                  <Link
+                    className="header--link"
+                    onClick={() => deleteUser(history)}
+                  >
+                    Logout
+                  </Link>
                 </li>
               </>
             )}

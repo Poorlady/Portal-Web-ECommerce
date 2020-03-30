@@ -11,7 +11,7 @@ function StorePageHeader({ store }) {
           <img src={`/uploads/stores/${store.img}`} alt="" />
         </div>
         <div className="store-header-info-left">
-          <h4>{store.name}</h4>
+          <h4 className="capitalize">{store.name}</h4>
           <p className="store-header-loc">Location : {store.location}</p>
         </div>
       </div>

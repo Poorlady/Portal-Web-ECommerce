@@ -41,7 +41,7 @@ function Carts() {
         <div className=" cart-price input-border">
           <h4>Total :</h4>
           <p>{stringFormat.toCurrency(totalPrice())}</p>
-          <Link to="carts/payment" className="input-border">
+          <Link className="red--link input-border" to="carts/payment">
             Buy Now
           </Link>
         </div>

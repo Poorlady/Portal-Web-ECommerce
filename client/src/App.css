@@ -524,7 +524,7 @@ height: fit-content;
   position: relative;
 }
 .review-wrapper{
-  height: 70vh;
+  height: fit-content;
   overflow: auto;
 }
 .review-card{
@@ -536,11 +536,11 @@ height: fit-content;
 }
 
 .review-card-photo{
-  width: 100%;
+  width: 40%;
 }
 
 .review-card img{
-  width: 70%;
+  width: 100%;
   border-radius: 20px;
 }
 
@@ -904,12 +904,20 @@ text-transform: capitalize;
   vertical-align: middle;
 }
 .edit-btn{
-  background-color: #28A745;
+  background-color: #ccc;
+  color: white;
+  text-shadow: 1px black;
+}
+.edit-btn:hover{
+  background-color: grey;
   color: white;
 }
 .del-btn{
-  background-color: #FF0000;
+  background-color: #F44D27;
   color: white;
+}
+.del-btn:hover{
+  background-color: red;
 }
 
 .store-productmenu-wrapper hr{
@@ -978,16 +986,6 @@ text-transform: capitalize;
   margin-bottom: 3em;
 }
 
-.profile-open-store{
-  margin-top: 5em;
-  padding: 5px;
-  width: 100px;
-  color: white;
-  background-color: #007BFF;
-}
-.profile-open-store a{
-  color: white;
-}
 
 .submit-btn{
   height: 40px;
@@ -1327,4 +1325,96 @@ text-transform: capitalize;
 
 .billing-card{
   width: 50%;
+}
+.cart--button:link{
+  background-color: #4CAF50;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+.cart--button:hover{
+  background-color: green;
+}
+.cart--button{
+  color: white;
+}
+
+.amount--button:hover,
+.subdetail--button:hover,.arrow--button:hover{
+  background-color: grey!important;
+  color: white;
+}
+.detail--select:hover{
+  border: 2px solid #007BFF;
+  cursor: pointer;
+}
+
+.card--link:hover{
+  border: 2px solid #cccccc;
+  border-radius: 7px;
+}
+
+.arrow--button{
+  padding: 10px;
+  font-weight: bold;
+  opacity: 0.5;
+}
+.arrow--button:hover{
+  opacity: 1;
+}
+.header--link:link{
+  padding: 7px;
+  border-radius: 5px;
+}
+.header--link:hover,.profile--link:hover{
+  background-color: #F1F1F1;
+}
+.profile--link{
+ width: fit-content;
+}
+.profile--link:link{
+  padding: 10px;
+  border-radius: 5px;
+}
+.profile-open-store{
+  color: white !important;
+  width: fit-content;
+}
+.profile-open-store:link{
+  background-color: #28A745;
+  padding: 10px;
+  border-radius: 5px;
+}
+.profile-open-store:hover{
+  background-color: green;
+}
+
+.submit-btn:hover{
+  background-color: green;
+}
+.forget-password{
+  font-size: 12px;
+  margin-top: 10px;
+  display: block;
+}
+.small-uInfo{
+  font-size: 14px !important;
+}
+.red--link{
+  color: white;
+}
+.red--link:link{
+  padding: 10px 12px;
+  background-color: #fa755a;
+  margin-top: 1rem;
+}
+.red--link:hover{
+  background-color: red;
+}
+.order-btn{
+  width: 53%;
+}
+.same-address{
+  margin-bottom: 1rem;
 }

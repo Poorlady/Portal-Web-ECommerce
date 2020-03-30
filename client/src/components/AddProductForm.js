@@ -216,7 +216,7 @@ function AddProductForm({ store, product }) {
             <option selected defaultChecked>
               Select Etalase
             </option>
-            {etalaseList.length > 1 ? (
+            {etalaseList.length > 0 ? (
               etalaseList.map(item => (
                 <option selected={item === etalase} value={item}>
                   {item}
@@ -311,7 +311,7 @@ function AddProductForm({ store, product }) {
           />
         </div>
         <div className="add-form-group">
-          <button type="submit" className="input-border">
+          <button type="submit" className=" submit-btn input-border">
             Simpan Produk
           </button>
         </div>

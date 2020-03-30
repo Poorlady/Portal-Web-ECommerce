@@ -23,7 +23,10 @@ mongoose
       useFindAndModify: false
     }
   )
-  .then(res => console.log("connected"))
+  .then(res => {
+    console.log("connected");
+    // require("./api/data/adminSeed");
+  })
   .catch(err => console.log(err));
 
 server.use(fileUpload());
