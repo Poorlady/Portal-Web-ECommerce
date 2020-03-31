@@ -21,6 +21,9 @@ import StorePage from "./pages/storePage";
 import PowerStore from "./pages/powerStore";
 import CartPayment from "./pages/cartPayment";
 
+//admin component
+import AdminDashboard from "./pages/adminDashboard";
+
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -28,10 +31,11 @@ import { authContext } from "./contexts/Auth";
 
 import PrivateRoute from "./components/PrivateRoutes";
 
-const stripePromise ;
+const stripePromise = loadStripe("");
+
 function App() {
   const [isPop, setIsPop] = useState(false);
-  const { isLogIn } = useContext(authContext);
+  const { isLogIn, user } = useContext(authContext);
 
   const openLogin = () => {
     console.log(isLogIn);
@@ -40,10 +44,12 @@ function App() {
     }
   };
 
+  let userCheck = user ? user.role !== "admin" : true;
+
   const closeLogin = () => {
     setIsPop(false);
   };
-  return window.location.pathname.search("/admin") ? (
+  return window.location.pathname.search("/admin") && userCheck ? (
     <>
       <Header openLogin={openLogin} />
       {isPop && <LogIn closeLogin={closeLogin} />}
@@ -97,10 +103,10 @@ function App() {
         <LogIn role="admin" />
       </Route>
       <Route path="/admin/dashboard">
-        <p>Hello Administrator</p>
+        <AdminDashboard />
       </Route>
     </Switch>
   );
-};
+}
 
 export default App;

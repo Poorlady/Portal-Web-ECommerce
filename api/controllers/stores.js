@@ -84,3 +84,12 @@ exports.findByName = (req, res) => {
     .then(result => res.json(result))
     .catch(err => console.log(err));
 };
+
+exports.findRandom = (req, res) => {
+  Store.find()
+    .limit(8)
+    .select({ name: 1, img: 1 })
+    .exec()
+    .then(result => res.json(result))
+    .catch(err => console.log(err));
+};

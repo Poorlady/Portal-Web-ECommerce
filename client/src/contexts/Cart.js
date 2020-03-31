@@ -38,14 +38,6 @@ function CartProvider(props) {
       .catch(err => console.log(err));
   };
 
-  const findCartIndex = (product, colour, size) => {
-    const cartProductIndex = cartProduct.findIndex(
-      item =>
-        item._id === product._id && item.colour === colour && item.size === size
-    );
-    return cartProductIndex;
-  };
-
   const fetchCart = async () => {
     axios
       .get(`/api/user/cart/${user._id}`)
@@ -166,4 +158,12 @@ export { CartContext, CartProvider };
 //     ...prevCart,
 //     { ...product, amount: amout, colour: colour, size: size }
 //   ]);
+// };
+
+// const findCartIndex = (product, colour, size) => {
+//   const cartProductIndex = cartProduct.findIndex(
+//     item =>
+//       item._id === product._id && item.colour === colour && item.size === size
+//   );
+//   return cartProductIndex;
 // };

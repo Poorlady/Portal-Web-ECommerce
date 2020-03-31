@@ -10,6 +10,8 @@ const storeController = require("../controllers/stores");
 
 const orderController = require("../controllers/orders");
 
+const adminController = require("../controllers/admins");
+
 routes.post("/api/product/addreview", productController.postReview);
 routes.post("/api/product", productController.postProduct);
 routes.post("/api/edit-product/:id", productController.editProduct);
@@ -33,6 +35,7 @@ routes.post("/api/store/addStore", storeController.addStore);
 routes.post("/api/store/getStore", storeController.getStore);
 routes.post("/api/store/updateStore", storeController.updateStore);
 routes.put("/api/store/addEtalase", storeController.addEtalase);
+routes.get("/api/store/random", storeController.findRandom);
 routes.get("/api/store/:params", storeController.findByName);
 routes.post("/api/order", orderController.postOrder);
 routes.get("/api/order/:params", orderController.getOrder);
@@ -43,6 +46,12 @@ routes.post("/api/user/reset", userController.resetPassword);
 routes.post("/api/user/changepassword", userController.changePassword);
 
 routes.post("/api/stripe/post-intent", orderController.postIntent);
+
+routes.post("/api/admin/category", adminController.addCategory);
+routes.delete("/api/admin/category/:name", adminController.deleteCategory);
+routes.get("/api/admin", adminController.getAdminData);
+routes.post("/api/admin/carousel", adminController.postCarousel);
+routes.delete("/api/admin/carousel/:name", adminController.deleteCarousel);
 module.exports = routes;
 
 // routes.get("/api/user/user", userController.getUser);

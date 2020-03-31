@@ -138,11 +138,16 @@ exports.getProducts = (req, res) => {
 
 exports.getProductsById = (req, res) => {
   Product.findById(req.params.id)
-    .populate("storeId", "name")
     .populate({
       path: "review.user.userId",
       select: {
         img: 1
+      },
+      populate: {
+        path: "storeId",
+        select: {
+          name: 1
+        }
       }
     })
     .exec()

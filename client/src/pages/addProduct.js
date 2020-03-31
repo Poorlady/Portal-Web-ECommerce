@@ -14,7 +14,7 @@ function AddProduct({ method }) {
     if (id) {
       getProduct(id);
     }
-  }, []);
+  }, [id]);
 
   const getProduct = async id => {
     await fetch(`/api/products/${id}`)

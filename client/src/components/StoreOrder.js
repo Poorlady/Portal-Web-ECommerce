@@ -16,7 +16,7 @@ function StoreOrder() {
   };
   useEffect(() => {
     fetchOrder();
-  }, []);
+  });
 
   const mappedOrders = order.map(item => (
     <StoreOrderList store={store} order={item} key={item._id} />

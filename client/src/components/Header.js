@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Link, useHistory } from "react-router-dom";
 
@@ -10,10 +10,25 @@ import { authContext } from "../contexts/Auth";
 function Header({ openLogin, closeLogin }) {
   const { cartProduct, totalPrice } = useContext(CartContext);
   const { isLogIn, user, deleteUser } = useContext(authContext);
+  const [text, setText] = useState("");
+  const categoryList = localStorage.getItem("category")
+    ? JSON.parse(localStorage.getItem("category"))
+    : [];
   let history = useHistory();
+
+  const handleChange = e => {
+    const { value } = e.target;
+    setText(value);
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    history.push(`/product-page/${text}`);
+  };
+
   useEffect(() => {
     console.log(user);
-  }, []);
+  });
 
   return (
     <header>
@@ -29,22 +44,24 @@ function Header({ openLogin, closeLogin }) {
               <div class="dropdown">
                 <Link class="dropbtn">Kategori</Link>
                 <div class="dropdown-content">
-                  <Link to="/product-page/komputer">Komputer</Link>
-                  <Link to="/product-page/buku">Buku</Link>
-                  <Link to="/product-page/sepatu pria">Sepatu Pria</Link>
-                  <Link to="/product-page">Sepatu Wanita</Link>
-                  <Link to="/product-page">Sepatu Anak-anak</Link>
+                  {categoryList.length > 0 &&
+                    categoryList.map(item => (
+                      <Link to={`/product-page/${item.toLowerCase()}`}>
+                        {item}
+                      </Link>
+                    ))}
                 </div>
               </div>
             </li>
             <li>
-              <form className="search-header">
+              <form onSubmit={handleSubmit} className="search-header">
                 <input
                   className="input-border"
                   placeholder="search here..."
                   name="search"
+                  value={text}
+                  onChange={handleChange}
                 />
-
                 <button className="input-border">search</button>
               </form>
             </li>

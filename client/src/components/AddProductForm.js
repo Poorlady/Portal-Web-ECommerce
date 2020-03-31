@@ -10,15 +10,18 @@ function AddProductForm({ store, product }) {
   const [secondImg, setSecondImg] = useState();
   const [thirdImg, setThirdImg] = useState();
   const [desc, setDesc] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState();
   const [etalase, setEtalase] = useState("");
   const [condition, setCondition] = useState("");
   const [colour, setColour] = useState("");
   const [size, setSize] = useState("");
   const [price, setPrice] = useState();
   const [weight, setWeight] = useState();
-  const [etalaseList, setEtalaseList] = useState(store ? store.etalase : []);
+  const [etalaseList] = useState(store ? store.etalase : []);
   const [isLoading, setIsLoading] = useState();
+  const categoryList =
+    localStorage.getItem("category") &&
+    JSON.parse(localStorage.getItem("category"));
 
   let history = useHistory();
 
@@ -194,14 +197,23 @@ function AddProductForm({ store, product }) {
         </div>
         <div className="add-form-group">
           <label>Kategori Produk :</label>
-          <input
+          <select
             name="category"
             className="add-form-input input-border"
             type="text"
             placeholder="Product's Category"
             value={category}
             onChange={handleChange}
-          />
+          >
+            <option selected defaultChecked>
+              Select Etalase
+            </option>
+            {categoryList.map(item => (
+              <option selected={item === category} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="add-form-group">
           <label>Etalase Produk :</label>

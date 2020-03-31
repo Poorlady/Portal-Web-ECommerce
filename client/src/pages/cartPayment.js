@@ -81,16 +81,16 @@ function CartPayment() {
         : { city: billCity, line1: billAdd, postal_code: billZip }
     };
 
-    const products = cartProduct.map(item => {
-      return {
-        name: item.productId.name,
-        desc: item.productId.desc,
-        price: item.productId.price * item.amount,
-        size: item.size,
-        colour: item.colour,
-        amount: item.amount
-      };
-    });
+    // const products = cartProduct.map(item => {
+    //   return {
+    //     name: item.productId.name,
+    //     desc: item.productId.desc,
+    //     price: item.productId.price * item.amount,
+    //     size: item.size,
+    //     colour: item.colour,
+    //     amount: item.amount
+    //   };
+    // });
     setIsProcessing(true);
     console.log(stripe);
     const { data: clientSecret } = await axios.post("/api/stripe/post-intent", {

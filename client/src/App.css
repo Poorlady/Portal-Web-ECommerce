@@ -230,15 +230,26 @@ nav ul li {
 }
 .OffStore-item{
   padding: 10px;
-  height: 50px;
+  height: 70px;
   border-style: solid;
   border-width: 1px;
   border-color: rgb(229, 231, 233);
   text-align: center;
   display: inline;
   background-color: white;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
-
+.OffStore-item img{
+  width: 100%;
+}
+.OffStore-name{
+  color: white;
+  font-size: large;
+  font-weight: bold;
+  text-shadow: 3px 2px 4px black;
+}
 .productlist-wrapper{
   margin: 100px auto;
   padding: 20px;
@@ -1417,4 +1428,141 @@ text-transform: capitalize;
 }
 .same-address{
   margin-bottom: 1rem;
+}
+
+
+
+/*admin*/
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin: -100px 0 0;
+}
+
+.span-row-4{grid-row: span 4 / auto;}
+.span-row-5{grid-row: span 5 / auto;}
+
+.side--panel{
+  background-color: #0164FF;
+  padding: 0 15px;
+  min-height: 100vh;
+  color: white;
+  border-radius: 0 15px 15px 0;
+}
+.panel--content{
+  padding: 30px 0 0 5rem ;
+  height: 80vh;
+}
+.panel--header{
+  min-height:75px;
+  padding: 10px 0 20px 5rem ;
+}
+.side--header{
+ text-align: center;
+ font-size: 26px;
+  margin-top: 30px;
+}
+.side--menu{
+  text-align: left;
+  margin-top: 6rem;
+}
+.side--menu ul{
+  list-style: none;
+}
+.side--menu li{
+  margin: 40px 0;
+}
+.side--menu-link{
+  color: white;
+}
+.side--menu-link:link{
+  padding: 10px 12px;
+}
+.side--menu-link:hover{
+  background-color: blue;
+}
+.category--form-list th,td{
+  width: 300px;
+  text-align: left;
+  height: 40px;
+}
+.category--form-list a{
+  margin-top: 3rem;
+  display: block;
+}
+.category--form-div label{
+  width: 10%;
+}
+.category--form-div input{
+  width: 30%;
+  height: 20px;
+}
+.category--form{
+  width: 100%;
+}
+.category--form label{
+  width: 10%;
+  margin-right: 15px;
+}
+.category--form input{
+  width: 70%;
+  height: 30px;
+}
+.category--form div{
+  margin: 10px 10px 10px 0;
+  width: 70%;
+  display: inline-block;
+}
+.cat--item{
+  padding: 7px;
+  width: 30%;
+}
+.cat--add{
+  color: white;
+}
+.cat--add:link{
+  width: fit-content;
+  padding: 10px 12px;
+  background-color: #ccc;
+}
+.cat--add:hover{
+  background-color: #007BFF;
+  color: white;
+}
+.side--menu-head {
+  width: 90%;
+  border-bottom: 1px solid black;
+  margin-bottom: 10px;
+}
+
+.pic-add{
+  width: 100%;
+}
+.pic-add img{
+  width: 100%;
+  object-fit: cover;
+  height: 80vh;
+}
+
+.category--list-grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+  width: 90%;
+}
+.carousel--item-div{
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+}
+.carousel--item-div img{
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.odd-box{
+  background-color: #F6E049;
+}
+.even-box{
+  background-color: #EEBED3;
 }
