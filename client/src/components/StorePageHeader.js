@@ -12,7 +12,15 @@ function StorePageHeader({ store }) {
         </div>
         <div className="store-header-info-left">
           <h4 className="capitalize">{store.name}</h4>
-          <p className="store-header-loc">Location : {store.location}</p>
+          <p className="store-header-loc">
+            Location :{" "}
+            {store.location.split(",").map(item => (
+              <>
+                <span>{item}</span>
+                <br />
+              </>
+            ))}
+          </p>
         </div>
       </div>
       <div className="store-header-right">

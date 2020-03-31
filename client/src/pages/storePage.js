@@ -11,7 +11,7 @@ function StorePage() {
   const { name } = useParams();
   const [products, setProducts] = useState([]);
   const [store, setStore] = useState();
-  const [isPowerStore, setIsPowerStore] = useState(false);
+  const [isPowerStore] = useState(false);
   const [etalase, setEtalase] = useState();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState();

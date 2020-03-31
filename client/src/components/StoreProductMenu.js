@@ -9,7 +9,7 @@ function StoreProductMenu({ id }) {
 
   useEffect(() => {
     fetchProducts(id);
-  }, []);
+  }, [id]);
 
   const fetchProducts = async id => {
     await axios

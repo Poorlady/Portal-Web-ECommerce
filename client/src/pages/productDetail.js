@@ -139,9 +139,13 @@ function ProductDetail() {
         <div>
           <p>Product's Information</p>
           <p className="product-sub-info">
-            Weight: {product.weight}kg | Condition: {product.condition} | By :{" "}
-            <Link className="capitalize" to={`/store/${product.storeName}`}>
-              {product.storeName}
+            Weight: {product.weight}kg | Condition: {product.condition} | By :
+            <Link
+              className="capitalize"
+              to={`/store/${product.storeId !== undefined &&
+                product.storeId.name}`}
+            >
+              {product.storeId !== undefined && product.storeId.name}
             </Link>
           </p>
         </div>
@@ -243,7 +247,7 @@ function ProductDetail() {
           <p>{product.desc}</p>
         ) : (
           <div className="review-wrapper">
-            {mappedReview.length > 1 ? (
+            {mappedReview.length > 0 ? (
               mappedReview
             ) : (
               <p>No review for this product</p>

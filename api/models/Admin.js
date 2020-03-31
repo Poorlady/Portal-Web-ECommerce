@@ -1,0 +1,14 @@
+const mongoose = require("mongoose");
+
+const Schema = mongoose.Schema;
+
+const AdminSchema = new Schema({
+  category: {
+    items: [{ type: String }]
+  },
+  carousel: {
+    images: [{ type: String }]
+  }
+});
+
+module.exports = mongoose.model("Admin", AdminSchema);

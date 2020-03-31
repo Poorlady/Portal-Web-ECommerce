@@ -1,7 +1,5 @@
 import React from "react";
 
-import User from "../img/user.jpg";
-
 function ReviewCard({ review }) {
   return (
     <div className="review-card input-border">

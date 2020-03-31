@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { authContext } from "../contexts/Auth";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function ReviewForm({ closeReview, productToReview, orderId }) {
   const [text, setText] = useState("");

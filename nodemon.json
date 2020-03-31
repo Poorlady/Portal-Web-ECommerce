@@ -1,6 +1,5 @@
 {
     "env":{
-        "MONGO_ATLAS_PW": "storedatabase",
-        
+        "MONGO_ATLAS_PW": "storedatabase"
     }
 }
