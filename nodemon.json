@@ -1,6 +1,5 @@
 {
     "env":{
-        "MONGO_ATLAS_PW": "storedatabase",
-        "SENDGRID_API_KEY":""
+        "MONGO_ATLAS_PW": "storedatabase"
     }
 }
