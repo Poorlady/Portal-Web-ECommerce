@@ -29,9 +29,9 @@ import { loadStripe } from "@stripe/stripe-js";
 
 import { authContext } from "./contexts/Auth";
 
-import PrivateRoute from "./components/PrivateRoutes";
-
 import notFound from "./img/404.png";
+
+import PrivateRoute from "./components/PrivateRoutes";
 
 const stripePromise = loadStripe("pk_test_AtlHscRyVkd8ifMfwTytBMfc00e4hmgMWA");
 
@@ -46,15 +46,15 @@ function App() {
     }
   };
 
-  let userCheck = user ? user.role !== "admin" : true;
+  let userCheck = user && user.role === "admin";
 
   const closeLogin = () => {
     setIsPop(false);
   };
 
   console.log(userCheck);
-
-  return window.location.pathname.search("/admin") && userCheck ? (
+  console.log(window.location.pathname.search("/admin"));
+  return window.location.pathname.search("/admin") === -1 ? (
     <>
       <Header openLogin={openLogin} />
       {isPop && <LogIn closeLogin={closeLogin} />}
@@ -62,6 +62,27 @@ function App() {
         <Route exact path="/">
           <LandingApp />
         </Route>
+        <PrivateRoute exact path="/add-product" openLogin={openLogin}>
+          <AddProduct />
+        </PrivateRoute>
+        <PrivateRoute exact path="/carts" openLogin={openLogin}>
+          <Carts />
+        </PrivateRoute>
+        <PrivateRoute exact path="/edit-product/:id" openLogin={openLogin}>
+          <AddProduct />
+        </PrivateRoute>
+        <PrivateRoute exact path="/power-store/page" openLogin={openLogin}>
+          <PowerStore />
+        </PrivateRoute>
+        <Route exact path="/product/:id">
+          <ProductDetail />
+        </Route>
+        <Route exact path="/product-page/:param">
+          <ProductPage />
+        </Route>
+        <PrivateRoute path="/profile" openLogin={openLogin}>
+          <Profile />
+        </PrivateRoute>
         <Route exact path="/reset/:token">
           <div className="reset-password">
             <ResetPassword />
@@ -70,40 +91,19 @@ function App() {
         <Route exact path="/signup">
           <SignUp closeLogin={closeLogin} />
         </Route>
-        <Route exact path="/product-page/:param">
-          <ProductPage />
+        <Route exact path="/store/:name">
+          <StorePage />
         </Route>
-        <Route exact path="/product/:id">
-          <ProductDetail />
-        </Route>
+        <PrivateRoute exact path="/carts/payment" openLogin={openLogin}>
+          <Elements stripe={stripePromise}>
+            <CartPayment />
+          </Elements>
+        </PrivateRoute>
         <Route exact>
-          <div className="not--found">
+          <div className="not-found">
             <img src={notFound} />
           </div>
         </Route>
-        <PrivateRoute exact path="/carts" openLogin={openLogin}>
-          <Carts />
-        </PrivateRoute>
-        <PrivateRoute exact path="/profile" openLogin={openLogin}>
-          <Profile />
-        </PrivateRoute>
-        <PrivateRoute exact path="/add-product" openLogin={openLogin}>
-          <AddProduct />
-        </PrivateRoute>
-        <PrivateRoute exact path="/edit-product/:id" openLogin={openLogin}>
-          <AddProduct />
-        </PrivateRoute>
-        <Route path="/store/:name">
-          <StorePage />
-        </Route>
-        <PrivateRoute exact path="/power-store/page" openLogin={openLogin}>
-          <PowerStore />
-        </PrivateRoute>
-        <Elements stripe={stripePromise}>
-          <PrivateRoute exact path="/carts/payment" openLogin={openLogin}>
-            <CartPayment />
-          </PrivateRoute>
-        </Elements>
       </Switch>
       <Footer />
     </>
@@ -112,8 +112,8 @@ function App() {
       <Route exact path="/admin/">
         <LogIn role="admin" />
       </Route>
-      <Route exact path="/admin/dashboard">
-        {!userCheck && user ? <AdminDashboard /> : <Redirect to="/admin" />}
+      <Route path="/admin/dashboard">
+        {userCheck ? <AdminDashboard /> : <Redirect to="/admin" />}
       </Route>
     </Switch>
   );

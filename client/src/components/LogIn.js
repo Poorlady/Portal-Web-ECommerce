@@ -115,7 +115,7 @@ function LogIn({ closeLogin, role }) {
         )}
         {role !== "admin" && (
           <button
-            className="  etalase-close input-border login-close"
+            className=" del-btn etalase-close login-close"
             onClick={() => closeLogin()}
           >
             X

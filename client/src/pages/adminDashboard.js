@@ -16,7 +16,6 @@ const saveLocal = data => {
 function AdminDashboard() {
   let { path } = useRouteMatch();
   const { deleteUser } = useContext(authContext);
-
   const fetchData = async () => {
     await axios
       .get("/api/admin")
