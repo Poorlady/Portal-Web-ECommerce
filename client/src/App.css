@@ -1566,3 +1566,7 @@ text-transform: capitalize;
 .even-box{
   background-color: #EEBED3;
 }
+.not--found img{  
+  width: 100%;
+  margin: auto;
+}

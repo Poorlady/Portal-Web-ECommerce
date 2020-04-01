@@ -23,8 +23,6 @@ function AuthProvider(props) {
       .catch(err => console.log(err));
   };
 
-  console.log(user);
-  console.log(store);
   useEffect(() => {
     if (user != null && store == null) {
       fetchStore(user._id);
