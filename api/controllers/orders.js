@@ -4,7 +4,7 @@ const User = require("../models/User");
 const stringFormatter = require("../../helpers/stringFormat");
 
 const objectId = require("mongoose").Types.ObjectId;
-const stripe = require("stripe")("");
+const stripe = require("stripe")("sk_test_INhAMx6X7pWJKnS3nitQxfN7008HCLiBLu");
 
 const checkObjectId = value => {
   if (objectId.isValid(value)) {

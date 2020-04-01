@@ -73,8 +73,11 @@ function ReviewForm({ closeReview, productToReview, orderId }) {
             </button>
           </div>
         </form>
-        <button className="login-close" onClick={() => closeReview()}>
-          Close
+        <button
+          className="del-btn etalase-close login-close"
+          onClick={() => closeReview()}
+        >
+          X
         </button>
       </div>
     </div>

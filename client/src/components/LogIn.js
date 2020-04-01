@@ -113,9 +113,14 @@ function LogIn({ closeLogin, role }) {
             </div>
           </>
         )}
-        <button className="login-close" onClick={() => closeLogin()}>
-          Close
-        </button>
+        {role !== "admin" && (
+          <button
+            className=" del-btn etalase-close login-close"
+            onClick={() => closeLogin()}
+          >
+            X
+          </button>
+        )}
       </div>
     </div>
   );
