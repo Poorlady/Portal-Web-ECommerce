@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { authContext } from "./Auth";
+import { Redirect } from "react-router-dom";
 const CartContext = React.createContext();
 
 function CartProvider(props) {
@@ -50,9 +51,13 @@ function CartProvider(props) {
   };
 
   const addProduct = async (product, amount, colour, size) => {
-    const productId = product.productId ? product.productId : product;
-    console.log(product.productId);
-    manipulateCart(productId, amount, colour, size);
+    if (!user) {
+      alert("Please Log In First");
+    } else {
+      const productId = product.productId ? product.productId : product;
+      console.log(product.productId);
+      manipulateCart(productId, amount, colour, size);
+    }
   };
 
   const subProduct = product => {
