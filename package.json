@@ -1,0 +1,43 @@
+{
+  "name": "skirpsi-merge",
+  "version": "1.0.0",
+  "description": "penggabungan front end dengan back end untuk keperluan skripsi",
+  "main": "server.js",
+  "engines": {
+    "node": "12.14.x"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client ",
+    "start": "node server.js"
+  },
+  "author": "Alif Ekasmara",
+  "license": "MIT",
+  "dependencies": {
+    "@stripe/react-stripe-js": "^1.1.0",
+    "@stripe/stripe-js": "^1.2.0",
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6",
+    "mongoose": "^5.8.11",
+    "nodemailer": "^6.4.6",
+    "nodemailer-sendgrid-transport": "^0.2.0",
+    "stripe": "^8.36.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "nodemon": "^2.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Poorlady/Portal-Web-ECommerce.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Poorlady/Portal-Web-ECommerce/issues"
+  },
+  "homepage": "https://github.com/Poorlady/Portal-Web-ECommerce#readme"
+}
