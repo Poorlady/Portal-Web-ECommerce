@@ -3,10 +3,12 @@ import axios from "axios";
 import { authContext } from "./Auth";
 import { Redirect } from "react-router-dom";
 const CartContext = React.createContext();
+const calculator = require("../helpers/calculator");
 
 function CartProvider(props) {
   const [cartProduct, setCartProduct] = useState([]);
   const { user } = useContext(authContext);
+  const date = new Date();
 
   useEffect(() => {
     if (user) {
@@ -72,10 +74,17 @@ function CartProvider(props) {
       })
       .catch((err) => console.log(err));
   };
+  console.log(cartProduct);
 
   const totalPrice = () => {
     return cartProduct.reduce(
-      (acc, { productId, amount }) => acc + productId.price * amount,
+      (acc, { productId, amount }) =>
+        acc +
+        (productId.discount
+          ? new Date(productId.discount.startedDate) <= date &&
+            new Date(productId.discount.endDate) >= date &&
+            calculator.getDiscount(productId) * amount
+          : productId.price * amount),
       0
     );
   };

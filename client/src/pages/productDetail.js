@@ -6,7 +6,7 @@ import ProductSlider from "../components/ProductSlider";
 import ReviewCard from "../components/ReviewCard";
 
 import { CartContext } from "../contexts/Cart";
-
+const calculator = require("../helpers/calculator");
 const currency = require("../helpers/stringFormarter");
 
 function ProductDetail() {
@@ -35,11 +35,11 @@ function ProductDetail() {
   //fetching dataapi
   const getProduct = async () => {
     await fetch(`/api/products/${id}`)
-      .then(res => res.json())
-      .then(prod => setProduct(prod));
+      .then((res) => res.json())
+      .then((prod) => setProduct(prod));
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     pickOption(e.target.name, e.target.value);
   };
 
@@ -64,21 +64,21 @@ function ProductDetail() {
     if (amount === product.stock) {
       return alert("Maximum Stock");
     }
-    setAmount(prev => prev + 1);
+    setAmount((prev) => prev + 1);
   };
   const subAmount = () => {
     if (amount === 0) {
       return alert("Amount Can't Be Below 0");
     }
-    setAmount(prev => prev - 1);
+    setAmount((prev) => prev - 1);
   };
 
   //manipulate view in page
-  const descClick = e => {
+  const descClick = (e) => {
     setIsOptionClicked(false);
   };
 
-  const reviewClick = e => {
+  const reviewClick = (e) => {
     setIsOptionClicked(true);
   };
 
@@ -91,7 +91,7 @@ function ProductDetail() {
   // };
 
   //validate the order product
-  const validate = product => {
+  const validate = (product) => {
     if (checkedOption()) {
       if (pickSize === "" || pickColour === "" || amount === 0) {
         return false;
@@ -116,7 +116,7 @@ function ProductDetail() {
 
   const mappedReview =
     product.review &&
-    product.review.map(item => <ReviewCard id={item._id} review={item} />);
+    product.review.map((item) => <ReviewCard id={item._id} review={item} />);
   console.log(product);
   return (
     <div className="productdetail-wrapper">
@@ -133,17 +133,26 @@ function ProductDetail() {
       </div>
       <div className="productdetail-info">
         <h2>{product.name}</h2>
-        <p className="price-info">
-          {product.price && currency.toCurrency(product.price)}
-        </p>
+        {product.discount ? (
+          <>
+            <p className="strip">
+              {currency.toCurrency(product.price, product.amount)}
+            </p>
+            <small className="nostrip">{` ${product.discount.rate}% discount`}</small>
+            <p>{currency.toCurrency(calculator.getDiscount(product))}</p>
+          </>
+        ) : (
+          <p>{currency.toCurrency(product.price, product.amount)}</p>
+        )}
         <div>
           <p>Product's Information</p>
           <p className="product-sub-info">
             Weight: {product.weight}kg | Condition: {product.condition} | By :
             <Link
               className="capitalize"
-              to={`/store/${product.storeId !== undefined &&
-                product.storeId.name}`}
+              to={`/store/${
+                product.storeId !== undefined && product.storeId.name
+              }`}
             >
               {product.storeId !== undefined && product.storeId.name}
             </Link>
@@ -162,7 +171,7 @@ function ProductDetail() {
                 >
                   <option defaultChecked>Pick Colour</option>
                   {product.colour &&
-                    product.colour.map(colour => (
+                    product.colour.map((colour) => (
                       <option key={colour} value={colour}>
                         {colour}
                       </option>
@@ -184,7 +193,7 @@ function ProductDetail() {
                   onChange={handleChange}
                 >
                   <option defaultChecked>Pick Size</option>
-                  {product.size.map(size => (
+                  {product.size.map((size) => (
                     <option key={size} value={size}>
                       {size}
                     </option>

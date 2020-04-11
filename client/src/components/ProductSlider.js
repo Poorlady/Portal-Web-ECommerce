@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import ArrowSlide from "./ArrowSlide";
 import ProductCard from "./ProductCard";
 function ProductSlider() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("/api/products")
-      .then(res => res.json())
-      .then(products => setProducts(products));
+    axios
+      .get("/api/products/discount")
+      .then((res) => setProducts(res.data))
+      .catch((err) => console.log(err));
   }, []);
+
+  let checkIndex = products.length > 5 ? true : false;
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const prevSlide = () => {
@@ -44,17 +48,21 @@ function ProductSlider() {
 
   return (
     <div className="slider-wrapper">
-      <ArrowSlide onClick={prevSlide} position={"slide-arrow left"}>
-        Prev
-      </ArrowSlide>
+      {checkIndex && (
+        <ArrowSlide onClick={prevSlide} position={"slide-arrow left"}>
+          Prev
+        </ArrowSlide>
+      )}
       <div className="products-slider">
-        {firstFiveVideo.map(product => (
+        {firstFiveVideo.map((product) => (
           <ProductCard product={product} key={product._id} />
         ))}
       </div>
-      <ArrowSlide onClick={nextSlide} position={"slide-arrow right"}>
-        Next
-      </ArrowSlide>
+      {checkIndex && (
+        <ArrowSlide onClick={nextSlide} position={"slide-arrow right"}>
+          Next
+        </ArrowSlide>
+      )}
     </div>
   );
 }

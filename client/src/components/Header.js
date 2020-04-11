@@ -6,6 +6,7 @@ import CartCard from "./CartCard";
 
 import { CartContext } from "../contexts/Cart";
 import { authContext } from "../contexts/Auth";
+import stringFormat from "../helpers/stringFormarter";
 
 function Header({ openLogin, closeLogin }) {
   const { cartProduct, totalPrice } = useContext(CartContext);
@@ -73,7 +74,7 @@ function Header({ openLogin, closeLogin }) {
                         <CartCard key={i} product={item} />
                       ))}
                       <div className="cart-drop">
-                        <p>Total : {totalPrice()}</p>
+                        <p>Total : {stringFormat.toCurrency(totalPrice())}</p>
                       </div>
                       <div className="cart-drop">
                         <Link>Checkout</Link>

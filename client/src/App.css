@@ -1570,3 +1570,41 @@ text-transform: capitalize;
   width: 100%;
   margin: auto;
 }
+
+.disc-btn{
+  margin-top: 10px;
+  width: 170px !important;
+  background-color: #28A745;
+  color: white;
+}
+.disc-btn:hover{
+  background-color: green;
+}
+.disc-form-class{
+  width: 90%;
+  margin: 0 auto;
+}
+.disc-form-class form{
+  width: 100%;
+}
+.disc-form-class input{
+  width: 97%;
+}
+.disc-form-group{
+  margin: 20px 0;
+}
+.cancel-btn{
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px 0;
+  background-color: #F44D27;
+  color: white;
+}
+.strip{
+  text-decoration: line-through;
+  color: red;
+  display: inline-block;
+}
+.nostrip{
+  text-decoration: none !important;
+}

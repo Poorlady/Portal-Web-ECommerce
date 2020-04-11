@@ -1,15 +1,17 @@
 import React from "react";
 
 const currency = require("../helpers/stringFormarter");
-
+const calculator = require("../helpers/calculator");
 function CartProduct({
   product,
   delProduct,
   addProduct,
   subProduct,
-  status
+  status,
   // toCurrency
 }) {
+  const date = new Date();
+
   return (
     <div className="cart-product-wrapper">
       <div className="cart-product-img">
@@ -35,7 +37,16 @@ function CartProduct({
         </div>
       </div>
       <div>
-        <p>{currency.toCurrency(product.productId.price, product.amount)}</p>
+        <p>
+          {product.productId.discount
+            ? new Date(product.productId.discount.startedDate) <= date &&
+              new Date(product.productId.discount.endDate) >= date &&
+              currency.toCurrency(
+                calculator.getDiscount(product.productId),
+                product.amount
+              )
+            : currency.toCurrency(product.productId.price, product.amount)}
+        </p>
         {status !== "payment" && (
           <div className="cart-product-amount">
             <button
