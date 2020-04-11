@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { authContext } from "./Auth";
+import { Redirect } from "react-router-dom";
 const CartContext = React.createContext();
 
 function CartProvider(props) {
   const [cartProduct, setCartProduct] = useState([]);
   const { user } = useContext(authContext);
 
-  console.log(cartProduct);
   useEffect(() => {
     if (user) {
       fetchCart();
@@ -19,7 +19,7 @@ function CartProvider(props) {
     }
   }, [user]);
 
-  const saveLocal = products => {
+  const saveLocal = (products) => {
     localStorage.setItem("carts", JSON.stringify(products));
   };
 
@@ -30,46 +30,47 @@ function CartProvider(props) {
         amount: amount,
         colour: colour,
         size: size,
-        userId: user._id
+        userId: user._id,
       })
-      .then(result => {
+      .then((result) => {
         fetchCart();
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
   const fetchCart = async () => {
     axios
       .get(`/api/user/cart/${user._id}`)
-      .then(result => {
+      .then((result) => {
         setCartProduct(result.data.items);
-        console.log("oka");
         saveLocal(result.data.items);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
   const addProduct = async (product, amount, colour, size) => {
-    const productId = product.productId ? product.productId : product;
-    console.log(product.productId);
-    manipulateCart(productId, amount, colour, size);
+    if (!user) {
+      alert("Please Log In First");
+    } else {
+      const productId = product.productId ? product.productId : product;
+      manipulateCart(productId, amount, colour, size);
+    }
   };
 
-  const subProduct = product => {
+  const subProduct = (product) => {
     manipulateCart(product.productId, -1, product.colour, product.size);
   };
   const delAll = () => {
     setCartProduct([]);
   };
 
-  const delProduct = async product => {
-    console.log(product);
+  const delProduct = async (product) => {
     await axios
       .delete(`/api/user/cart/${product._id}U${user._id} `)
-      .then(result => {
+      .then((result) => {
         fetchCart();
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
   const totalPrice = () => {
@@ -87,7 +88,7 @@ function CartProvider(props) {
         addProduct,
         delProduct,
         subProduct,
-        delAll
+        delAll,
         // toCurrency
       }}
     >

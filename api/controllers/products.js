@@ -8,15 +8,15 @@ const Product = require("../models/Product");
 const Order = require("../models/Order");
 const stringFormater = require("../../helpers/stringFormat");
 
-const makeSlug = name => {
+const makeSlug = (name) => {
   return name.replace(/\s/g, "-").toLowerCase();
 };
 
-const removeFile = fileName => {
+const removeFile = (fileName) => {
   fs.unlinkSync(`${mainpath}/client/public/uploads/products/${fileName}`);
 };
 
-const setData = req => {
+const setData = (req) => {
   const {
     name,
     desc,
@@ -29,7 +29,7 @@ const setData = req => {
     condition,
     storeName,
     weight,
-    storeId
+    storeId,
   } = req.body;
 
   let dataSet,
@@ -101,7 +101,7 @@ const setData = req => {
     weight: weight,
     storeName: storeName,
     storeId: storeId,
-    addedDate: stringFormater.dateToday()
+    addedDate: stringFormater.dateToday(),
   };
 
   return dataSet;
@@ -114,13 +114,13 @@ exports.postProduct = (req, res) => {
   console.log(req);
   product
     .save()
-    .then(result => {
+    .then((result) => {
       console.log("product created");
       res.json({
-        mssg: "product added"
+        mssg: "product added",
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };
@@ -129,46 +129,44 @@ exports.getProducts = (req, res) => {
   Product.find()
     .populate("storeId", "name")
     .exec()
-    .then(products => {
+    .then((products) => {
       // console.log(products);
       res.json(products);
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };
 
 exports.getProductsById = (req, res) => {
   Product.findById(req.params.id)
     .populate({
+      path: "storeId",
+      select: { name: 1 },
+    })
+    .populate({
       path: "review.user.userId",
       select: {
-        img: 1
+        img: 1,
       },
-      populate: {
-        path: "storeId",
-        select: {
-          name: 1
-        }
-      }
     })
     .exec()
-    .then(product => {
+    .then((product) => {
       // console.log(product);
       res.status(202).json(product);
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };
 
 exports.getProductByParams = (req, res) => {
   console.log(req.params.params);
   Product.find({
-    $or: [{ category: req.params.params }, { name: req.params.params }]
-  }).then(product => res.json(product));
+    $or: [{ category: req.params.params }, { name: req.params.params }],
+  }).then((product) => res.json(product));
 };
 
 exports.getProductsByStoreId = (req, res) => {
   Product.find({
-    storeId: req.params.params
-  }).then(product => res.json(product));
+    storeId: req.params.params,
+  }).then((product) => res.json(product));
 };
 
 exports.editProduct = (req, res) => {
@@ -176,26 +174,26 @@ exports.editProduct = (req, res) => {
   Product.findOneAndUpdate(
     { _id: req.params.id },
     {
-      $set: dataSet
+      $set: dataSet,
     }
   )
-    .then(result => {
+    .then((result) => {
       res.status(202).json({
-        mssg: "Product Edited"
+        mssg: "Product Edited",
       });
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };
 
 exports.deleteProducts = (req, res) => {
   Product.findByIdAndRemove(req.params.params)
-    .then(result => {
+    .then((result) => {
       result.mainImg && removeFile(result.mainImg);
       result.secondImg && removeFile(result.secondImg);
       result.thirdImg && removeFile(result.thirdImg);
       res.json(result);
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };
 
 exports.postReview = (req, res) => {
@@ -207,21 +205,21 @@ exports.postReview = (req, res) => {
     text,
     rate,
     orderId,
-    orderList
+    orderList,
   } = req.body;
 
   const review = {
     user: { userId: userId, name: userName },
     text: text,
     rate: rate,
-    date: stringFormater.dateToday()
+    date: stringFormater.dateToday(),
   };
   Product.updateOne({ _id: productId }, { $push: { review: review } })
-    .then(result => {
-      Order.findById(orderId).then(result => {
+    .then((result) => {
+      Order.findById(orderId).then((result) => {
         const orderItems = [...result.order.items];
         const index = orderItems.findIndex(
-          item => item._id.toString() === orderList.toString()
+          (item) => item._id.toString() === orderList.toString()
         );
         orderItems[index].reviewed = true;
         const order = { items: orderItems };
@@ -229,8 +227,8 @@ exports.postReview = (req, res) => {
         return result.save();
       });
     })
-    .then(result => res.json(result))
-    .catch(err => console.log(err));
+    .then((result) => res.json(result))
+    .catch((err) => console.log(err));
 };
 
 exports.processCheckout = (req, res) => {};

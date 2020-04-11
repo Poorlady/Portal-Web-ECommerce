@@ -10,13 +10,12 @@ function ProtectionForm() {
   const [rePassword, setRePassword] = useState("");
   const { user } = useContext(authContext);
   const param = useParams();
-  const URL = !param
-    ? "/api/user/update-password/"
+  const URL = !param.token
+    ? "/api/user/update-password"
     : "/api/user/changepassword";
-  console.log(param.token);
   let history = useHistory();
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     switch (name) {
       case "password":
@@ -36,21 +35,25 @@ function ProtectionForm() {
     }
     return false;
   };
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validePassword(password, rePassword)) {
       await axios
         .post(URL, {
           _id: user && user._id,
           password: password,
-          token: param.token
+          token: param.token,
         })
-        .then(result => {
-          if (param) {
+        .then((result) => {
+          if (param.token) {
             history.push("/");
+          } else {
+            setPassword("");
+            setRePassword("");
+            alert("Password Updated");
           }
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     }
   };
 

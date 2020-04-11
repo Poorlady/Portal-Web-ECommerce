@@ -56,7 +56,8 @@ function SignUp({ closeLogin }) {
   }, []);
 
   const passCheck = (pass, rePass) => {
-    if (password.length > 8) {
+    console.log(pass.length);
+    if (password.length >= 8) {
       if (pass === rePass) {
         return true;
       } else {

@@ -14,8 +14,6 @@ import { authContext } from "../contexts/Auth";
 function Profile() {
   let { path } = useRouteMatch();
   const { user, updateState, store } = useContext(authContext);
-  console.log(user);
-  console.log(store);
   useEffect(() => {}, [user]);
 
   return (

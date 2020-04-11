@@ -7,8 +7,8 @@ const sendgridTransport = require("nodemailer-sendgrid-transport");
 const transport = nodemailer.createTransport(
   sendgridTransport({
     auth: {
-      api_key: process.env.SENDGRID_API_KEY
-    }
+      api_key: process.env.SENDGRID_API_KEY,
+    },
   })
 );
 const mainpath = require("../../helpers/path");
@@ -16,14 +16,14 @@ const User = require("../models/User");
 const Product = require("../models/Product");
 const stringFormater = require("../../helpers/stringFormat");
 
-const emailSign = userMail => {
+const emailSign = (userMail) => {
   return (email = {
     to: userMail,
     from: "shop@node-ecom.com",
     subject: "Welcome To ECommerce Shop",
     text:
       "We are grateful for your membership and hope you have fun shopping in our website",
-    html: "<strong>and easy to do anywhere, even with Node.js</strong>"
+    html: "<strong>and easy to do anywhere, even with Node.js</strong>",
   });
 };
 
@@ -33,13 +33,13 @@ const emailReset = (userMail, token) => {
     from: "shop@node-ecom.com",
     subject: "Password Reset",
     html: `<p>You request a reset password for this account</p>
-    <p>Click this <a href="http://localhost:3000/reset/${token}"> Link </a> for reset your account password</p>`
+    <p>Click this <a href="http://localhost:3000/reset/${token}"> Link </a> for reset your account password</p>`,
   });
 };
 
 const insertProductToCart = (user, productId, amount, size, colour) => {
   const cartProductIndex = user.cart.items.findIndex(
-    item =>
+    (item) =>
       item.productId.toString() === productId.toString() &&
       item.size === size &&
       item.colour === colour
@@ -56,7 +56,7 @@ const insertProductToCart = (user, productId, amount, size, colour) => {
       productId: productId,
       size: size,
       colour: colour,
-      amount: amount
+      amount: amount,
     };
     updatedCartProducts.push(newProduct);
     // newArr = addNewProduct(user.cart.items, productId, amount, colour, size);
@@ -68,7 +68,7 @@ const insertProductToCart = (user, productId, amount, size, colour) => {
 };
 
 const deleteProductFromCart = (user, product) => {
-  let updatedCartProducts = user.cart.items.filter(item => {
+  let updatedCartProducts = user.cart.items.filter((item) => {
     if (item._id.toString() === product.toString()) {
       return false;
     } else {
@@ -86,7 +86,7 @@ const deleteProductFromCart = (user, product) => {
 exports.signUp = (req, res) => {
   const { fName, lName, bDate, email, password } = req.body;
 
-  bcrypt.hash(password, saltRound, function(err, hash) {
+  bcrypt.hash(password, saltRound, function (err, hash) {
     if (err) {
       res.status(502).json({ mssg: "Server bad gateway" });
     }
@@ -95,20 +95,20 @@ exports.signUp = (req, res) => {
       lName: lName,
       bDate: bDate,
       email: email,
-      password: hash
+      password: hash,
     });
 
-    User.findOne({ email: email }).then(result => {
+    User.findOne({ email: email }).then((result) => {
       if (result) {
         res.status(204).json({ mssg: "Email already taken" });
       } else {
         user
           .save()
-          .then(result => {
+          .then((result) => {
             res.status(201).json({ data: result });
             return transport.sendMail(emailSign(email));
           })
-          .catch(err => res.status(501).json({ err: err }));
+          .catch((err) => res.status(501).json({ err: err }));
       }
     });
   });
@@ -119,12 +119,12 @@ exports.logIn = (req, res) => {
   let userRole = role ? role : "user";
 
   User.findOne({ email: email, role: userRole })
-    .then(user => {
+    .then((user) => {
       if (!user) {
         console.log(0);
         return res.status(204).json({ mssg: "user not found!" });
       } else {
-        bcrypt.compare(password, user.password, function(err, result) {
+        bcrypt.compare(password, user.password, function (err, result) {
           if (result) {
             console.log(1);
             req.user = user;
@@ -136,7 +136,7 @@ exports.logIn = (req, res) => {
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(501).json({ err: err });
     });
 };
@@ -155,7 +155,7 @@ exports.updateUser = (req, res) => {
       address: address,
       city: city,
       zip: zip,
-      phone: phone
+      phone: phone,
     };
 
     imgFile.mv(`${mainpath}/client/public/uploads/users/${imgFileName}`);
@@ -164,37 +164,37 @@ exports.updateUser = (req, res) => {
       address: address,
       city: city,
       zip: zip,
-      phone: phone
+      phone: phone,
     };
   }
 
   User.findByIdAndUpdate(
     _id,
     {
-      $set: setData
+      $set: setData,
     },
     { new: true }
   )
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(err => res.json(err));
+    .catch((err) => res.json(err));
 };
 
 exports.updatePassword = (req, res) => {
   const { _id, password } = req.body;
   console.log(req.body);
 
-  bcrypt.hash(password, saltRound, function(err, hash) {
+  bcrypt.hash(password, saltRound, function (err, hash) {
     if (err) {
       res.status(502).json({ mssg: "Server bad gateway" });
     }
 
     User.findByIdAndUpdate(_id, { $set: { password: hash } }, { new: true })
-      .then(result => {
+      .then((result) => {
         res.json(result);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   });
@@ -205,8 +205,8 @@ exports.getUser = (req, res) => {
   const { email } = req.body;
 
   User.findOne({ email: email })
-    .then(result => res.json(result))
-    .catch(err => console.log(err));
+    .then((result) => res.json(result))
+    .catch((err) => console.log(err));
 };
 
 exports.addToCart = (req, res) => {
@@ -214,11 +214,11 @@ exports.addToCart = (req, res) => {
   console.log(productId);
   // console.log(productId, amount, size, colour, userId);
   User.findById(userId)
-    .then(user => {
+    .then((user) => {
       return insertProductToCart(user, productId, amount, size, colour);
     })
-    .then(result => res.json(result))
-    .catch(err => console.log(err));
+    .then((result) => res.json(result))
+    .catch((err) => console.log(err));
 };
 
 exports.getCart = (req, res) => {
@@ -233,13 +233,13 @@ exports.getCart = (req, res) => {
         storeId: 1,
         price: 1,
         condition: 1,
-        weight: 1
+        weight: 1,
       },
-      populate: { path: "storeId", select: { name: 1 } }
+      populate: { path: "storeId", select: { name: 1 } },
     })
     .exec()
-    .then(result => res.json(result.cart))
-    .catch(err => console.log(err));
+    .then((result) => res.json(result.cart))
+    .catch((err) => console.log(err));
 };
 
 exports.deleteCart = (req, res) => {
@@ -247,9 +247,9 @@ exports.deleteCart = (req, res) => {
   const productId = req.params.id.split("U").shift();
   console.log(productId);
   User.findById(userId)
-    .then(user => deleteProductFromCart(user, productId))
-    .then(result => res.json(result))
-    .catch(err => console.log(err));
+    .then((user) => deleteProductFromCart(user, productId))
+    .then((result) => res.json(result))
+    .catch((err) => console.log(err));
 };
 
 exports.resetPassword = (req, res) => {
@@ -263,7 +263,7 @@ exports.resetPassword = (req, res) => {
     const token = buffer.toString("hex");
     console.log(token);
     User.findOne({ email: email })
-      .then(user => {
+      .then((user) => {
         if (!user) {
           return res.status(201).json({ mssg: "Email Not Found" });
         }
@@ -272,36 +272,38 @@ exports.resetPassword = (req, res) => {
         user.resetExpired = Date.now() + 3600000;
         return user.save();
       })
-      .then(result => {
+      .then((result) => {
         res.status(200).json({ mssg: "Email has been send" });
         transport.sendMail(emailReset(email, token + "U" + id));
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   });
 };
 
 exports.changePassword = (req, res) => {
   const { password, token } = req.body;
+  console.log(req.body);
   const userId = token.split("U").pop();
   let resetUser;
   User.findOne({
     resetToken: token,
     resetExpired: { $gt: Date.now() },
-    _id: userId
+    _id: userId,
   })
-    .then(user => {
+    .then((user) => {
       resetUser = user;
       if (!user) {
         res.status(201).json({ mssg: "Token is expired!" });
       }
       return bcrypt.hash(password, saltRound);
     })
-    .then(hashedPassword => {
+    .then((hashedPassword) => {
+      console.log(hashedPassword);
       resetUser.password = hashedPassword;
       resetUser.resetToken = undefined;
       resetUser.resetExpired = undefined;
       return resetUser.save();
     })
-    .then(result => res.json({ mssg: "Password Change" }))
-    .catch(err => console.log(err));
+    .then((result) => res.json({ mssg: "Password Change" }))
+    .catch((err) => console.log(err));
 };

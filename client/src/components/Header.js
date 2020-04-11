@@ -16,19 +16,15 @@ function Header({ openLogin, closeLogin }) {
     : [];
   let history = useHistory();
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { value } = e.target;
     setText(value);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     history.push(`/product-page/${text}`);
   };
-
-  useEffect(() => {
-    console.log(user);
-  });
 
   return (
     <header>
@@ -45,7 +41,7 @@ function Header({ openLogin, closeLogin }) {
                 <Link class="dropbtn">Kategori</Link>
                 <div class="dropdown-content">
                   {categoryList.length > 0 &&
-                    categoryList.map(item => (
+                    categoryList.map((item) => (
                       <Link to={`/product-page/${item.toLowerCase()}`}>
                         {item}
                       </Link>
@@ -109,7 +105,6 @@ function Header({ openLogin, closeLogin }) {
               </>
             ) : (
               <>
-                {console.log(isLogIn)}
                 <li>
                   <Link
                     className="header--link"
