@@ -33,7 +33,7 @@ const emailReset = (userMail, token) => {
     from: "shop@node-ecom.com",
     subject: "Password Reset",
     html: `<p>You request a reset password for this account</p>
-    <p>Click this <a href="http://localhost:3000/reset/${token}"> Link </a> for reset your account password</p>`,
+    <p>Click this <a href="https://mycommercial.herokuapp.com/reset/${token}"> Link </a> for reset your account password</p>`,
   });
 };
 
