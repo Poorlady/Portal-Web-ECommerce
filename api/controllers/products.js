@@ -231,7 +231,37 @@ exports.postReview = (req, res) => {
     .catch((err) => console.log(err));
 };
 
-exports.processCheckout = (req, res) => {};
+exports.addDiscount = (req, res) => {
+  const { start, end, id, rate } = req.body;
+
+  Product.findById(id)
+    .then((product) => {
+      const discount = {
+        startedDate: start,
+        endDate: end,
+        rate: rate,
+      };
+      product.discount = discount;
+      return product.save();
+    })
+    .then((result) => res.json(result))
+    .catch((err) => console.log(err));
+};
+
+exports.getDiscount = (req, res) => {
+  console.log("hello");
+  console.log(stringFormater.dateToday());
+  Product.find({
+    $and: [
+      {
+        "discount.startedDate": { $lte: new Date() },
+      },
+      { "discount.endDate": { $gte: new Date() } },
+    ],
+  })
+    .then((result) => res.json(result))
+    .catch((err) => console.log(err));
+};
 // console.log(dataSet);
 // console.log(req.files.mainFile);
 // console.log(req.body);

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-
+import DiscountForm from "./DiscountForm";
 import { Link } from "react-router-dom";
 
 import stringFormater from "../helpers/stringFormarter";
 
 function StoreProductList({ product, deleteProduct }) {
   const [isDelClicked, setIsDelClicked] = useState(false);
+  const [isDiscClicked, setIsDiscClicked] = useState(false);
 
   const delClicked = () => {
     setIsDelClicked(true);
@@ -13,6 +14,14 @@ function StoreProductList({ product, deleteProduct }) {
 
   const delClose = () => {
     setIsDelClicked(false);
+  };
+
+  const openForm = () => {
+    setIsDiscClicked(true);
+  };
+
+  const closeForm = () => {
+    setIsDiscClicked(false);
   };
 
   return (
@@ -35,6 +44,9 @@ function StoreProductList({ product, deleteProduct }) {
         <button className="input-border del-btn" onClick={delClicked}>
           Delete
         </button>
+        <button onClick={() => openForm()} className="input-border disc-btn">
+          Add Discount
+        </button>
       </div>
       {isDelClicked && (
         <div className="popup-wrapper">
@@ -43,7 +55,7 @@ function StoreProductList({ product, deleteProduct }) {
               <p>Are you sure?</p>
               <button
                 className="ml-0 del-btn input-border"
-                onClick={e => {
+                onClick={(e) => {
                   deleteProduct(product._id);
                   delClose();
                 }}
@@ -57,6 +69,7 @@ function StoreProductList({ product, deleteProduct }) {
           </div>
         </div>
       )}
+      {isDiscClicked && <DiscountForm closeForm={closeForm} id={product._id} />}
     </div>
   );
 }

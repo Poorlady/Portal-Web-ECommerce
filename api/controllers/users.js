@@ -234,6 +234,7 @@ exports.getCart = (req, res) => {
         price: 1,
         condition: 1,
         weight: 1,
+        discount: 1,
       },
       populate: { path: "storeId", select: { name: 1 } },
     })

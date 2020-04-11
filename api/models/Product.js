@@ -5,11 +5,11 @@ const Schema = mongoose.Schema;
 const productSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   slug: {
     type: String,
-    required: true
+    required: true,
   },
   mainImg: { type: String },
   secondImg: { type: String },
@@ -19,7 +19,7 @@ const productSchema = new Schema({
   colour: [{ type: String }],
   price: {
     type: Number,
-    required: true
+    required: true,
   },
   category: { type: String },
   etalase: { type: String },
@@ -27,12 +27,12 @@ const productSchema = new Schema({
   storeId: {
     type: Schema.Types.ObjectId,
     ref: "Store",
-    required: true
+    required: true,
   },
   weight: { type: Number },
   addedDate: {
     type: Date,
-    required: true
+    required: true,
   },
   review: [
     {
@@ -40,24 +40,29 @@ const productSchema = new Schema({
         userId: {
           type: Schema.Types.ObjectId,
           ref: "User",
-          required: true
+          required: true,
         },
-        name: { type: String, required: true }
+        name: { type: String, required: true },
       },
       text: {
         type: String,
-        required: true
+        required: true,
       },
       rate: {
         type: Number,
-        required: true
+        required: true,
       },
       date: {
         type: Date,
-        required: true
-      }
-    }
-  ]
+        required: true,
+      },
+    },
+  ],
+  discount: {
+    startedDate: { type: Date },
+    endDate: { type: Date },
+    rate: { type: Number },
+  },
 });
 
 module.exports = mongoose.model("Product", productSchema);
