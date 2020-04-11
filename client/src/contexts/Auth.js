@@ -14,24 +14,22 @@ function AuthProvider(props) {
     localStorage.getItem("rememberMe") ? true : false
   );
 
-  const fetchStore = async userId => {
+  const fetchStore = async (userId) => {
     await axios
       .post("/api/store/getStore", { userId: userId })
-      .then(result => {
+      .then((result) => {
         updateState("store", result.data);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
-  console.log(user);
-  console.log(store);
   useEffect(() => {
     if (user != null && store == null) {
       fetchStore(user._id);
     }
   }, [user, store]);
 
-  const deleteUser = history => {
+  const deleteUser = (history) => {
     setUser();
     setStore();
     setIsLogIn(false);
@@ -65,7 +63,7 @@ function AuthProvider(props) {
         isLogIn,
         deleteUser,
         updateState,
-        store
+        store,
       }}
     >
       {props.children}

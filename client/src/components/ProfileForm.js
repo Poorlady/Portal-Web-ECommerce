@@ -14,7 +14,6 @@ function ProfileForm() {
   const [phone, setPhone] = useState("");
   const bDate = user.bDate.split("T")[0];
   const URL = "/api/user/update/";
-  console.log(phone);
   let history = useHistory();
 
   useEffect(() => {
@@ -24,12 +23,12 @@ function ProfileForm() {
     setPhone(user.phone);
   }, [user]);
 
-  const handleFile = e => {
+  const handleFile = (e) => {
     const { files } = e.target;
     setImg(files[0]);
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     switch (name) {
       case "address":
@@ -49,7 +48,7 @@ function ProfileForm() {
     }
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
 
@@ -62,13 +61,13 @@ function ProfileForm() {
 
     await axios
       .put(URL, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+        headers: { "Content-Type": "multipart/form-data" },
       })
-      .then(result => {
+      .then((result) => {
         updateState("user", result.data);
         history.push("/profile/menu");
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
   return (

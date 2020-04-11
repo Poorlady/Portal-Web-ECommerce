@@ -16,23 +16,23 @@ function StorePage() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState();
 
-  const fetchStore = async name => {
+  const fetchStore = async (name) => {
     await axios
       .get(`/api/store/${name}`)
-      .then(result => {
+      .then((result) => {
         setStore(result.data);
         fetchProducts(result.data._id);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
   console.log(sort);
-  const fetchProducts = async id => {
+  const fetchProducts = async (id) => {
     await axios
       .get(`/api/products/store/${id}`)
-      .then(result => {
+      .then((result) => {
         setProducts(result.data);
       })
-      .then(err => console.log(err));
+      .then((err) => console.log(err));
   };
 
   const sortFilter = (a, b) => {
@@ -40,17 +40,21 @@ function StorePage() {
       return a.price - b.price;
     } else if (sort === "highest price") {
       return b.price - a.price;
+    } else if (sort === "latest add") {
+      return new Date(b.addedDate) - new Date(a.addedDate);
+    } else {
+      return new Date(a.addedDate) - new Date(b.addedDate);
     }
   };
 
-  const handleClick = e => {
+  const handleClick = (e) => {
     if (e.target.text === "All Etalase") {
       return setEtalase("");
     }
     setEtalase(e.target.text);
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     switch (name) {
       case "search":
@@ -70,7 +74,7 @@ function StorePage() {
 
   const etalaseMapped =
     store &&
-    store.etalase.map(item => (
+    store.etalase.map((item) => (
       <li>
         <Link onClick={handleClick} key={item}>
           {item}
@@ -81,12 +85,12 @@ function StorePage() {
   const productsMapped =
     products &&
     products
-      .filter(item =>
+      .filter((item) =>
         etalase ? item.etalase.toLowerCase() === etalase.toLowerCase() : item
       )
-      .filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
+      .filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))
       .sort((a, b) => sortFilter(a, b))
-      .map(item => <ProductCard key={item._id} product={item} />);
+      .map((item) => <ProductCard key={item._id} product={item} />);
 
   return store ? (
     <div className="store-page-wrapper">

@@ -40,7 +40,6 @@ function App() {
   const { isLogIn, user } = useContext(authContext);
 
   const openLogin = () => {
-    console.log(isLogIn);
     if (!localStorage.getItem("logIn")) {
       setIsPop(true);
     }
@@ -52,8 +51,6 @@ function App() {
     setIsPop(false);
   };
 
-  console.log(userCheck);
-  console.log(window.location.pathname.search("/admin"));
   return window.location.pathname.search("/admin") === -1 ? (
     <>
       <Header openLogin={openLogin} />
