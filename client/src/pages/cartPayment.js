@@ -19,15 +19,15 @@ const CARD_ELEMENT_OPTIONS = {
       fontSmoothing: "antialiased",
       fontSize: "16px",
       "::placeholder": {
-        color: "#aab7c4"
-      }
+        color: "#aab7c4",
+      },
     },
     invalid: {
       color: "#fa755a",
-      iconColor: "#fa755a"
-    }
+      iconColor: "#fa755a",
+    },
   },
-  hidePostalCode: true
+  hidePostalCode: true,
 };
 
 function CartPayment() {
@@ -38,7 +38,7 @@ function CartPayment() {
     totalPrice,
     delProduct,
     subProduct,
-    delAll
+    delAll,
     // toCurrency
   } = useContext(CartContext);
   const { user } = useContext(authContext);
@@ -66,7 +66,7 @@ function CartPayment() {
     }
   }, [isSameAddress]);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (user.address == null && user.city == null && user.zip == null) {
@@ -78,7 +78,7 @@ function CartPayment() {
       email: user.email,
       address: isSameAddress
         ? { city: user.city, line1: user.address, postal_code: user.zip }
-        : { city: billCity, line1: billAdd, postal_code: billZip }
+        : { city: billCity, line1: billAdd, postal_code: billZip },
     };
 
     // const products = cartProduct.map(item => {
@@ -94,7 +94,7 @@ function CartPayment() {
     setIsProcessing(true);
     console.log(stripe);
     const { data: clientSecret } = await axios.post("/api/stripe/post-intent", {
-      total: totalPrice()
+      total: totalPrice(),
     });
     console.log(clientSecret.client_secret);
 
@@ -104,14 +104,14 @@ function CartPayment() {
     const paymentMethod = await stripe.createPaymentMethod({
       type: "card",
       card: card,
-      billing_details: userInfo
+      billing_details: userInfo,
     });
     console.log(paymentMethod);
 
     const confirmedPayment = await stripe.confirmCardPayment(
       clientSecret.client_secret,
       {
-        payment_method: paymentMethod.paymentMethod.id
+        payment_method: paymentMethod.paymentMethod.id,
       }
     );
 
@@ -119,17 +119,17 @@ function CartPayment() {
 
     await axios
       .post(URL, { userId: user._id, total: total })
-      .then(result => {
+      .then((result) => {
         localStorage.removeItem("carts");
         delAll();
         console.log(result);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
 
     setIsProcessing(false);
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     switch (name) {
       case "billName":
@@ -146,7 +146,7 @@ function CartPayment() {
         break;
       default:
         if (user.address != null && user.city != null && user.zip != null) {
-          setIsSameAddress(prevState => !prevState);
+          setIsSameAddress((prevState) => !prevState);
         } else {
           alert("You Have No Address!");
         }
@@ -247,7 +247,7 @@ function CartPayment() {
               <div className="billing-card">
                 <label>
                   Card detail
-                  <CardElement options={CARD_ELEMENT_OPTIONS} />;
+                  <CardElement options={CARD_ELEMENT_OPTIONS} />
                 </label>
               </div>
               <button

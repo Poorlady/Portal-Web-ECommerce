@@ -15,7 +15,7 @@ function ProductCard({ product }) {
           <p className="card-name">{product.name}</p>
           {product.discount ? (
             new Date(product.discount.startedDate) <= date &&
-            new Date(product.discount.endDate) >= date && (
+            new Date(product.discount.endDate) >= date ? (
               <>
                 <p className="strip">
                   {currency.toCurrency(product.price, product.amount)}
@@ -23,6 +23,8 @@ function ProductCard({ product }) {
                 <small className="nostrip">{` ${product.discount.rate}% discount`}</small>
                 <p>{currency.toCurrency(calculator.getDiscount(product))}</p>
               </>
+            ) : (
+              <p>{currency.toCurrency(product.price, product.amount)}</p>
             )
           ) : (
             <p>{currency.toCurrency(product.price, product.amount)}</p>
