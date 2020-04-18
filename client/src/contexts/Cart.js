@@ -82,8 +82,9 @@ function CartProvider(props) {
         acc +
         (productId.discount
           ? new Date(productId.discount.startedDate) <= date &&
-            new Date(productId.discount.endDate) >= date &&
-            calculator.getDiscount(productId) * amount
+            new Date(productId.discount.endDate) >= date
+            ? calculator.getDiscount(productId) * amount
+            : productId.price * amount
           : productId.price * amount),
       0
     );

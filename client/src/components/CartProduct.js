@@ -40,11 +40,12 @@ function CartProduct({
         <p>
           {product.productId.discount
             ? new Date(product.productId.discount.startedDate) <= date &&
-              new Date(product.productId.discount.endDate) >= date &&
-              currency.toCurrency(
-                calculator.getDiscount(product.productId),
-                product.amount
-              )
+              new Date(product.productId.discount.endDate) >= date
+              ? currency.toCurrency(
+                  calculator.getDiscount(product.productId),
+                  product.amount
+                )
+              : currency.toCurrency(product.productId.price, product.amount)
             : currency.toCurrency(product.productId.price, product.amount)}
         </p>
         {status !== "payment" && (

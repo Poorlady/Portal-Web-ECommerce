@@ -15,7 +15,7 @@ function ProductDetail() {
   const [amount, setAmount] = useState(0);
   const [pickColour, setPickColour] = useState("");
   const [pickSize, setPickSize] = useState();
-
+  const date = new Date();
   const { id } = useParams();
 
   const { addProduct } = useContext(CartContext);
@@ -134,13 +134,18 @@ function ProductDetail() {
       <div className="productdetail-info">
         <h2>{product.name}</h2>
         {product.discount ? (
-          <>
-            <p className="strip">
-              {currency.toCurrency(product.price, product.amount)}
-            </p>
-            <small className="nostrip">{` ${product.discount.rate}% discount`}</small>
-            <p>{currency.toCurrency(calculator.getDiscount(product))}</p>
-          </>
+          new Date(product.discount.startedDate) <= date &&
+          new Date(product.discount.endDate) >= date ? (
+            <>
+              <p className="strip">
+                {currency.toCurrency(product.price, product.amount)}
+              </p>
+              <small className="nostrip">{` ${product.discount.rate}% discount`}</small>
+              <p>{currency.toCurrency(calculator.getDiscount(product))}</p>
+            </>
+          ) : (
+            <p>{currency.toCurrency(product.price, product.amount)}</p>
+          )
         ) : (
           <p>{currency.toCurrency(product.price, product.amount)}</p>
         )}
