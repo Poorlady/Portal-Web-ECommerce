@@ -25,7 +25,7 @@ function AddProductForm({ store, product }) {
 
   let history = useHistory();
 
-  const check = product => {
+  const check = (product) => {
     setIsLoading(true);
     if (product) {
       console.log(product.mainImg);
@@ -53,7 +53,7 @@ function AddProductForm({ store, product }) {
     check(product);
   }, [store, product]);
 
-  const handleFile = e => {
+  const handleFile = (e) => {
     const { name, files } = e.target;
     switch (name) {
       case "mainImg":
@@ -70,7 +70,7 @@ function AddProductForm({ store, product }) {
     }
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     if (value === "Select Etalase") {
       setEtalase("-");
@@ -107,7 +107,7 @@ function AddProductForm({ store, product }) {
         break;
     }
   };
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
 
@@ -135,11 +135,11 @@ function AddProductForm({ store, product }) {
     await axios
       .post(URL, formData, {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       })
-      .then(response => history.push("/profile/store/products"))
-      .catch(err => console.log(err));
+      .then((response) => history.push("/profile/store/products"))
+      .catch((err) => console.log(err));
   };
 
   console.log(product);
@@ -154,6 +154,7 @@ function AddProductForm({ store, product }) {
             className="add-form-uploaded"
             src={`/uploads/products/${product.mainImg}`}
             alt={`${product.name} one`}
+            required
           />
         )}
         <label>Add Main Picture</label>
@@ -193,6 +194,7 @@ function AddProductForm({ store, product }) {
             placeholder="Product's Title"
             value={name}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="add-form-group">
@@ -208,7 +210,7 @@ function AddProductForm({ store, product }) {
             <option selected defaultChecked>
               Select Etalase
             </option>
-            {categoryList.map(item => (
+            {categoryList.map((item) => (
               <option selected={item === category} value={item}>
                 {item}
               </option>
@@ -229,7 +231,7 @@ function AddProductForm({ store, product }) {
               Select Etalase
             </option>
             {etalaseList.length > 0 ? (
-              etalaseList.map(item => (
+              etalaseList.map((item) => (
                 <option selected={item === etalase} value={item}>
                   {item}
                 </option>
@@ -249,6 +251,7 @@ function AddProductForm({ store, product }) {
             placeholder="Product's Description"
             value={desc}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="add-form-group">
@@ -320,6 +323,7 @@ function AddProductForm({ store, product }) {
             placeholder="Product's Price"
             value={price}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="add-form-group">
