@@ -16,6 +16,18 @@ const removeFile = (fileName) => {
   fs.unlinkSync(`${mainpath}/client/public/uploads/products/${fileName}`);
 };
 
+const handleFile = (file, imgIndex, storeId, name, formerImg) => {
+  let fileContainer = file;
+  let imgName = stringFormater.makeFileName(
+    `${storeId}_${name}`,
+    fileContainer,
+    `${imgIndex}`
+  );
+  fileContainer.mv(`${mainpath}/client/public/uploads/products/${imgName}`);
+  formerImg && removeFile(formerImg);
+  return imgName;
+};
+
 const setData = (req) => {
   const {
     name,
@@ -30,65 +42,55 @@ const setData = (req) => {
     storeName,
     weight,
     storeId,
+    formerMain,
+    formerSecond,
+    formerThird,
   } = req.body;
 
-  let dataSet,
-    mainFile,
-    mainImgName,
-    secondFile,
-    secondImgName,
-    thirdFile,
-    thirdImgName;
+  console.log(req.body);
+
+  let dataSet, mainImgName, secondImgName, thirdImgName;
 
   const mappedSize = stringFormater.stringTOArray(size);
   const mappedColour = stringFormater.stringTOArray(colour);
   const slug = makeSlug(name);
 
   if (req.files !== null) {
-    console.log(typeof req.files.thirdFile);
-    console.log(req.files.thirdFile);
     if (req.files.mainFile != null) {
-      mainFile = req.files.mainFile;
-      mainImgName = stringFormater.makeFileName(
-        `${storeId}_${name}`,
-        mainFile,
-        "main"
+      mainImgName = handleFile(
+        req.files.mainFile,
+        "main",
+        storeId,
+        name,
+        formerMain
       );
-      mainFile.mv(`${mainpath}/client/public/uploads/products/${mainImgName}`);
-      req.body.mainFile && removeFile(req.body.mainFile);
     }
     if (req.files.secondFile != null) {
-      secondFile = req.files.secondFile;
-      secondImgName = stringFormater.makeFileName(
-        `${storeId}_${name}`,
-        secondFile,
-        "second"
+      secondImgName = handleFile(
+        req.files.secondFile,
+        "second",
+        storeId,
+        name,
+        formerSecond
       );
-      secondFile.mv(
-        `${mainpath}/client/public/uploads/products/${secondImgName}`
-      );
-      req.body.secondFile && removeFile(req.body.secondFile);
     }
 
     if (req.files.thirdFile != null) {
-      thirdFile = req.files.thirdFile;
-      thirdImgName = stringFormater.makeFileName(
-        `${storeId}_${name}`,
-        thirdFile,
-        "third"
+      thirdImgName = handleFile(
+        req.files.thirdFile,
+        "third",
+        storeId,
+        name,
+        formerThird
       );
-      thirdFile.mv(
-        `${mainpath}/client/public/uploads/products/${thirdImgName}`
-      );
-      req.body.thirdFile && removeFile(req.body.thirdFile);
     }
   }
 
   dataSet = {
     name: name,
-    mainImg: mainImgName ? mainImgName : req.body.mainFile,
-    secondImg: secondImgName ? secondImgName : req.body.secondFile,
-    thirdImg: thirdImgName ? thirdImgName : req.body.thirdFile,
+    mainImg: mainImgName ? mainImgName : formerMain,
+    secondImg: secondImgName ? secondImgName : formerSecond,
+    thirdImg: thirdImgName ? thirdImgName : formerThird,
     slug: slug,
     desc: desc,
     size: mappedSize,
@@ -110,8 +112,7 @@ const setData = (req) => {
 exports.postProduct = (req, res) => {
   const dataSet = setData(req);
   const product = new Product(dataSet);
-  console.log(req.user);
-  console.log(req);
+  console.log("post product");
   product
     .save()
     .then((result) => {

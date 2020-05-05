@@ -19,6 +19,9 @@ function AddProductForm({ store, product }) {
   const [weight, setWeight] = useState();
   const [etalaseList] = useState(store ? store.etalase : []);
   const [isLoading, setIsLoading] = useState();
+  const [formerMain, setFormerMain] = useState();
+  const [formerSecond, setFormerSecond] = useState();
+  const [formerThird, setFormertThird] = useState();
   const categoryList =
     localStorage.getItem("category") &&
     JSON.parse(localStorage.getItem("category"));
@@ -30,8 +33,8 @@ function AddProductForm({ store, product }) {
     if (product) {
       console.log(product.mainImg);
       setName(product.name);
-      setImg(product.mainImg);
-      setSecondImg(product.secondImg);
+      setFormerMain(product.mainImg);
+      setFormerSecond(product.secondImg);
       setThirdImg(product.thirdImg);
       setDesc(product.desc);
       setCategory(product.category);
@@ -111,15 +114,9 @@ function AddProductForm({ store, product }) {
     event.preventDefault();
     const formData = new FormData();
 
-    formData.append("mainFile", img ? img : product ? product.mainImg : null);
-    formData.append(
-      "secondFile",
-      secondImg ? secondImg : product ? product.secondImg : null
-    );
-    formData.append(
-      "thirdFile",
-      thirdImg ? thirdImg : product ? product.thirdImg : null
-    );
+    formData.append("mainFile", img);
+    formData.append("secondFile", secondImg);
+    formData.append("thirdFile", thirdImg);
     formData.append("name", name);
     formData.append("desc", desc);
     formData.append("category", category);
@@ -131,6 +128,9 @@ function AddProductForm({ store, product }) {
     formData.append("weight", weight);
     formData.append("storeName", store.name);
     formData.append("storeId", store._id);
+    formData.append("formerMain", product ? formerMain : null);
+    formData.append("formerSecond", product ? formerSecond : null);
+    formData.append("formerThird", product ? formerThird : null);
 
     await axios
       .post(URL, formData, {
