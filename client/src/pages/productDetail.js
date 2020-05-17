@@ -117,7 +117,7 @@ function ProductDetail() {
   const mappedReview =
     product.review &&
     product.review.map((item) => <ReviewCard id={item._id} review={item} />);
-  console.log(product);
+
   return (
     <div className="productdetail-wrapper">
       <div className="productdetail-photo">

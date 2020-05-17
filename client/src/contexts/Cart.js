@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { authContext } from "./Auth";
-import { Redirect } from "react-router-dom";
 const CartContext = React.createContext();
 const calculator = require("../helpers/calculator");
 

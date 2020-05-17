@@ -19,19 +19,22 @@ function AddProductForm({ store, product }) {
   const [weight, setWeight] = useState();
   const [etalaseList] = useState(store ? store.etalase : []);
   const [isLoading, setIsLoading] = useState();
+  const [formerMain, setFormerMain] = useState();
+  const [formerSecond, setFormerSecond] = useState();
+  const [formerThird, setFormertThird] = useState();
   const categoryList =
     localStorage.getItem("category") &&
     JSON.parse(localStorage.getItem("category"));
 
   let history = useHistory();
 
-  const check = product => {
+  const check = (product) => {
     setIsLoading(true);
     if (product) {
       console.log(product.mainImg);
       setName(product.name);
-      setImg(product.mainImg);
-      setSecondImg(product.secondImg);
+      setFormerMain(product.mainImg);
+      setFormerSecond(product.secondImg);
       setThirdImg(product.thirdImg);
       setDesc(product.desc);
       setCategory(product.category);
@@ -53,7 +56,7 @@ function AddProductForm({ store, product }) {
     check(product);
   }, [store, product]);
 
-  const handleFile = e => {
+  const handleFile = (e) => {
     const { name, files } = e.target;
     switch (name) {
       case "mainImg":
@@ -70,7 +73,7 @@ function AddProductForm({ store, product }) {
     }
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     if (value === "Select Etalase") {
       setEtalase("-");
@@ -107,19 +110,13 @@ function AddProductForm({ store, product }) {
         break;
     }
   };
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
 
-    formData.append("mainFile", img ? img : product ? product.mainImg : null);
-    formData.append(
-      "secondFile",
-      secondImg ? secondImg : product ? product.secondImg : null
-    );
-    formData.append(
-      "thirdFile",
-      thirdImg ? thirdImg : product ? product.thirdImg : null
-    );
+    formData.append("mainFile", img);
+    formData.append("secondFile", secondImg);
+    formData.append("thirdFile", thirdImg);
     formData.append("name", name);
     formData.append("desc", desc);
     formData.append("category", category);
@@ -131,15 +128,18 @@ function AddProductForm({ store, product }) {
     formData.append("weight", weight);
     formData.append("storeName", store.name);
     formData.append("storeId", store._id);
+    formData.append("formerMain", product ? formerMain : null);
+    formData.append("formerSecond", product ? formerSecond : null);
+    formData.append("formerThird", product ? formerThird : null);
 
     await axios
       .post(URL, formData, {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       })
-      .then(response => history.push("/profile/store/products"))
-      .catch(err => console.log(err));
+      .then((response) => history.push("/profile/store/products"))
+      .catch((err) => console.log(err));
   };
 
   console.log(product);
@@ -154,6 +154,7 @@ function AddProductForm({ store, product }) {
             className="add-form-uploaded"
             src={`/uploads/products/${product.mainImg}`}
             alt={`${product.name} one`}
+            required
           />
         )}
         <label>Add Main Picture</label>
@@ -193,6 +194,7 @@ function AddProductForm({ store, product }) {
             placeholder="Product's Title"
             value={name}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="add-form-group">
@@ -208,7 +210,7 @@ function AddProductForm({ store, product }) {
             <option selected defaultChecked>
               Select Etalase
             </option>
-            {categoryList.map(item => (
+            {categoryList.map((item) => (
               <option selected={item === category} value={item}>
                 {item}
               </option>
@@ -229,7 +231,7 @@ function AddProductForm({ store, product }) {
               Select Etalase
             </option>
             {etalaseList.length > 0 ? (
-              etalaseList.map(item => (
+              etalaseList.map((item) => (
                 <option selected={item === etalase} value={item}>
                   {item}
                 </option>
@@ -249,6 +251,7 @@ function AddProductForm({ store, product }) {
             placeholder="Product's Description"
             value={desc}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="add-form-group">
@@ -320,6 +323,7 @@ function AddProductForm({ store, product }) {
             placeholder="Product's Price"
             value={price}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="add-form-group">

@@ -80,33 +80,19 @@ function CartPayment() {
         ? { city: user.city, line1: user.address, postal_code: user.zip }
         : { city: billCity, line1: billAdd, postal_code: billZip },
     };
-
-    // const products = cartProduct.map(item => {
-    //   return {
-    //     name: item.productId.name,
-    //     desc: item.productId.desc,
-    //     price: item.productId.price * item.amount,
-    //     size: item.size,
-    //     colour: item.colour,
-    //     amount: item.amount
-    //   };
-    // });
     setIsProcessing(true);
-    console.log(stripe);
+
     const { data: clientSecret } = await axios.post("/api/stripe/post-intent", {
       total: totalPrice(),
     });
-    console.log(clientSecret.client_secret);
 
     const card = elements.getElement(CardElement);
-    console.log(card);
 
     const paymentMethod = await stripe.createPaymentMethod({
       type: "card",
       card: card,
       billing_details: userInfo,
     });
-    console.log(paymentMethod);
 
     const confirmedPayment = await stripe.confirmCardPayment(
       clientSecret.client_secret,
@@ -115,16 +101,15 @@ function CartPayment() {
       }
     );
 
-    console.log(confirmedPayment);
-
-    await axios
-      .post(URL, { userId: user._id, total: total })
-      .then((result) => {
-        localStorage.removeItem("carts");
-        delAll();
-        console.log(result);
-      })
-      .catch((err) => console.log(err));
+    !confirmedPayment.error
+      ? await axios
+          .post(URL, { userId: user._id, total: total })
+          .then((result) => {
+            localStorage.removeItem("carts");
+            delAll();
+          })
+          .catch((err) => console.log(err))
+      : alert(confirmedPayment.error.decline_code);
 
     setIsProcessing(false);
   };
@@ -266,3 +251,14 @@ function CartPayment() {
 }
 
 export default CartPayment;
+
+// const products = cartProduct.map(item => {
+//   return {
+//     name: item.productId.name,
+//     desc: item.productId.desc,
+//     price: item.productId.price * item.amount,
+//     size: item.size,
+//     colour: item.colour,
+//     amount: item.amount
+//   };
+// });
