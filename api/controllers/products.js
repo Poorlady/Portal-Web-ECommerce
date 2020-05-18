@@ -24,7 +24,7 @@ const handleFile = (file, imgIndex, storeId, name, formerImg) => {
     `${imgIndex}`
   );
   fileContainer.mv(`${mainpath}/client/public/uploads/products/${imgName}`);
-  formerImg && removeFile(formerImg);
+  formerImg !== "null" && removeFile(formerImg);
   return imgName;
 };
 
@@ -46,8 +46,6 @@ const setData = (req) => {
     formerSecond,
     formerThird,
   } = req.body;
-
-  console.log(req.body);
 
   let dataSet, mainImgName, secondImgName, thirdImgName;
 
@@ -84,13 +82,17 @@ const setData = (req) => {
         formerThird
       );
     }
+  } else {
+    mainImgName = formerMain;
+    secondImgName = formerSecond;
+    thirdImgName = formerThird;
   }
 
   dataSet = {
     name: name,
-    mainImg: mainImgName ? mainImgName : formerMain,
-    secondImg: secondImgName ? secondImgName : formerSecond,
-    thirdImg: thirdImgName ? thirdImgName : formerThird,
+    mainImg: mainImgName,
+    secondImg: secondImgName,
+    thirdImg: thirdImgName,
     slug: slug,
     desc: desc,
     size: mappedSize,
@@ -105,12 +107,12 @@ const setData = (req) => {
     storeId: storeId,
     addedDate: stringFormater.dateToday(),
   };
-
   return dataSet;
 };
 
 exports.postProduct = (req, res) => {
   const dataSet = setData(req);
+  console.log(dataSet);
   const product = new Product(dataSet);
   console.log("post product");
   product
@@ -172,18 +174,19 @@ exports.getProductsByStoreId = (req, res) => {
 
 exports.editProduct = (req, res) => {
   const dataSet = setData(req);
-  Product.findOneAndUpdate(
-    { _id: req.params.id },
-    {
-      $set: dataSet,
-    }
-  )
-    .then((result) => {
-      res.status(202).json({
-        mssg: "Product Edited",
-      });
-    })
-    .catch((err) => console.log(err));
+  console.log(dataSet);
+  // Product.findOneAndUpdate(
+  //   { _id: req.params.id },
+  //   {
+  //     $set: dataSet,
+  //   }
+  // )
+  //   .then((result) => {
+  //     res.status(202).json({
+  //       mssg: "Product Edited",
+  //     });
+  //   })
+  //   .catch((err) => console.log(err));
 };
 
 exports.deleteProducts = (req, res) => {
