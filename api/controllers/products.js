@@ -24,7 +24,7 @@ const handleFile = (file, imgIndex, storeId, name, formerImg) => {
     `${imgIndex}`
   );
   fileContainer.mv(`${mainpath}/client/public/uploads/products/${imgName}`);
-  formerImg && removeFile(formerImg);
+  formerImg !== "null" && removeFile(formerImg);
   return imgName;
 };
 
@@ -46,8 +46,6 @@ const setData = (req) => {
     formerSecond,
     formerThird,
   } = req.body;
-
-  console.log(req.body);
 
   let dataSet, mainImgName, secondImgName, thirdImgName;
 
@@ -84,39 +82,40 @@ const setData = (req) => {
         formerThird
       );
     }
+  } else {
+    mainImgName = formerMain;
+    secondImgName = formerSecond;
+    thirdImgName = formerThird;
   }
 
   dataSet = {
     name: name,
-    mainImg: mainImgName ? mainImgName : formerMain,
-    secondImg: secondImgName ? secondImgName : formerSecond,
-    thirdImg: thirdImgName ? thirdImgName : formerThird,
+    mainImg: mainImgName,
+    secondImg: secondImgName,
+    thirdImg: thirdImgName,
     slug: slug,
     desc: desc,
     size: mappedSize,
     colour: mappedColour,
     stock: stock,
     price: price,
-    category: category.trim().toLowerCase(),
-    etalase: etalase,
+    category: category.trim(),
+    etalase: etalase.trim(),
     condition: condition,
     weight: weight,
     storeName: storeName,
     storeId: storeId,
     addedDate: stringFormater.dateToday(),
   };
-
   return dataSet;
 };
 
 exports.postProduct = (req, res) => {
   const dataSet = setData(req);
   const product = new Product(dataSet);
-  console.log("post product");
   product
     .save()
     .then((result) => {
-      console.log("product created");
       res.json({
         mssg: "product added",
       });
@@ -131,7 +130,6 @@ exports.getProducts = (req, res) => {
     .populate("storeId", "name")
     .exec()
     .then((products) => {
-      // console.log(products);
       res.json(products);
     })
     .catch((err) => console.log(err));
@@ -151,14 +149,12 @@ exports.getProductsById = (req, res) => {
     })
     .exec()
     .then((product) => {
-      // console.log(product);
       res.status(202).json(product);
     })
     .catch((err) => console.log(err));
 };
 
 exports.getProductByParams = (req, res) => {
-  console.log(req.params.params);
   Product.find({
     $or: [{ category: req.params.params }, { name: req.params.params }],
   }).then((product) => res.json(product));
@@ -198,7 +194,6 @@ exports.deleteProducts = (req, res) => {
 };
 
 exports.postReview = (req, res) => {
-  // console.log(req.body);
   const {
     userId,
     userName,
@@ -250,8 +245,6 @@ exports.addDiscount = (req, res) => {
 };
 
 exports.getDiscount = (req, res) => {
-  console.log("hello");
-  console.log(stringFormater.dateToday());
   Product.find({
     $and: [
       {
@@ -263,6 +256,3 @@ exports.getDiscount = (req, res) => {
     .then((result) => res.json(result))
     .catch((err) => console.log(err));
 };
-// console.log(dataSet);
-// console.log(req.files.mainFile);
-// console.log(req.body);

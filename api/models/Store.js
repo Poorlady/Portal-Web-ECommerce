@@ -6,25 +6,24 @@ const storeSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   desc: {
     type: String,
-    required: true
+    required: true,
   },
   location: {
     type: String,
-    required: true
+    required: true,
   },
   img: {
     type: String,
-    required: true
   },
-  etalase: [{ type: String }]
+  etalase: [{ type: String }],
 });
 
 module.exports = mongoose.model("Store", storeSchema);

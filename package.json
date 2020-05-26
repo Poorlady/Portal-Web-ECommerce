@@ -24,6 +24,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.1.6",
     "mongoose": "^5.8.11",
+    "node-blob": "0.0.2",
     "nodemailer": "^6.4.6",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "stripe": "^8.36.0"

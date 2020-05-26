@@ -6,7 +6,7 @@ const stringFormatter = require("../../helpers/stringFormat");
 const objectId = require("mongoose").Types.ObjectId;
 const stripe = require("stripe")("sk_test_INhAMx6X7pWJKnS3nitQxfN7008HCLiBLu");
 
-const checkObjectId = value => {
+const checkObjectId = (value) => {
   if (objectId.isValid(value)) {
     return { "user.userId": value };
   } else {
@@ -27,21 +27,21 @@ exports.postOrder = (req, res) => {
         storeId: 1,
         price: 1,
         condition: 1,
-        weight: 1
+        weight: 1,
       },
-      populate: { path: "storeId", select: { name: 1 } }
+      populate: { path: "storeId", select: { name: 1 } },
     })
     .exec()
-    .then(user => {
-      const products = user.cart.items.map(item => {
+    .then((user) => {
+      const products = user.cart.items.map((item) => {
         return {
           product: {
             ...item.productId._doc,
-            storeId: { ...item.productId.storeId._doc }
+            storeId: { ...item.productId.storeId._doc },
           },
           size: item.size,
           colour: item.colour,
-          amount: item.amount
+          amount: item.amount,
         };
       });
       const username = stringFormatter.fullName(user.fName, user.lName);
@@ -54,34 +54,38 @@ exports.postOrder = (req, res) => {
         user: {
           userId: user,
           name: username,
-          location: location
+          location: location,
         },
         order: {
-          items: products
+          items: products,
         },
         orderDate: stringFormatter.dateToday(),
-        total: total
+        total: total,
       });
 
       return order.save();
     })
-    .then(result => {
-      User.findById(result.user.userId).then(user => {
+    .then((result) => {
+      console.log(result);
+      User.findById(result.user.userId).then((user) => {
         const cart = { items: [] };
         user.cart = cart;
         return user.save();
       });
     })
-    .then(result => res.json(result))
-    .catch(err => console.log(err));
+    .then((result) => {
+      console.log(result);
+      res.json(result);
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.getOrder = (req, res) => {
   const filter = checkObjectId(req.params.params);
   console.log(filter);
   Order.find(filter)
-    .then(result => res.json(result))
-    .catch(err => console.log(err));
+    .then((result) => res.json(result))
+    .catch((err) => console.log(err));
 };
 
 exports.postIntent = async (req, res) => {
@@ -90,11 +94,12 @@ exports.postIntent = async (req, res) => {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: req.body.total * 100,
       currency: "idr",
-      metadata: { integration_check: "accept_a_payment" }
+      metadata: { integration_check: "accept_a_payment" },
     });
     res.status(200).json({ client_secret: paymentIntent.client_secret });
   } catch (err) {
-    res.status(500).json({ statusCode: 500, mssg: err.massage });
+    console.log(err);
+    // res.status(500).json({ statusCode: 500, mssg: err.massage });
   }
 };
 // console.log(product);

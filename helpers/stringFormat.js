@@ -7,15 +7,16 @@ let time =
 exports.getDate = date;
 
 exports.makeFileName = (name, file, index) => {
-  return `${name.replace(/\s/g, "-")}_${date}_${time}_${index}Img.${file &&
-    file.name.split(".").pop()}`;
+  return `${name.replace(/\s/g, "-")}_${date}_${time}_${index}Img.${
+    file && file.name.split(".").pop()
+  }`;
 };
 
-exports.stringTOArray = item => {
+exports.stringTOArray = (item) => {
   return item
     .trim()
     .split(",")
-    .map(item => item.trim());
+    .map((item) => item.trim());
 };
 
 exports.dateToday = () => {
@@ -29,3 +30,9 @@ exports.locationMaker = (address, city, zip) => {
 exports.fullName = (fName, lName) => {
   return `${fName} ${lName}`;
 };
+
+let fakeF = {
+  name: "fileName.jpeg",
+};
+
+console.log(this.makeFileName("gambar", null, "main"));

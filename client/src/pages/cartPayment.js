@@ -86,6 +86,8 @@ function CartPayment() {
       total: totalPrice(),
     });
 
+    // console.log(clientSecret.client_secret);
+
     const card = elements.getElement(CardElement);
 
     const paymentMethod = await stripe.createPaymentMethod({

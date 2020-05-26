@@ -11,10 +11,10 @@ const currency = require("../helpers/stringFormarter");
 
 function ProductDetail() {
   const [isOptionClicked, setIsOptionClicked] = useState(false);
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState();
   const [amount, setAmount] = useState(0);
   const [pickColour, setPickColour] = useState("");
-  const [pickSize, setPickSize] = useState();
+  const [pickSize, setPickSize] = useState("");
   const date = new Date();
   const { id } = useParams();
 
@@ -89,7 +89,7 @@ function ProductDetail() {
   //   size: pickSize,
   //   amount: amount
   // };
-
+  console.log(pickSize);
   //validate the order product
   const validate = (product) => {
     if (checkedOption()) {
@@ -115,10 +115,15 @@ function ProductDetail() {
   };
 
   const mappedReview =
+    product &&
     product.review &&
     product.review.map((item) => <ReviewCard id={item._id} review={item} />);
 
-  return (
+  return !product ? (
+    <div className="productdetail-wrapper">
+      <p>Product Not Found</p>
+    </div>
+  ) : (
     <div className="productdetail-wrapper">
       <div className="productdetail-photo">
         <div className="productdetail-mainphoto">
@@ -174,7 +179,9 @@ function ProductDetail() {
                   onChange={handleChange}
                   value={pickColour}
                 >
-                  <option defaultChecked>Pick Colour</option>
+                  <option value="" defaultChecked>
+                    Pick Colour
+                  </option>
                   {product.colour &&
                     product.colour.map((colour) => (
                       <option key={colour} value={colour}>
@@ -197,7 +204,9 @@ function ProductDetail() {
                   className="detail--select input-border"
                   onChange={handleChange}
                 >
-                  <option defaultChecked>Pick Size</option>
+                  <option value="" defaultChecked>
+                    Pick Size
+                  </option>
                   {product.size.map((size) => (
                     <option key={size} value={size}>
                       {size}
