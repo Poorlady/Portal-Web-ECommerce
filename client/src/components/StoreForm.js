@@ -16,7 +16,7 @@ function StoreForm({ store, user, updateState }) {
     }
   }, [store]);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     switch (name) {
       case "name":
@@ -33,12 +33,12 @@ function StoreForm({ store, user, updateState }) {
     }
   };
 
-  const handleFile = e => {
+  const handleFile = (e) => {
     const { files } = e.target;
     setImg(files[0]);
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     store
@@ -51,12 +51,12 @@ function StoreForm({ store, user, updateState }) {
 
     await axios
       .post(URL, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+        headers: { "Content-Type": "multipart/form-data" },
       })
-      .then(result => {
+      .then((result) => {
         updateState("store", result.data);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -72,6 +72,7 @@ function StoreForm({ store, user, updateState }) {
           placeholder="Store Name"
           onChange={handleChange}
           value={name}
+          required
         />
       </div>
       <div className="store-form-group">
@@ -83,6 +84,7 @@ function StoreForm({ store, user, updateState }) {
           placeholder="Store Description"
           onChange={handleChange}
           value={desc}
+          required
         />
       </div>
       <div className="store-form-group">
@@ -93,6 +95,7 @@ function StoreForm({ store, user, updateState }) {
           className="input-border"
           onChange={handleChange}
           value={location}
+          required
         />
       </div>
       <div>

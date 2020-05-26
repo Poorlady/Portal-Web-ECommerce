@@ -18,18 +18,29 @@ function DiscountForm({ closeForm, id }) {
     }
   };
 
+  const validate = () => {
+    let value = new Date(start) - new Date(end);
+    if (value > 0) {
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    axios
-      .post(URL, { start: start, end: end, id: id, rate: discount })
-      .then((result) => {
-        setEnd("");
-        setStart("");
-        alert("discount added");
-        closeForm();
-      })
-      .catch((err) => console.log(err));
+    if (validate()) {
+      axios
+        .post(URL, { start: start, end: end, id: id, rate: discount })
+        .then((result) => {
+          setEnd("");
+          setStart("");
+          alert("discount added");
+          closeForm();
+        })
+        .catch((err) => console.log(err));
+    } else {
+      alert("End date have to be greater than start date");
+    }
   };
 
   return (
@@ -67,7 +78,7 @@ function DiscountForm({ closeForm, id }) {
                 value={discount}
                 className="input-border"
                 type="number"
-                min="10"
+                min="1"
                 max="100"
               />
             </div>

@@ -21,13 +21,13 @@ function AddProductForm({ store, product }) {
   const [isLoading, setIsLoading] = useState();
   const [formerMain, setFormerMain] = useState();
   const [formerSecond, setFormerSecond] = useState();
-  const [formerThird, setFormertThird] = useState();
+  const [formerThird, setFormerThird] = useState();
   const categoryList =
     localStorage.getItem("category") &&
     JSON.parse(localStorage.getItem("category"));
 
   let history = useHistory();
-
+  console.log(URL);
   const check = (product) => {
     setIsLoading(true);
     if (product) {
@@ -35,7 +35,7 @@ function AddProductForm({ store, product }) {
       setName(product.name);
       setFormerMain(product.mainImg);
       setFormerSecond(product.secondImg);
-      setThirdImg(product.thirdImg);
+      setFormerThird(product.thirdImg);
       setDesc(product.desc);
       setCategory(product.category);
       setEtalase(product.etalase);
@@ -142,7 +142,9 @@ function AddProductForm({ store, product }) {
       .catch((err) => console.log(err));
   };
 
-  console.log(product);
+  console.log(category);
+
+  categoryList.map((i) => console.log(i));
 
   return isLoading ? (
     <p>Loading data....</p>
@@ -154,7 +156,6 @@ function AddProductForm({ store, product }) {
             className="add-form-uploaded"
             src={`/uploads/products/${product.mainImg}`}
             alt={`${product.name} one`}
-            required
           />
         )}
         <label>Add Main Picture</label>
@@ -208,13 +209,17 @@ function AddProductForm({ store, product }) {
             onChange={handleChange}
           >
             <option selected defaultChecked>
-              Select Etalase
+              Select Categories
             </option>
-            {categoryList.map((item) => (
-              <option selected={item === category} value={item}>
-                {item}
-              </option>
-            ))}
+            {etalaseList.length > 0 ? (
+              categoryList.map((item) => (
+                <option selected={item === category} value={item}>
+                  {item}
+                </option>
+              ))
+            ) : (
+              <option>-</option>
+            )}
           </select>
         </div>
         <div className="add-form-group">

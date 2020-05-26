@@ -54,6 +54,8 @@ function ProtectionForm() {
           }
         })
         .catch((err) => console.log(err));
+    } else {
+      alert("Password is not match");
     }
   };
 

@@ -99,8 +99,8 @@ const setData = (req) => {
     colour: mappedColour,
     stock: stock,
     price: price,
-    category: category.trim().toLowerCase(),
-    etalase: etalase,
+    category: category.trim(),
+    etalase: etalase.trim(),
     condition: condition,
     weight: weight,
     storeName: storeName,
@@ -112,13 +112,10 @@ const setData = (req) => {
 
 exports.postProduct = (req, res) => {
   const dataSet = setData(req);
-  console.log(dataSet);
   const product = new Product(dataSet);
-  console.log("post product");
   product
     .save()
     .then((result) => {
-      console.log("product created");
       res.json({
         mssg: "product added",
       });
@@ -133,7 +130,6 @@ exports.getProducts = (req, res) => {
     .populate("storeId", "name")
     .exec()
     .then((products) => {
-      // console.log(products);
       res.json(products);
     })
     .catch((err) => console.log(err));
@@ -153,14 +149,12 @@ exports.getProductsById = (req, res) => {
     })
     .exec()
     .then((product) => {
-      // console.log(product);
       res.status(202).json(product);
     })
     .catch((err) => console.log(err));
 };
 
 exports.getProductByParams = (req, res) => {
-  console.log(req.params.params);
   Product.find({
     $or: [{ category: req.params.params }, { name: req.params.params }],
   }).then((product) => res.json(product));
@@ -174,19 +168,18 @@ exports.getProductsByStoreId = (req, res) => {
 
 exports.editProduct = (req, res) => {
   const dataSet = setData(req);
-  console.log(dataSet);
-  // Product.findOneAndUpdate(
-  //   { _id: req.params.id },
-  //   {
-  //     $set: dataSet,
-  //   }
-  // )
-  //   .then((result) => {
-  //     res.status(202).json({
-  //       mssg: "Product Edited",
-  //     });
-  //   })
-  //   .catch((err) => console.log(err));
+  Product.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      $set: dataSet,
+    }
+  )
+    .then((result) => {
+      res.status(202).json({
+        mssg: "Product Edited",
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.deleteProducts = (req, res) => {
@@ -201,7 +194,6 @@ exports.deleteProducts = (req, res) => {
 };
 
 exports.postReview = (req, res) => {
-  // console.log(req.body);
   const {
     userId,
     userName,
@@ -253,8 +245,6 @@ exports.addDiscount = (req, res) => {
 };
 
 exports.getDiscount = (req, res) => {
-  console.log("hello");
-  console.log(stringFormater.dateToday());
   Product.find({
     $and: [
       {
@@ -266,6 +256,3 @@ exports.getDiscount = (req, res) => {
     .then((result) => res.json(result))
     .catch((err) => console.log(err));
 };
-// console.log(dataSet);
-// console.log(req.files.mainFile);
-// console.log(req.body);

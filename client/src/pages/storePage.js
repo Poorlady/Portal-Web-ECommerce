@@ -95,7 +95,6 @@ function StorePage() {
   return store ? (
     <div className="store-page-wrapper">
       <StorePageHeader store={store} />
-      {isPowerStore && <PowerStore />}
       <div className="store-page-product">
         <div className="store-page-etalase input-border">
           <h4>Store's Etalase</h4>
@@ -134,7 +133,9 @@ function StorePage() {
       </div>
     </div>
   ) : (
-    <p>Loading....</p>
+    <div className="store-page-wrapper">
+      <p>Store Not Found</p>
+    </div>
   );
 }
 

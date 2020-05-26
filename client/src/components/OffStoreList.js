@@ -5,7 +5,7 @@ function OffStoreList({ stores }) {
   var sectionStyle = {
     width: "100%",
     height: "400px",
-    backgroundImage: "url(" + {} + ")"
+    backgroundImage: "url(" + {} + ")",
   };
   return (
     <div className="OffStore-wrapper">
@@ -31,7 +31,6 @@ function OffStoreList({ stores }) {
         <div className="OffStore-item">Samsung</div>
         <div className="OffStore-item">LG</div>
         <div className="OffStore-item">Hyundai</div>
-        <div className="OffStore-item">LogiTech</div>
       </div>
     </div>
   );

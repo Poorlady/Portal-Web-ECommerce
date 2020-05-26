@@ -62,7 +62,7 @@ const insertProductToCart = (user, productId, amount, size, colour) => {
     // newArr = addNewProduct(user.cart.items, productId, amount, colour, size);
   }
   const updatedCart = { items: updatedCartProducts };
-  // console.log(updatedCartProducts);
+  console.log(updatedCart);
   user.cart = updatedCart;
   return user.save();
 };
@@ -122,7 +122,7 @@ exports.logIn = (req, res) => {
     .then((user) => {
       if (!user) {
         console.log(0);
-        return res.status(204).json({ mssg: "user not found!" });
+        return res.status(201).json({ mssg: "user not found!" });
       } else {
         bcrypt.compare(password, user.password, function (err, result) {
           if (result) {
@@ -211,11 +211,11 @@ exports.getUser = (req, res) => {
 
 exports.addToCart = (req, res) => {
   const { productId, amount, size, colour, userId } = req.body;
-  console.log(productId);
   // console.log(productId, amount, size, colour, userId);
   User.findById(userId)
     .then((user) => {
       return insertProductToCart(user, productId, amount, size, colour);
+      // console.log(insertProductToCart(user, productId, amount, size, colour));
     })
     .then((result) => res.json(result))
     .catch((err) => console.log(err));
