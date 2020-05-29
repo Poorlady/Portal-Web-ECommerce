@@ -7,12 +7,14 @@ function StoreForm({ store, user, updateState }) {
   const [desc, setDesc] = useState("");
   const [location, setLocation] = useState("");
   const [image, setImg] = useState("");
+  const [formerImg, setFormerImg] = useState();
 
   useEffect(() => {
     if (store) {
       setName(store.name);
       setDesc(store.desc);
       setLocation(store.location);
+      setFormerImg(store.img);
     }
   }, [store]);
 
@@ -48,6 +50,7 @@ function StoreForm({ store, user, updateState }) {
     formData.append("name", name);
     formData.append("desc", desc);
     formData.append("location", location);
+    formData.append("formerImg", formerImg);
 
     await axios
       .post(URL, formData, {

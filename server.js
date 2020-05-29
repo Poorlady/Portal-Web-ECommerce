@@ -2,7 +2,6 @@ const express = require("express");
 const fileUpload = require("express-fileupload");
 const path = require("path");
 const server = express();
-
 const apiRoutes = require("./api/routes/api");
 
 const mongoose = require("mongoose");
@@ -20,14 +19,14 @@ mongoose
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useFindAndModify: false
+      useFindAndModify: false,
     }
   )
-  .then(res => {
+  .then((res) => {
     console.log("connected");
     // require("./api/data/adminSeed");
   })
-  .catch(err => console.log(err));
+  .catch((err) => console.log(err));
 
 server.use(fileUpload());
 server.use(apiRoutes);

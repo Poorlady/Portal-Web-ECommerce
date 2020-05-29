@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const saltRound = 10;
+const fs = require("fs");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 const transport = nodemailer.createTransport(
@@ -15,6 +16,10 @@ const mainpath = require("../../helpers/path");
 const User = require("../models/User");
 const Product = require("../models/Product");
 const stringFormater = require("../../helpers/stringFormat");
+
+const removeFile = (fileName) => {
+  fs.unlinkSync(`${mainpath}/client/public/uploads/users/${fileName}`);
+};
 
 const emailSign = (userMail) => {
   return (email = {
@@ -142,13 +147,12 @@ exports.logIn = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  const { _id, address, city, zip, phone } = req.body;
-  console.log(phone);
+  const { _id, address, city, zip, phone, formerImg } = req.body;
+
   let imgFileName, setData;
   if (req.files !== null) {
     const imgFile = req.files.file;
     imgFileName = stringFormater.makeFileName(_id, imgFile, "photo");
-    console.log(imgFileName);
 
     setData = {
       img: imgFileName,
@@ -158,6 +162,7 @@ exports.updateUser = (req, res) => {
       phone: phone,
     };
 
+    formerImg !== "undefined" ? removeFile(formerImg) : null;
     imgFile.mv(`${mainpath}/client/public/uploads/users/${imgFileName}`);
   } else {
     setData = {
@@ -308,3 +313,24 @@ exports.changePassword = (req, res) => {
     .then((result) => res.json({ mssg: "Password Change" }))
     .catch((err) => console.log(err));
 };
+
+const createAdmin = () => {
+  bcrypt.hash("adminPassword", saltRound, function (err, hash) {
+    if (err) {
+      res.status(502).json({ mssg: "Server bad gateway" });
+    }
+    const user = new User({
+      fName: "admin",
+      lName: "akun",
+      email: "admin@email.com",
+      password: hash,
+      role: "admin",
+    });
+    user
+      .save()
+      .then((result) => console.log(result))
+      .catch((err) => console.log(err));
+  });
+};
+
+createAdmin();

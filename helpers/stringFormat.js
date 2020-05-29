@@ -30,9 +30,3 @@ exports.locationMaker = (address, city, zip) => {
 exports.fullName = (fName, lName) => {
   return `${fName} ${lName}`;
 };
-
-let fakeF = {
-  name: "fileName.jpeg",
-};
-
-console.log(this.makeFileName("gambar", null, "main"));
