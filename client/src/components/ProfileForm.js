@@ -12,6 +12,7 @@ function ProfileForm() {
   const [city, setCity] = useState("");
   const [zip, setZip] = useState();
   const [phone, setPhone] = useState("");
+  const [formerImg, setFormerImg] = useState();
   const bDate = user.bDate.split("T")[0];
   const URL = "/api/user/update/";
   let history = useHistory();
@@ -21,6 +22,7 @@ function ProfileForm() {
     setCity(user.city);
     setZip(user.zip);
     setPhone(user.phone);
+    setFormerImg(user.img);
   }, [user]);
 
   const handleFile = (e) => {
@@ -58,6 +60,7 @@ function ProfileForm() {
     formData.append("city", city);
     formData.append("zip", zip);
     formData.append("phone", phone);
+    formData.append("formerImg", formerImg);
 
     await axios
       .put(URL, formData, {
