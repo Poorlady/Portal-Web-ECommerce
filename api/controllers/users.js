@@ -332,5 +332,3 @@ const createAdmin = () => {
       .catch((err) => console.log(err));
   });
 };
-
-createAdmin();
