@@ -128,9 +128,9 @@ function AddProductForm({ store, product }) {
     formData.append("weight", weight);
     formData.append("storeName", store.name);
     formData.append("storeId", store._id);
-    formData.append("formerMain", product ? formerMain : null);
-    formData.append("formerSecond", product ? formerSecond : null);
-    formData.append("formerThird", product ? formerThird : null);
+    formData.append("formerMain", product && formerMain);
+    formData.append("formerSecond", product && formerSecond);
+    formData.append("formerThird", product && formerThird);
 
     await axios
       .post(URL, formData, {

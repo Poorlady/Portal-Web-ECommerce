@@ -18,17 +18,21 @@ const removeFile = (fileName) => {
 
 const handleFile = (file, imgIndex, storeId, name, formerImg) => {
   let fileContainer = file;
-  let imgName = stringFormater.makeFileName(
-    `${storeId}_${name}`,
-    fileContainer,
-    `${imgIndex}`
-  );
+  let imgName = file.name.replace(/\s/g, `${storeId + imgIndex + name}`);
+
   fileContainer.mv(`${mainpath}/client/public/uploads/products/${imgName}`);
-  formerImg !== "null" && removeFile(formerImg);
+
+  console.log(typeof formerImg);
+
+  formerImg !== "null" && formerImg !== "undefined"
+    ? removeFile(formerImg)
+    : null;
   return imgName;
 };
 
 const setData = (req) => {
+  console.log(req.body);
+  console.log(req.files);
   const {
     name,
     desc,
@@ -46,7 +50,6 @@ const setData = (req) => {
     formerSecond,
     formerThird,
   } = req.body;
-
   let dataSet, mainImgName, secondImgName, thirdImgName;
 
   const mappedSize = stringFormater.stringTOArray(size);
@@ -54,6 +57,7 @@ const setData = (req) => {
   const slug = makeSlug(name);
 
   if (req.files !== null) {
+    console.log(req.files.mainFile != null);
     if (req.files.mainFile != null) {
       mainImgName = handleFile(
         req.files.mainFile,
@@ -62,6 +66,8 @@ const setData = (req) => {
         name,
         formerMain
       );
+    } else {
+      mainImgName = formerMain;
     }
     if (req.files.secondFile != null) {
       secondImgName = handleFile(
@@ -71,6 +77,8 @@ const setData = (req) => {
         name,
         formerSecond
       );
+    } else {
+      secondImgName = formerSecond;
     }
 
     if (req.files.thirdFile != null) {
@@ -81,13 +89,17 @@ const setData = (req) => {
         name,
         formerThird
       );
+    } else {
+      thirdImgName = formerThird;
     }
   } else {
     mainImgName = formerMain;
     secondImgName = formerSecond;
     thirdImgName = formerThird;
   }
-
+  console.log(mainImgName);
+  console.log(secondImgName);
+  console.log(thirdImgName);
   dataSet = {
     name: name,
     mainImg: mainImgName,
@@ -113,6 +125,7 @@ const setData = (req) => {
 exports.postProduct = (req, res) => {
   const dataSet = setData(req);
   const product = new Product(dataSet);
+  console.log(product);
   product
     .save()
     .then((result) => {
@@ -168,6 +181,7 @@ exports.getProductsByStoreId = (req, res) => {
 
 exports.editProduct = (req, res) => {
   const dataSet = setData(req);
+  console.log(dataSet);
   Product.findOneAndUpdate(
     { _id: req.params.id },
     {
@@ -185,6 +199,7 @@ exports.editProduct = (req, res) => {
 exports.deleteProducts = (req, res) => {
   Product.findByIdAndRemove(req.params.params)
     .then((result) => {
+      console.log(result);
       result.mainImg && removeFile(result.mainImg);
       result.secondImg && removeFile(result.secondImg);
       result.thirdImg && removeFile(result.thirdImg);
