@@ -27,7 +27,7 @@ function AddProductForm({ store, product }) {
     JSON.parse(localStorage.getItem("category"));
 
   let history = useHistory();
-  console.log(URL);
+  console.log(categoryList);
   const check = (product) => {
     setIsLoading(true);
     if (product) {
@@ -211,7 +211,7 @@ function AddProductForm({ store, product }) {
             <option selected defaultChecked>
               Select Categories
             </option>
-            {etalaseList.length > 0 ? (
+            {categoryList.length > 0 ? (
               categoryList.map((item) => (
                 <option selected={item === category} value={item}>
                   {item}
