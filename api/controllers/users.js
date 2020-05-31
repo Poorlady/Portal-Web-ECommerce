@@ -67,7 +67,7 @@ const insertProductToCart = (user, productId, amount, size, colour) => {
     // newArr = addNewProduct(user.cart.items, productId, amount, colour, size);
   }
   const updatedCart = { items: updatedCartProducts };
-  console.log(updatedCart);
+
   user.cart = updatedCart;
   return user.save();
 };
@@ -81,7 +81,6 @@ const deleteProductFromCart = (user, product) => {
     }
   });
 
-  console.log(updatedCartProducts);
   const updatedCart = { items: updatedCartProducts };
   // console.log(updatedCartProducts);
   user.cart = updatedCart;
@@ -126,16 +125,13 @@ exports.logIn = (req, res) => {
   User.findOne({ email: email, role: userRole })
     .then((user) => {
       if (!user) {
-        console.log(0);
         return res.status(201).json({ mssg: "user not found!" });
       } else {
         bcrypt.compare(password, user.password, function (err, result) {
           if (result) {
-            console.log(1);
             req.user = user;
             res.status(200).json({ data: user });
           } else {
-            console.log(2);
             return res.status(201).json({ mssg: "Wrong password, try again!" });
           }
         });
@@ -188,7 +184,6 @@ exports.updateUser = (req, res) => {
 
 exports.updatePassword = (req, res) => {
   const { _id, password } = req.body;
-  console.log(req.body);
 
   bcrypt.hash(password, saltRound, function (err, hash) {
     if (err) {
@@ -206,7 +201,6 @@ exports.updatePassword = (req, res) => {
 };
 
 exports.getUser = (req, res) => {
-  console.log(req.body);
   const { email } = req.body;
 
   User.findOne({ email: email })
@@ -251,7 +245,7 @@ exports.getCart = (req, res) => {
 exports.deleteCart = (req, res) => {
   const userId = req.params.id.split("U").pop();
   const productId = req.params.id.split("U").shift();
-  console.log(productId);
+
   User.findById(userId)
     .then((user) => deleteProductFromCart(user, productId))
     .then((result) => res.json(result))
@@ -288,7 +282,7 @@ exports.resetPassword = (req, res) => {
 
 exports.changePassword = (req, res) => {
   const { password, token } = req.body;
-  console.log(req.body);
+
   const userId = token.split("U").pop();
   let resetUser;
   User.findOne({
@@ -304,7 +298,6 @@ exports.changePassword = (req, res) => {
       return bcrypt.hash(password, saltRound);
     })
     .then((hashedPassword) => {
-      console.log(hashedPassword);
       resetUser.password = hashedPassword;
       resetUser.resetToken = undefined;
       resetUser.resetExpired = undefined;

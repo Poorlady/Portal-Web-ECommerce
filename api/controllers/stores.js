@@ -52,7 +52,6 @@ exports.updateStore = (req, res) => {
   const { storeId, name, desc, location, formerImg } = req.body;
 
   let imgFileName;
-  console.log(formerImg);
   if (req.files !== null) {
     const imgFile = req.files.file;
     imgFileName = stringFormater.makeFileName(storeId, imgFile, "photo");
@@ -76,7 +75,6 @@ exports.updateStore = (req, res) => {
 
 exports.addEtalase = (req, res) => {
   const { id, etalase } = req.body;
-
   Store.findByIdAndUpdate(id, { $set: { etalase: etalase } }, { new: true })
     .then((result) => res.json(result))
     .catch((err) => console.log(err));

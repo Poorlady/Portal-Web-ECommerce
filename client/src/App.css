@@ -837,8 +837,10 @@ text-transform: capitalize;
   text-align: left;
   list-style: decimal;
   padding: 0;
+  display: grid;
 }
 .etalase-lists li{
+  width: 70%;
   margin: 10px 0;
   padding: 10px;
 }
@@ -1607,4 +1609,8 @@ text-transform: capitalize;
 }
 .nostrip{
   text-decoration: none !important;
+}
+
+.etalaseList-div{
+  display: flex;
 }

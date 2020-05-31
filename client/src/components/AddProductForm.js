@@ -27,7 +27,6 @@ function AddProductForm({ store, product }) {
     JSON.parse(localStorage.getItem("category"));
 
   let history = useHistory();
-  console.log(categoryList);
   const check = (product) => {
     setIsLoading(true);
     if (product) {

@@ -7,6 +7,7 @@ import StorePageHeader from "../components/StorePageHeader";
 import PowerStore from "../components/PowerStore";
 import { useParams, Link } from "react-router-dom";
 
+const calculator = require("../helpers/calculator");
 function StorePage() {
   const { name } = useParams();
   const [products, setProducts] = useState([]);
@@ -15,6 +16,7 @@ function StorePage() {
   const [etalase, setEtalase] = useState();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState();
+  const date = new Date();
 
   const fetchStore = async (name) => {
     await axios
@@ -25,7 +27,7 @@ function StorePage() {
       })
       .catch((err) => console.log(err));
   };
-  console.log(sort);
+
   const fetchProducts = async (id) => {
     await axios
       .get(`/api/products/store/${id}`)
@@ -37,8 +39,37 @@ function StorePage() {
 
   const sortFilter = (a, b) => {
     if (sort === "lowest price") {
+      if (
+        a.discount &&
+        new Date(a.discount.startedDate) <= date &&
+        new Date(a.discount.endDate) >= date
+      ) {
+        if (
+          b.discount &&
+          new Date(b.discount.startedDate) <= date &&
+          new Date(b.discount.endDate) >= date
+        ) {
+          return calculator.getDiscount(a) - calculator.getDiscount(b);
+        }
+        return calculator.getDiscount(a) - b.price;
+      }
       return a.price - b.price;
     } else if (sort === "highest price") {
+      if (
+        b.discount &&
+        new Date(b.discount.startedDate) <= date &&
+        new Date(b.discount.endDate) >= date
+      ) {
+        if (
+          a.discount &&
+          new Date(a.discount.startedDate) <= date &&
+          new Date(a.discount.endDate) >= date
+        ) {
+          return calculator.getDiscount(b) - calculator.getDiscount(a);
+        }
+
+        return calculator.getDiscount(b) - a.price;
+      }
       return b.price - a.price;
     } else if (sort === "latest add") {
       return new Date(b.addedDate) - new Date(a.addedDate);
@@ -100,7 +131,9 @@ function StorePage() {
           <h4>Store's Etalase</h4>
           <ul>
             <li>
-              <Link onClick={handleClick}>All Etalase</Link>
+              <Link to="#" onClick={handleClick}>
+                All Etalase
+              </Link>
             </li>
             {etalaseMapped}
           </ul>

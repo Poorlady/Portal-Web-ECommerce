@@ -4,24 +4,23 @@ const fs = require("fs");
 const stringFormarter = require("../../helpers/stringFormat");
 const mainpath = require("../../helpers/path");
 
-const removeFile = fileName => {
+const removeFile = (fileName) => {
   fs.unlinkSync(`${mainpath}/client/public/uploads/admins/${fileName}`);
 };
 
 exports.addCategory = (req, res) => {
   const { category } = req.body;
-  Admin.countDocuments(function(err, count) {
+  Admin.countDocuments(function (err, count) {
     if (!err && count === 0) {
-      console.log("kosong");
       const data = { category: { items: category } };
       Admin.create(data)
-        .then(result =>
+        .then((result) =>
           res.status(200).json({ result: result, mssg: "Item already saved!" })
         )
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     } else if (!err && count !== 0) {
       Admin.findOne()
-        .then(result => {
+        .then((result) => {
           let updatedCategories;
           if (result.category.items.length > 0) {
             const categoryArr = [...result.category.items];
@@ -33,7 +32,7 @@ exports.addCategory = (req, res) => {
           result.category = updatedCategories;
           return result.save();
         })
-        .then(result => {
+        .then((result) => {
           res.status(200).json({ result: result, mssg: "Item already saved!" });
         });
     } else {
@@ -44,8 +43,8 @@ exports.addCategory = (req, res) => {
 
 exports.deleteCategory = (req, res) => {
   Admin.findOne()
-    .then(result => {
-      const categoryArr = [...result.category.items].filter(item => {
+    .then((result) => {
+      const categoryArr = [...result.category.items].filter((item) => {
         if (item === req.params.name) {
           return false;
         }
@@ -55,14 +54,14 @@ exports.deleteCategory = (req, res) => {
       result.category = newCategory;
       return result.save();
     })
-    .then(result => res.status(200).json(result))
-    .catch(err => console.log(err));
+    .then((result) => res.status(200).json(result))
+    .catch((err) => console.log(err));
 };
 
 exports.getAdminData = (req, res) => {
   Admin.findOne()
-    .then(result => res.json(result))
-    .catch(err => console.log(err));
+    .then((result) => res.json(result))
+    .catch((err) => console.log(err));
 };
 
 exports.postCarousel = (req, res) => {
@@ -73,18 +72,18 @@ exports.postCarousel = (req, res) => {
     "carousel"
   );
 
-  Admin.countDocuments(function(err, count) {
+  Admin.countDocuments(function (err, count) {
     if (!err && count === 0) {
       const data = { carousel: { images: fileName } };
       imgFile.mv(`${mainpath}/client/public/uploads/admins/${fileName}`);
       Admin.create(data)
-        .then(result =>
+        .then((result) =>
           res.status(200).json({ result: result, mssg: "Item already saved!" })
         )
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     } else if (!err && count !== 0) {
       Admin.findOne()
-        .then(result => {
+        .then((result) => {
           let updatedCarousel;
           if (result.carousel.images.length > 0) {
             const carouselArr = [...result.carousel.images];
@@ -97,7 +96,7 @@ exports.postCarousel = (req, res) => {
           imgFile.mv(`${mainpath}/client/public/uploads/admins/${fileName}`);
           return result.save();
         })
-        .then(result => {
+        .then((result) => {
           res.status(200).json({ result: result, mssg: "Item already saved!" });
         });
     } else {
@@ -107,10 +106,9 @@ exports.postCarousel = (req, res) => {
 };
 
 exports.deleteCarousel = (req, res) => {
-  console.log("clicked");
   Admin.findOne()
-    .then(result => {
-      const carouselArr = [...result.carousel.images].filter(item => {
+    .then((result) => {
+      const carouselArr = [...result.carousel.images].filter((item) => {
         if (item === req.params.name) {
           return false;
         }
@@ -121,6 +119,6 @@ exports.deleteCarousel = (req, res) => {
       result.carousel = newCarousel;
       return result.save();
     })
-    .then(result => res.status(200).json(result))
-    .catch(err => console.log(err));
+    .then((result) => res.status(200).json(result))
+    .catch((err) => console.log(err));
 };

@@ -17,7 +17,6 @@ const checkObjectId = (value) => {
 exports.postOrder = (req, res) => {
   //   console.log(req.body);
   const { userId, total } = req.body;
-  console.log(userId, total);
   User.findById(userId)
     .populate({
       path: "cart.items.productId",
@@ -66,7 +65,6 @@ exports.postOrder = (req, res) => {
       return order.save();
     })
     .then((result) => {
-      console.log(result);
       User.findById(result.user.userId).then((user) => {
         const cart = { items: [] };
         user.cart = cart;
@@ -74,7 +72,6 @@ exports.postOrder = (req, res) => {
       });
     })
     .then((result) => {
-      console.log(result);
       res.json(result);
     })
     .catch((err) => console.log(err));
@@ -82,14 +79,12 @@ exports.postOrder = (req, res) => {
 
 exports.getOrder = (req, res) => {
   const filter = checkObjectId(req.params.params);
-  console.log(filter);
   Order.find(filter)
     .then((result) => res.json(result))
     .catch((err) => console.log(err));
 };
 
 exports.postIntent = async (req, res) => {
-  console.log(req.body);
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: req.body.total * 100,
