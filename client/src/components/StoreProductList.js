@@ -32,7 +32,7 @@ function StoreProductList({ product, deleteProduct }) {
       <div className="span-col-2 store-product-detail">
         <h4>{product.name}</h4>
         <p>Price : {stringFormater.toCurrency(product.price)}</p>
-        <p>Stock : {product.stock} pieces</p>
+        <p>{product.desc}</p>
       </div>
       <div className="store-product-menu">
         <Link

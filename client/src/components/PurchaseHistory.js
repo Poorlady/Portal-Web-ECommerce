@@ -16,29 +16,27 @@ function PurchaseHistory({ user }) {
     setDoReview(true);
   };
 
-  const closeReview = status => {
-    console.log(status);
+  const closeReview = (status) => {
     if (status === 200) {
       fetchOrder();
     }
     setDoReview(false);
   };
 
-  const fetchOrder = async e => {
+  const fetchOrder = async (e) => {
     await axios
       .get(URL)
-      .then(result => {
-        console.log(result);
+      .then((result) => {
         setHistory(result.data);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
     fetchOrder();
   }, []);
 
-  const mappedHistory = history.map(item => (
+  const mappedHistory = history.map((item) => (
     <PurchaseList
       key={item._id}
       item={item}

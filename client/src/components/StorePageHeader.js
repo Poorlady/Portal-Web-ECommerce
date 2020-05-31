@@ -3,7 +3,6 @@ import React from "react";
 // import Person from "../img/user.jpg";
 
 function StorePageHeader({ store }) {
-  console.log(store);
   return (
     <div className="store-page-header input-border">
       <div className="store-header-left">

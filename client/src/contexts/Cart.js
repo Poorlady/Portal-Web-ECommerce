@@ -73,7 +73,6 @@ function CartProvider(props) {
       })
       .catch((err) => console.log(err));
   };
-  console.log(cartProduct);
 
   const totalPrice = () => {
     return cartProduct.reduce(

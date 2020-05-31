@@ -4,8 +4,6 @@ const currency = require("../helpers/stringFormarter");
 
 function CartCard({ product }) {
   const date = new Date();
-  console.log(product);
-  console.log(product);
   return (
     <div className="cart-card-wrapper">
       <div className="cart-card-img">

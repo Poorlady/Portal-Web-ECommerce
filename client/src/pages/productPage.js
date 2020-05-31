@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-
 import ProductCard from "../components/ProductCard";
 import { useParams } from "react-router-dom";
+
+const calculator = require("../helpers/calculator");
 
 function ProductPage() {
   const [products, setProducts] = useState([]);
@@ -11,7 +12,7 @@ function ProductPage() {
 
   const { param } = useParams();
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     switch (name) {
       case "startPrice":
@@ -24,13 +25,13 @@ function ProductPage() {
         break;
     }
   };
-  console.log(color);
-  const handleClick = e => {
+
+  const handleClick = (e) => {
     const { value } = e.target;
-    if (!color.some(item => item === String(value))) {
-      setColor(prevState => [...prevState, String(value)]);
+    if (!color.some((item) => item === String(value))) {
+      setColor((prevState) => [...prevState, String(value)]);
     } else {
-      setColor(color.filter(item => item !== String(value)));
+      setColor(color.filter((item) => item !== String(value)));
     }
   };
 
@@ -39,29 +40,38 @@ function ProductPage() {
     window.scrollTo(0, 0);
   }, [param]);
 
-  console.log(param);
-  const findProduct = async s => {
+  const findProduct = async (s) => {
     await fetch(`/api/products/filter/${s}`)
-      .then(res => res.json())
-      .then(products => setProducts(products));
+      .then((res) => res.json())
+      .then((products) => setProducts(products));
   };
 
   const colorSet = new Set(color);
-
+  const date = new Date();
   const mappedProducts = products
-    .filter(item =>
+    .filter((item) =>
       priceFilter
-        ? parseInt(priceFilter) < parseInt(endPrice)
+        ? item.discount
+          ? new Date(item.discount.startedDate) <= date &&
+            new Date(item.discount.endDate) >= date
+            ? parseInt(priceFilter) < parseInt(endPrice)
+              ? calculator.getDiscount(item) >= priceFilter &&
+                calculator.getDiscount(item) <= endPrice
+              : calculator.getDiscount(item) >= priceFilter
+            : parseInt(priceFilter) < parseInt(endPrice)
+            ? item.price >= priceFilter && item.price <= endPrice
+            : item.price >= priceFilter
+          : parseInt(priceFilter) < parseInt(endPrice)
           ? item.price >= priceFilter && item.price <= endPrice
           : item.price >= priceFilter
         : item
     )
-    .filter(item =>
-      item.colour.some(colour =>
+    .filter((item) =>
+      item.colour.some((colour) =>
         color.length > 0 ? colorSet.has(colour) : colour
       )
     )
-    .map(product => <ProductCard key={product.id} product={product} />);
+    .map((product) => <ProductCard key={product._id} product={product} />);
 
   return (
     <div className="productpage-wrapper">
@@ -73,7 +83,7 @@ function ProductPage() {
         <div className="price-option">
           <p>Price</p>
           <form className="filter-form">
-            <label for="startPrice">Starting Price</label>
+            <label htmlFor="startPrice">Starting Price</label>
             <input
               className="input-border"
               type="number"
@@ -82,7 +92,7 @@ function ProductPage() {
               value={priceFilter}
               onChange={handleChange}
             />
-            <label for="startPrice">End Price</label>
+            <label htmlFor="startPrice">End Price</label>
             <input
               className="input-border"
               type="number"
@@ -121,15 +131,6 @@ function ProductPage() {
               onClick={handleClick}
             ></button>
           </div>
-        </div>
-        <div>
-          <p>Rating</p>
-          <form>
-            <label>
-              <input className="input-border" type="checkbox" />
-              Di atas 4
-            </label>
-          </form>
         </div>
       </div>
       <div className="productgrid-wrapper">

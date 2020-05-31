@@ -89,7 +89,6 @@ function ProductDetail() {
   //   size: pickSize,
   //   amount: amount
   // };
-  console.log(pickSize);
   //validate the order product
   const validate = (product) => {
     if (checkedOption()) {
@@ -237,6 +236,7 @@ function ProductDetail() {
         </div>
         <div className="product-buttons">
           <Link
+            to="#"
             onClick={() => {
               if (validate()) {
                 addProduct(product, amount, pickColour, pickSize);

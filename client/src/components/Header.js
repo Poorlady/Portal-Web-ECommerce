@@ -38,12 +38,14 @@ function Header({ openLogin, closeLogin }) {
         <nav>
           <ul>
             <li>
-              <div class="dropdown">
-                <Link class="dropbtn">Kategori</Link>
-                <div class="dropdown-content">
+              <div className="dropdown">
+                <Link to="#" className="dropbtn">
+                  Kategori
+                </Link>
+                <div className="dropdown-content">
                   {categoryList.length > 0 &&
                     categoryList.map((item) => (
-                      <Link to={`/product-page/${item.toLowerCase()}`}>
+                      <Link key={item} to={`/product-page/${item}`}>
                         {item}
                       </Link>
                     ))}
@@ -63,11 +65,11 @@ function Header({ openLogin, closeLogin }) {
               </form>
             </li>
             <li>
-              <div class="dropdown">
+              <div className="dropdown">
                 <Link className="header--link" to="/carts">
                   Cart
                 </Link>
-                <div class="dropdown-content ml-50">
+                <div className="dropdown-content ml-50">
                   {cartProduct.length > 0 ? (
                     <>
                       {cartProduct.map((item, i) => (
@@ -77,7 +79,7 @@ function Header({ openLogin, closeLogin }) {
                         <p>Total : {stringFormat.toCurrency(totalPrice())}</p>
                       </div>
                       <div className="cart-drop">
-                        <Link>Checkout</Link>
+                        <Link to="/carts/payment">Checkout</Link>
                       </div>
                     </>
                   ) : (
@@ -114,6 +116,7 @@ function Header({ openLogin, closeLogin }) {
                 </li>
                 <li>
                   <Link
+                    to="#"
                     className="header--link"
                     onClick={() => deleteUser(history)}
                   >

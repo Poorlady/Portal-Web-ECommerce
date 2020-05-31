@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-
+import axios from "axios";
 import EtalaseForm from "./EtalaseForm";
 
 function EtalaseList({ etalase, id, updateState }) {
   const [isAddClicked, setIsAddClicked] = useState(false);
   const [isEtalase] = useState(etalase && etalase);
+  const URL = "/api/store/addEtalase";
 
   useEffect(() => {}, [isEtalase]);
 
@@ -16,7 +17,30 @@ function EtalaseList({ etalase, id, updateState }) {
     setIsAddClicked(false);
   };
 
-  let etalaseList = etalase && etalase.map(item => <li key={item}>{item}</li>);
+  const deleteEtalase = async (name) => {
+    let newEtalase = etalase.filter((item) => item !== name);
+    await axios
+      .put(URL, { id: id, etalase: newEtalase })
+      .then((store) => {
+        updateState("store", store.data);
+        closePop();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  let etalaseList =
+    etalase &&
+    etalase.map((item) => (
+      <div key={item} className="etalaseList-div">
+        <li>{item}</li>
+        <button
+          className="input-border del-btn"
+          onClick={() => deleteEtalase(item)}
+        >
+          Delete
+        </button>
+      </div>
+    ));
 
   return (
     <div>
