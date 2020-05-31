@@ -43,9 +43,7 @@ function Header({ openLogin, closeLogin }) {
                 <div class="dropdown-content">
                   {categoryList.length > 0 &&
                     categoryList.map((item) => (
-                      <Link to={`/product-page/${item.toLowerCase()}`}>
-                        {item}
-                      </Link>
+                      <Link to={`/product-page/${item}`}>{item}</Link>
                     ))}
                 </div>
               </div>
