@@ -27,13 +27,11 @@ const handleFile = (file, imgIndex, storeId, name, formerImg) => {
     file.name.replace(/\s/g, `${storeId + imgIndex + name}`);
 
   fileContainer.mv(`${mainpath}/client/public/uploads/products/${imgName}`);
-  console.log(formerImg);
   formerImg !== "null" ? removeFile(formerImg) : null;
   return imgName;
 };
 
 const setData = (req) => {
-  console.log(req.body);
   const {
     name,
     desc,
@@ -123,7 +121,6 @@ const setData = (req) => {
 exports.postProduct = (req, res) => {
   const dataSet = setData(req);
   const product = new Product(dataSet);
-  console.log(dataSet);
   product
     .save()
     .then((result) => {
@@ -179,7 +176,6 @@ exports.getProductsByStoreId = (req, res) => {
 
 exports.editProduct = (req, res) => {
   const dataSet = setData(req);
-  console.log(dataSet);
   Product.findOneAndUpdate(
     { _id: req.params.id },
     {
